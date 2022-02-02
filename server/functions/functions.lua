@@ -1,5 +1,5 @@
-ATL.GetLicense = function (id, cb)
-    local identifiers = GetPlayerIdentifiers(id)
+ATL.GetLicense = function(playerId, cb)
+    local identifiers = GetPlayerIdentifiers(playerId)
     local matchingIdentifier = "license:"
     for i=1, #identifiers do
         if identifiers[i]:match(matchingIdentifier) then
@@ -9,4 +9,8 @@ ATL.GetLicense = function (id, cb)
             return cb(identifiers[i])
         end
     end
+    if not cb then
+        return false
+    end
+    return cb(false)
 end

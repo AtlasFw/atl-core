@@ -1,6 +1,5 @@
 local function createPlayer()
-    local src <const> = source
-    
+    local src <const> = source 
     ATL.GetLicense(src, function (license)
         TriggerClientEvent("atl:client:spawnPlayer", src)
     end)

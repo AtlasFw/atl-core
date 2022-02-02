@@ -43,17 +43,6 @@ function player:getIdentifier(identifier)
     return "No matching identifier: " .. tostring(matchingIdentifier)
 end
 
-
-
-Players[1] = Players.setData(1, 20)
-print(json.encode(Players[1]:getSource()))
-
-function ATL.getJob(id)
-    return Players[1]
-end
-
-
-
 exports('get', function()
     return ATL
 end)
