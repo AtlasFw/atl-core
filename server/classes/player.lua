@@ -7,7 +7,16 @@ player.__index = player
 
 ---Creates player metadata
 ---@param source number
-player.setData = function(source, identifier, chardid, jobs, group, accounts, inventory, status, appearance)
+---@param identifier string
+---@param chardid number
+---@param jobs table
+---@param group string
+---@param accounts table
+---@param inventory table
+---@param status table
+---@param appearance table
+---@return table
+ATL.SetData = function(source, identifier, chardid, jobs, group, accounts, inventory, status, appearance)
     local self = {}
     self.source = source
     self.identifier = identifier
