@@ -1,53 +1,24 @@
----Function to spawn the player (PENDING A REFACTOR)
+---Set some basic spawn things as pvp or wanted level
+local function setSpawnParams()
+    local playerPed = PlayerPedId()
+    SetCanAttackFriendly(playerPed, true, false)
+    SetMaxWantedLevel(0)
+    SetPedDefaultComponentVariation(playerPed)
+end
+
+---Function to spawn the player (Using spawnmanager default resource)
 ---@param coords vector3
 local function spawnPlayer(coords)
-    local coords = { x = -802.00, y = 175.00, z = 72.95, h = 100.00 }
-
-    local ped = PlayerPedId()
-    local ply = PlayerId()
-
-    FreezeEntityPosition(ped, true)
-    
-    local model = GetHashKey("mp_m_freemode_01")
-
-    RequestModel(model)
-
-    while not HasModelLoaded(model) do
-        RequestModel(model)
-        Wait(0)
-    end
-
-    SetPlayerModel(ply, model)
-    ped = PlayerPedId()
-    SetPedDefaultComponentVariation(ped)
-    SetModelAsNoLongerNeeded(model)
-    RequestCollisionAtCoord(coords.x, coords.y, coords.z)
-    ped = PlayerPedId()
-    SetEntityCoordsNoOffset(ped, coords.x, coords.y, coords.z, false, false, false, true)
-    NetworkResurrectLocalPlayer(coords.x, coords.y, coords.z, coords.h, true, true, false)
-    ClearPedTasksImmediately(ped)
-    RemoveAllPedWeapons(ped) 
-    ClearPlayerWantedLevel(ply)
-    local time = GetGameTimer()
-    while not HasCollisionLoadedAroundEntity(ped) and (GetGameTimer() - time) < 3000 do
-        Wait(0)
-    end
-
-    ShutdownLoadingScreen()
-    if IsScreenFadedOut() then
-        DoScreenFadeIn(500)
-
-        while not IsScreenFadedIn() do
-            Wait(0)
-        end
-    end
-    SetEntityHealth(ped, 200)
-    SetPedMaxHealth(ped, 200)
-    FreezeEntityPosition(ped, false)
-    SetCanAttackFriendly(ped, true, false)
-    NetworkSetFriendlyFireOption(true)
-    ClearPlayerWantedLevel(ply)
-    SetMaxWantedLevel(0)
+    local coords = vector3(-802.00, 175.00, 72.95)
+    exports['spawnmanager']:spawnPlayer({
+        model = "mp_m_freemode_01",
+        heading = 100.00,
+        x = coords.x,
+        y = coords.y,
+        z = coords.z
+    }, function()
+        setSpawnParams()
+    end)
 end
 
 RegisterNetEvent("atl:client:spawnPlayer", spawnPlayer)
