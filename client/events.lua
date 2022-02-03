@@ -20,5 +20,4 @@ local function spawnPlayer(coords)
         setSpawnParams()
     end)
 end
-
 RegisterNetEvent("atl:client:spawnPlayer", spawnPlayer)
