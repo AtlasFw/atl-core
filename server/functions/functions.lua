@@ -1,3 +1,4 @@
+
 local encode, decode = json.encode, json.decode
 
 ATL.GetLicense = function (playerId, cb)
@@ -90,4 +91,7 @@ ATL.SpawnVehicle = function (model, coords, heading, cb)
     local hash = GetHashKey(model)
     local vehicle = CreateVehicle(hash, coords.x, coords.y, coords.z, heading, true, false)
     return cb(vehicle)
+
+        print("Existing")
+    end
 end
