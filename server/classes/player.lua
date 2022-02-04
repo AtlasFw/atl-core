@@ -30,7 +30,7 @@ ATL.SetData = function (source, identifier, chardid, jobs, group, accounts, inve
     self.inventory = inventory
     self.status = status
     self.appearance = appearance
-    self.chardata = char
+    self.char_data = char
     self.phone_data = phonedata
 
     Players[self.source] = self

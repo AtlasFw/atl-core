@@ -80,7 +80,7 @@ ATL.RegisterCommand = function (name, description, group, cb, suggestions, rcon)
         else
             local player = ATL.GetPlayer(src)
             if player.group == group then
-                cb(src, args, rawCommand, player)
+                cb(src, args, player)
             end
         end
     end)

@@ -6,7 +6,7 @@ ATL.RegisterCommand("setgroup", "Set player group", "guillewashere", function (a
     player.setGroup(group)
 end, { }, true)
 
-ATL.RegisterCommand("car", "Spawn a vehicle", "admin", function (source, args, rawCommand, playerData)
+ATL.RegisterCommand("car", "Spawn a vehicle", "admin", function (source, args, playerData)
     local veh = args[1]
     local ped = GetPlayerPed(source)
     local coords = GetEntityCoords(ped)
