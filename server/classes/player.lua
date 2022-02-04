@@ -19,7 +19,7 @@ player.__index = player
 ---@param char any
 ---@param phonedata any
 ---@return table
-ATL.SetData = function (source, identifier, chardid, jobs, group, accounts, inventory, status, appearance, char, phonedata)
+ATL.SetData = function(source, identifier, chardid, jobs, group, accounts, inventory, status, appearance)
     local self = {}
     self.source = source
     self.identifier = identifier

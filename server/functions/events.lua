@@ -13,12 +13,13 @@ local function createPlayer ()
     ATL.GetLicense(src, function (license)
         if license then
             DoesPlayerExist(license, function (result)
-                ATL.CreatePlayer(src, license, result)
+                ATL.CreatePlayer(src, license, result
             end)
         else
             DropPlayer(src, "[atl-core] License not found")
         end
     end)
 end
+
 
 RegisterNetEvent("atl:server:createPlayer", createPlayer)
