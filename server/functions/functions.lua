@@ -1,6 +1,7 @@
-local encode = json.encode
 
-ATL.GetLicense = function(playerId, cb)
+local encode, decode = json.encode, json.decode
+
+ATL.GetLicense = function (playerId, cb)
     local identifiers = GetPlayerIdentifiers(playerId)
     local matchingIdentifier = "license:"
     for i=1, #identifiers do
@@ -40,6 +41,55 @@ ATL.CreatePlayer = function (src, license, exists)
             end)
         end)
     else
-        print("Existing")
+        local data = exists[1]
+        Players[src] = ATL.SetData(src, license, data.character_id, decode(data.job_data), data.group, decode(data.accounts), decode(data.inventory), decode(data.status), decode(data.appearance), decode(data.char_data), decode(data.phone_data))
+        TriggerClientEvent("atl:client:spawnPlayer", src, decode(data.char_data).coords)
     end
+end
+
+---Set group to player
+---@param id number
+---@param group string
+ATL.SetGroup = function (id, group)
+    if not Players[tonumber(id)] then return end
+    Players[tonumber(id)].group = group
+end
+
+---Get a player object
+---@param id number
+---@return table
+ATL.GetPlayer = function (id)
+    local data = { }
+    data.src = id
+    data.group = Players[id].group
+
+    data.setGroup = function (group)
+        ATL.SetGroup(data.src, group)
+    end
+
+    return data
+end
+
+---Register a command (WIP)
+ATL.RegisterCommand = function (name, description, group, cb, suggestions, rcon)
+    RegisterCommand(name, function (source, args, rawCommand)
+        local src <const> = source
+        if rcon then
+            if src == 0 then
+                cb(args)
+            end
+        else
+            local player = ATL.GetPlayer(src)
+            if player.group == group then
+                cb(src, args, player)
+            end
+        end
+    end)
+end
+
+ATL.SpawnVehicle = function (model, coords, heading, cb)
+    local hash = GetHashKey(model)
+    local vehicle = CreateVehicle(hash, coords.x, coords.y, coords.z, heading, true, false)
+    return cb(vehicle)
+
 end

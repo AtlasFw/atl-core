@@ -26,4 +26,5 @@ server_scripts {
 
     'server/functions/events.lua',
     'server/functions/functions.lua',
+    'server/functions/commands.lua',
 }
