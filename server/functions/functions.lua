@@ -92,6 +92,4 @@ ATL.SpawnVehicle = function (model, coords, heading, cb)
     local vehicle = CreateVehicle(hash, coords.x, coords.y, coords.z, heading, true, false)
     return cb(vehicle)
 
-        print("Existing")
-    end
 end

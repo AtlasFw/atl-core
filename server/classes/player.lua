@@ -19,7 +19,7 @@ player.__index = player
 ---@param char any
 ---@param phonedata any
 ---@return table
-ATL.SetData = function(source, identifier, chardid, jobs, group, accounts, inventory, status, appearance)
+ATL.SetData = function(source, identifier, chardid, jobs, group, accounts, inventory, status, appearance, char, phonedata)
     local self = {}
     self.source = source
     self.identifier = identifier
@@ -54,7 +54,7 @@ function player:savePlayer ()
         ['@identity']   = encode({}),
         ['@phone_data'] = encode(self.phone_data),
         ['@job_data']   = encode(self.jobs),
-        ['@char_data']  = encode(self.chardata),
+        ['@char_data']  = encode(self.char_data),
     }, function ()
         -- Add saved player log
     end)
@@ -63,7 +63,7 @@ end
 ---Update the player coords on save
 function player:updateCoords ()
     local ped = GetPlayerPed(self.source)
-    self.chardata.coords = GetEntityCoords(ped)
+    self.char_data.coords = GetEntityCoords(ped)
 end
 
 ---Returns the identifier from argument
