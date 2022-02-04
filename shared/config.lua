@@ -12,3 +12,5 @@ Config.Groups = {
 Config.Others = { 
     coords = vector3(-802.00, 175.00, 72.95)
 }
+
+Config.SaveTime = --[[10 * 1000 * 60]] 2000
