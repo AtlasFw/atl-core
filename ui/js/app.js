@@ -1,13 +1,13 @@
 const fetchNUI = async (cbname, data) => {
-    const options = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json; charset=UTF-8'
-        },
-        body: JSON.stringify(data)
-    };
-    const resp = await fetch(`https://atl-core/${cbname}`, options);
-    return await resp.json();
+	const options = {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json; charset=UTF-8'
+		},
+		body: JSON.stringify(data)
+	};
+	const resp = await fetch(`https://atl-core/${cbname}`, options);
+	return await resp.json();
 }
 
 const app = Vue.createApp({
@@ -17,7 +17,7 @@ const app = Vue.createApp({
 				activated: true,
 				charSelection: 'Choose a Slot',
 				selected: null,
-                action: null,
+				action: null,
 				chars: []
 			},
 		}
@@ -26,52 +26,52 @@ const app = Vue.createApp({
 		messageHandler(e) {
 			switch (e.data.action) {
 				case 'open':
-                    for (let i = 0; i < 3; i++) {
-                        if (e.data.playerData[i]) {
-                            const test = {
-                                character_id: e.data.playerData[i].character_id,
-                                firstName: 'John',
-                                lastName: 'Doe',
-                                dob: '01/01/2000',
-                                sex: 'Male',
-                                accounts: {
-                                    money: 1500,
-                                    bank: 1500,
-                                    black: 1500,
-                                    tebex: 0
-                                },
-                                jobs: {
-                                    jobName: 'Police',
-                                    jobGrade: 'Chief',
-                                    job2Name: 'Mechanic',
-                                    job2Grade: 'Recruit'
-                                }
-                            }
-                            this.multicharacter.chars.push(test)
-                            continue;
-                        }
+					for (let i = 0; i < 3; i++) {
+						if (e.data.playerData[i]) {
+							const test = {
+								character_id: e.data.playerData[i].character_id,
+								firstName: 'John',
+								lastName: 'Doe',
+								dob: '01/01/2000',
+								sex: 'Male',
+								accounts: {
+									money: 1500,
+									bank: 1500,
+									black: 1500,
+									tebex: 0
+								},
+								jobs: {
+									jobName: 'Police',
+									jobGrade: 'Chief',
+									job2Name: 'Mechanic',
+									job2Grade: 'Recruit'
+								}
+							}
+							this.multicharacter.chars.push(test)
+							continue;
+						}
 
-                        if (i >= e.data.slots) {
-                            const blocked = {
-                                character_id: 'blocked'
-                            }
-                            this.multicharacter.chars.push(blocked)
-                            continue;
-                        }
+						if (i >= e.data.slots) {
+							const blocked = {
+								character_id: 'blocked'
+							}
+							this.multicharacter.chars.push(blocked)
+							continue;
+						}
 
-                        if (!e.data.playerData[i]) {
-                            const create = {
-                                character_id: 'create'
-                            }
-                            this.multicharacter.chars.push(create)
-                            continue;
-                        }
-                    }
-                    this.multicharacter.activated = true
+						if (!e.data.playerData[i]) {
+							const create = {
+								character_id: 'create'
+							}
+							this.multicharacter.chars.push(create)
+							continue;
+						}
+					}
+					this.multicharacter.activated = true
 					break;
-                case 'close':
-                    this[e.data.type].activated = false
-                    break;
+				case 'close':
+					this[e.data.type].activated = false
+					break;
 			}
 		},
 		getCharacter(id) {
@@ -81,15 +81,15 @@ const app = Vue.createApp({
 			this.multicharacter.chars.set(id, character)
 		},
 		checkCharacter() {
-            if (this.multicharacter.action === 'create') {
-                fetchNUI('create_character')
-            } else if (this.multicharacter.action !== null) {
-                console.log('test')
-                fetchNUI('select_character', this.multicharacter.action)
-            }
+			if (this.multicharacter.action === 'create') {
+				fetchNUI('create_character')
+			} else if (this.multicharacter.action !== null) {
+				console.log('test')
+				fetchNUI('select_character', this.multicharacter.action)
+			}
 		},
 		deleteSelected(key) {
-            fetchNUI('delete_character', key)
+			fetchNUI('delete_character', key)
 			console.log(key)
 		},
 		setSelected(key) {
@@ -114,17 +114,17 @@ const app = Vue.createApp({
 			switch (target.getAttribute('data-char-id')) {
 				case 'create':
 					this.multicharacter.charSelection = 'Create Character'
-                    this.multicharacter.action = 'create'
+					this.multicharacter.action = 'create'
 					break
 				case 'blocked':
 					target.classList.add('ring-4', 'ring-red-600')
 					this.multicharacter.charSelection = 'Blocked Character'
 					this.$refs.creation.style.backgroundColor = '#d52b2b'
 					this.$refs.creation.disabled = true
-                    this.multicharacter.action = null
+					this.multicharacter.action = null
 					return
 				default:
-                    this.multicharacter.action = target.getAttribute('data-char-id')
+					this.multicharacter.action = target.getAttribute('data-char-id')
 					this.multicharacter.charSelection = 'Select Character'
 					break
 			}
@@ -132,7 +132,7 @@ const app = Vue.createApp({
 		},
 	},
 	mounted() {
-        console.log('mounted')
+		console.log('mounted')
 		window.addEventListener('message', this.messageHandler)
 	},
 	unmounted() {

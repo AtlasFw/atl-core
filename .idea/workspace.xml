@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1c899674-47e2-4bb6-8f31-7d8cecc643c4" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/ui/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/ui/js/app.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ui/ui.html" beforeDir="false" afterPath="$PROJECT_DIR$/ui/ui.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -15,6 +15,14 @@
       <list>
         <option value="HTML File" />
       </list>
+    </option>
+  </component>
+  <component name="Git.Merge.Settings">
+    <option name="BRANCH" value="origin/master" />
+    <option name="OPTIONS">
+      <set>
+        <option value="NO_VERIFY" />
+      </set>
     </option>
   </component>
   <component name="Git.Settings">
@@ -63,7 +71,8 @@
       <workItem from="1643925788887" duration="73000" />
       <workItem from="1643929425461" duration="2751000" />
       <workItem from="1643970534147" duration="5082000" />
-      <workItem from="1643999312044" duration="18979000" />
+      <workItem from="1643999312044" duration="19138000" />
+      <workItem from="1644050762045" duration="368000" />
     </task>
     <servers />
   </component>
