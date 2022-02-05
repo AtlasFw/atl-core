@@ -15,3 +15,12 @@ ATL.RegisterCommand("car", "Spawn a vehicle", "admin", function (source, args, p
         TaskWarpPedIntoVehicle(ped, veh, -1)
     end)
 end, { }, false)
+
+ATL.RegisterCommand("dv", "Delete a vehicle", "admin", function (source, args)
+    local coords = GetEntityCoords(GetPlayerPed(source))
+    local dist = tonumber(args[1]) or 1.0 
+    local vehicles = ATL.GetVehicles(coords, dist)
+    for i = 1, #vehicles, 1 do
+        DeleteEntity(vehicles[i])
+    end
+end)

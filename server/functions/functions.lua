@@ -1,5 +1,5 @@
 
-local encode, decode = json.encode, json.decode
+local encode, decode, insert = json.encode, json.decode, table.insert
 
 ATL.GetLicense = function (playerId, cb)
     local identifiers = GetPlayerIdentifiers(playerId)
@@ -91,5 +91,21 @@ ATL.SpawnVehicle = function (model, coords, heading, cb)
     local hash = GetHashKey(model)
     local vehicle = CreateVehicle(hash, coords.x, coords.y, coords.z, heading, true, false)
     return cb(vehicle)
+end
 
+ATL.GetEntities = function (coords, entities, distance)
+    local ents = {}
+    for _, v in pairs(entities) do
+        if not IsPedAPlayer(v) then
+            local entityCoords = GetEntityCoords(v)
+            if #(coords - entityCoords) <= distance then
+                insert(ents, v)
+            end
+        end
+    end
+    return ents
+end
+
+ATL.GetVehicles = function (coords, dist)
+    return ATL.GetEntities(coords, GetAllVehicles(), dist or 1.0)
 end
