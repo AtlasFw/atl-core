@@ -75,8 +75,9 @@ end
 function player:setCoords(newCoords, newHeading)
     local ped = GetPlayerPed(self.source)
     if ped <= 0 then return false end
-    local coords, heading = newCoords or GetEntityCoords(ped), newHeading or GetEntityHeading(ped)
-    self.char_data.coords = vector4(coords.x, coords.y, coords.z, heading + 0.0)
+    local coords, heading = type(newCoords) == 'table' and newCoords or GetEntityCoords(ped), newHeading or GetEntityHeading(ped)
+    if coords.x == 0 or coords.y == 0 or coords.z == 0 then return false end
+    self.char_data.coords = vector4(coords.x, coords.y, coords.z, heading)
     return true
 end
 

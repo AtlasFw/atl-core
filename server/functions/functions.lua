@@ -34,11 +34,12 @@ ATL.CreatePlayer = function (playerId, license, exists)
             ['@identity']   = encode({}),
             ['@phone_data'] = encode({}),
             ['@job_data']   = encode({}),
-            ['@char_data']  = encode({ coords = Config.Others.coords }),
+            ['@char_data']  = encode({ coords = Config.Others.Coords }),
         }, function (row)
             if row then
                 MySQL.Async.fetchScalar('SELECT LAST_INSERT_ID()', {}, function (charId)
-                    Players[playerId] = ATL.SetData(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, Config.Others.coords, {})
+                    Players[playerId] = ATL.SetData(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Others.Coords }, {})
+                    TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Others.Coords)
                 end)
             else
                 print('[ATL] Error while creating player')

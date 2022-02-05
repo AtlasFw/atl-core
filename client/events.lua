@@ -9,6 +9,7 @@ end
 ---Function to spawn the player (Using spawnmanager default resource)
 ---@param coords vector3
 local function spawnPlayer(coords)
+    print(coords)
     exports["spawnmanager"]:spawnPlayer({
         model = 'mp_m_freemode_01',
         heading = coords.w,

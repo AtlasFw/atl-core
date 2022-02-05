@@ -20,7 +20,7 @@ Config.Identity = {
 }
 
 Config.Others = {
-    coords = vector4(-802.00, 175.00, 72.95, 180.00)
+    Coords = vector4(-802.00, 175.00, 72.00, 180.00)
 }
 
-Config.SaveTime = --[[10 * 1000 * 60]] 2000
+Config.SaveTime = --[[10 * 1000 * 60]] 10000
