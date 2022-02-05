@@ -1,3 +1,15 @@
+const fetchNUI = async (cbname, data) => {
+    const options = {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json; charset=UTF-8'
+        },
+        body: JSON.stringify(data)
+    };
+    const resp = await fetch(`https://atl-core/${cbname}`, options);
+    return await resp.json();
+}
+
 const app = Vue.createApp({
 	data() {
 		return {
@@ -5,16 +17,61 @@ const app = Vue.createApp({
 				activated: true,
 				charSelection: 'Choose a Slot',
 				selected: null,
-				chars: new Map()
+                action: null,
+				chars: []
 			},
 		}
 	},
 	methods: {
 		messageHandler(e) {
 			switch (e.data.action) {
-				case 'loaded':
-					this.isVisible = true;
+				case 'open':
+                    for (let i = 0; i < 3; i++) {
+                        if (e.data.playerData[i]) {
+                            const test = {
+                                character_id: e.data.playerData[i].character_id,
+                                firstName: 'John',
+                                lastName: 'Doe',
+                                dob: '01/01/2000',
+                                sex: 'Male',
+                                accounts: {
+                                    money: 1500,
+                                    bank: 1500,
+                                    black: 1500,
+                                    tebex: 0
+                                },
+                                jobs: {
+                                    jobName: 'Police',
+                                    jobGrade: 'Chief',
+                                    job2Name: 'Mechanic',
+                                    job2Grade: 'Recruit'
+                                }
+                            }
+                            this.multicharacter.chars.push(test)
+                            continue;
+                        }
+
+                        if (i >= e.data.slots) {
+                            const blocked = {
+                                character_id: 'blocked'
+                            }
+                            this.multicharacter.chars.push(blocked)
+                            continue;
+                        }
+
+                        if (!e.data.playerData[i]) {
+                            const create = {
+                                character_id: 'create'
+                            }
+                            this.multicharacter.chars.push(create)
+                            continue;
+                        }
+                    }
+                    this.multicharacter.activated = true
 					break;
+                case 'close':
+                    this[e.data.type].activated = false
+                    break;
 			}
 		},
 		getCharacter(id) {
@@ -24,9 +81,15 @@ const app = Vue.createApp({
 			this.multicharacter.chars.set(id, character)
 		},
 		checkCharacter() {
-
+            if (this.multicharacter.action === 'create') {
+                fetchNUI('create_character')
+            } else if (this.multicharacter.action !== null) {
+                console.log('test')
+                fetchNUI('select_character', this.multicharacter.action)
+            }
 		},
 		deleteSelected(key) {
+            fetchNUI('delete_character', key)
 			console.log(key)
 		},
 		setSelected(key) {
@@ -51,14 +114,17 @@ const app = Vue.createApp({
 			switch (target.getAttribute('data-char-id')) {
 				case 'create':
 					this.multicharacter.charSelection = 'Create Character'
+                    this.multicharacter.action = 'create'
 					break
 				case 'blocked':
 					target.classList.add('ring-4', 'ring-red-600')
 					this.multicharacter.charSelection = 'Blocked Character'
 					this.$refs.creation.style.backgroundColor = '#d52b2b'
 					this.$refs.creation.disabled = true
+                    this.multicharacter.action = null
 					return
 				default:
+                    this.multicharacter.action = target.getAttribute('data-char-id')
 					this.multicharacter.charSelection = 'Select Character'
 					break
 			}
@@ -66,28 +132,8 @@ const app = Vue.createApp({
 		},
 	},
 	mounted() {
+        console.log('mounted')
 		window.addEventListener('message', this.messageHandler)
-		const test = {
-			firstName: 'John',
-			lastName: 'Doe',
-			dob: '01/01/2000',
-			sex: 'Male',
-			accounts: {
-				money: 1500,
-				bank: 1500,
-				black: 1500,
-				tebex: 0
-			},
-			jobs: {
-				jobName: 'Police',
-				jobGrade: 'Chief',
-				job2Name: 'Mechanic',
-				job2Grade: 'Recruit'
-			}
-		}
-		this.setCharacter('char_id_1', test)
-		this.setCharacter('create', test)
-		this.setCharacter('blocked', test)
 	},
 	unmounted() {
 		window.addEventListener('message', this.messageHandler)
@@ -112,7 +158,7 @@ app.component('char-box', {
 				</svg>
 				<span class="group-hover:underline font-spline-sans text-gray-200 text-xl font-semibold">Ask for more character slots with administration.</span>
 			</div>
-			<button v-if="char_id !== 'create' && char_id !== 'blocked'" @click="$emit('delete-selected', $.vnode.key)" style="background-color: #113A57" class="group w-10 h-10 bg-slate-500 rounded grid place-items-center text-shadow-black drop-shadow-lg">
+			<button v-if="char_id !== 'create' && char_id !== 'blocked'" @click="$emit('delete-selected', char_id)" style="background-color: #113A57" class="group w-10 h-10 bg-slate-500 rounded grid place-items-center text-shadow-black drop-shadow-lg">
 				<svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-200 group-hover:animate-pulse transform duration-200" fill="none" viewBox="0 0 24 24" stroke="currentColor">
 					<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
 				</svg>

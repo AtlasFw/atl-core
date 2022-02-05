@@ -12,11 +12,7 @@ Config.Groups = {
 -- Needs refactoring to be more dynamic so that admins can give people more slots.
 Config.Identity = {
     Disable = false,
-    Slots = {
-        [1] = true,
-        [2] = true,
-        [3] = false
-    }
+    Slots = 2
 }
 
 Config.Others = {

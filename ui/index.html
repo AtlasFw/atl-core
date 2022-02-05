@@ -5,9 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Atlas Core</title>
-    <!-- Production
-    <script src="https://unpkg.com/tailwindcss-jit-cdn"></script>
-    -->
+    <!-- <script src="https://unpkg.com/tailwindcss-jit-cdn"></script> -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./css/main.css">
 </head>
@@ -22,9 +20,9 @@
             <char-box
                 v-for="(char, index) in multicharacter.chars"
                 :key="index"
-                :char_id="char[0]"
-                :char_data="char[1]"
-                :char_elem_id="'char_' + index.toString()"
+                :char_id="char.character_id || char"
+                :char_data="char"
+                :char_elem_id="'char_' + index"
                 class="mb-8 ml-16"
                 @click="setSelected(index)"
                 @delete-selected="deleteSelected"
@@ -36,7 +34,8 @@
             </div>
         </div>
     </div>
-    <script src="https://unpkg.com/vue@next"></script>
+    <script src="https://unpkg.com/vue@3.2.29/dist/vue.global.prod.js"></script>
+    <!-- <script src="https://unpkg.com/vue@next"></script> -->
     <script type="module" src="./js/app.js"></script>
 </body>
 </html>

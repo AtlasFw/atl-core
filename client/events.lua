@@ -2,6 +2,7 @@
 local function setSpawnParams()
     local ped = PlayerPedId()
     SetCanAttackFriendly(ped, true, false)
+    NetworkSetFriendlyFireOption(true)
     SetMaxWantedLevel(0)
     SetPedDefaultComponentVariation(ped)
 end
@@ -9,7 +10,6 @@ end
 ---Function to spawn the player (Using spawnmanager default resource)
 ---@param coords vector3
 local function spawnPlayer(coords)
-    print(coords)
     exports["spawnmanager"]:spawnPlayer({
         model = 'mp_m_freemode_01',
         heading = coords.w,
@@ -43,6 +43,19 @@ local function setPedSeats(netVehicle, seat)
     end
 end
 
+local function startMulticharacter(playerData, slots)
+    Wait(1500)
+    SetNuiFocus(true, true)
+    SendNUIMessage({
+        action = 'open',
+        type = 'multicharacter',
+        multicharacter = true,
+        playerData = playerData,
+        slots = slots
+    })
+end
+
 
 RegisterNetEvent('atl:client:spawnPlayer', spawnPlayer)
 RegisterNetEvent('atl:client:setPedSeat', setPedSeats)
+RegisterNetEvent('atl:client:startMulticharacter', startMulticharacter)
