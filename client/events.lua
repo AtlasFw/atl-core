@@ -10,8 +10,8 @@ end
 ---@param coords vector3
 local function spawnPlayer(coords)
     exports["spawnmanager"]:spawnPlayer({
-        model = "mp_m_freemode_01",
-        heading = 100.00,
+        model = 'mp_m_freemode_01',
+        heading = coords.w,
         x = coords.x,
         y = coords.y,
         z = coords.z
@@ -43,5 +43,5 @@ local function setPedSeats(netVehicle, seat)
 end
 
 
-RegisterNetEvent("atl:client:spawnPlayer", spawnPlayer)
+RegisterNetEvent('atl:client:spawnPlayer', spawnPlayer)
 RegisterNetEvent('atl:client:setPedSeat', setPedSeats)

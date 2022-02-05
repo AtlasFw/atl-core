@@ -1,9 +1,9 @@
-local CREATE_AUTOMOBILE = GetHashKey("CREATE_AUTOMOBILE")
+local CREATE_AUTOMOBILE = GetHashKey('CREATE_AUTOMOBILE')
 local encode, decode = json.encode, json.decode
 
 ATL.GetLicense = function (playerId, cb)
     local identifiers = GetPlayerIdentifiers(playerId)
-    local matchingIdentifier = "license:"
+    local matchingIdentifier = 'license:'
     for i=1, #identifiers do
         if identifiers[i]:match(matchingIdentifier) then
             if not cb then
@@ -24,7 +24,7 @@ end
 ---@param exists boolean
 ATL.CreatePlayer = function (playerId, license, exists)
     if not exists or not exists[1] then
-        MySQL.Async.execute("INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, phone_data, job_data, char_data) VALUES (@license, @accounts, @appearance, @group, @status, @inventory, @identity, @phone_data, @job_data, @char_data)", {
+        MySQL.Async.execute('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, phone_data, job_data, char_data) VALUES (@license, @accounts, @appearance, @group, @status, @inventory, @identity, @phone_data, @job_data, @char_data)', {
             ['@license']    = license,
             ['@accounts']   = encode(Config.Accounts),
             ['@appearance'] = encode({}),
@@ -37,19 +37,19 @@ ATL.CreatePlayer = function (playerId, license, exists)
             ['@char_data']  = encode({ coords = Config.Others.coords }),
         }, function (row)
             if row then
-                MySQL.Async.fetchScalar("SELECT LAST_INSERT_ID()", {}, function (charId)
+                MySQL.Async.fetchScalar('SELECT LAST_INSERT_ID()', {}, function (charId)
                     Players[playerId] = ATL.SetData(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, Config.Others.coords, {})
                 end)
             else
-                print("[ATL] Error while creating player")
-                DropPlayer(playerId, "[atl-core] Error while creating player")
+                print('[ATL] Error while creating player')
+                DropPlayer(playerId, '[ATL] Error while creating player')
             end
         end)
     else
         local player = exists[1]
         if player then
             Players[playerId] = ATL.SetData(playerId, license, player.character_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data), decode(player.phone_data))
-            TriggerClientEvent("atl:client:spawnPlayer", playerId, decode(player.char_data).coords)
+            TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player.char_data).coords)
         end
     end
 end
@@ -58,7 +58,7 @@ end
 ---@param playerId number
 ---@param group string
 ATL.SetGroup = function (playerId, group)
-    if type(player) ~= "number" then return end
+    if type(player) ~= 'number' then return end
     local player = Players[playerId]
 
     if not player then return end
@@ -88,7 +88,7 @@ end
 ---@param suggestions table - Table of suggestions
 ---@param rcon boolean - Can be used by rcon
 ATL.RegisterCommand = function (name, description, group, cb, suggestions, rcon)
-    if type(name) == "table" then
+    if type(name) == 'table' then
         for i=1, #name do
             ATL.RegisterCommand(name[i], description, group, cb, suggestions, rcon)
         end
@@ -120,7 +120,7 @@ ATL.SpawnVehicle = function(playerId, model, spawnCoords, cb)
     local ped = GetPlayerPed(playerId)
     if ped <= 0 and not spawnCoords then return end
 
-    local coords, heading = type(spawnCoords) == "table" and spawnCoords or GetEntityCoords(ped), spawnCoords and spawnCoords.w or GetEntityHeading(ped)
+    local coords, heading = type(spawnCoords) == 'table' and spawnCoords or GetEntityCoords(ped), spawnCoords and spawnCoords.w or GetEntityHeading(ped)
     local vehicle = Citizen.InvokeNative(CREATE_AUTOMOBILE, model, coords.x, coords.y, coords.z, heading)
 
     local timeout = false

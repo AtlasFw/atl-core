@@ -23,3 +23,5 @@ server_scripts {
     'server/functions/functions.lua',
     'server/functions/commands.lua',
 }
+
+provide 'atl' -- Instead of saying 'stop atl-core', you can just say 'stop atl'

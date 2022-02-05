@@ -1,7 +1,7 @@
 ---Check if a player was previously created
 ---@param license string
 local function DoesPlayerExist(license, cb)
-    MySQL.Async.fetchAll("SELECT * FROM `users` WHERE `license` = @license", {
+    MySQL.Async.fetchAll('SELECT * FROM `users` WHERE `license` = @license', {
         ['@license'] = license
     }, function (result)
         return cb(result)
@@ -16,10 +16,10 @@ local function createPlayer()
                 ATL.CreatePlayer(playerId, license, result)
             end)
         else
-            DropPlayer(playerId, "[atl-core] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.")
+            DropPlayer(playerId, '[ATL] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.')
         end
     end)
 end
 
 
-RegisterNetEvent("atl:server:createPlayer", createPlayer)
+RegisterNetEvent('atl:server:createPlayer', createPlayer)

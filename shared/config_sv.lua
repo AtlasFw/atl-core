@@ -5,8 +5,8 @@ Config.Accounts = { cash = 0, bank = 0, black = 0, tebex = 0  }
 Config.Status = { hunger = 100, thirst = 100 }
 
 Config.Groups = {
-    [1] = "user",
-    [2] = "admin",
+    [1] = 'user',
+    [2] = 'admin',
 }
 
 -- Needs refactoring to be more dynamic so that admins can give people more slots.

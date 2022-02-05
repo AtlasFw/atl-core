@@ -54,6 +54,7 @@ end
 
 --#endregion Getters
 
+--#region Setters
 ---Set the player group
 ---@param group string
 function player:setGroup(group)
@@ -79,8 +80,9 @@ function player:setCoords(newCoords, newHeading)
     return true
 end
 
+---Save player into the database
 function player:savePlayer()
-    MySQL.Async.execute("UPDATE `users` SET license = @license, accounts = @accounts, appearance = @appearance, `group` = @group, status = @status, inventory = @inventory, identity = @identity, phone_data = @phone_data, job_data = @job_data, char_data = @char_data", {
+    MySQL.Async.execute('UPDATE `users` SET license = @license, accounts = @accounts, appearance = @appearance, `group` = @group, status = @status, inventory = @inventory, identity = @identity, phone_data = @phone_data, job_data = @job_data, char_data = @char_data', {
         ['@license']    = self.identifier,
         ['@accounts']   = encode(self.accounts),
         ['@appearance'] = encode(self.appearance),
@@ -95,3 +97,4 @@ function player:savePlayer()
         -- Add saved player log
     end)
 end
+--#endregion Setters

@@ -1,16 +1,16 @@
-ATL.RegisterCommand("setgroup", "Set player group", "guillewashere", function(args)
+ATL.RegisterCommand('setgroup', 'Set player group', 'guillewashere', function(args)
     local playerId = tonumber(args[1])
     local group = args[2]
-    if not playerId or not group then error("Missing an id to set the group (Use setgroup + id + group)") end
+    if not playerId or not group then error('Missing an id to set the group (Use setgroup + id + group)') end
 
     local player = Players[playerId]
-    if not player then error("Player not found") end
+    if not player then error('Player not found') end
 
     local newGroup = player:setGroup(group)
-    if not newGroup then error("Could not set new group for player") end
+    if not newGroup then error('Group does not exist!') end
 end, { }, true)
 
-ATL.RegisterCommand({'car', 'veh'}, "Spawn a vehicle", "admin", function(playerId, args)
+ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(playerId, args)
     local hashModel = GetHashKey(args[1])
     local ped = GetPlayerPed(playerId)
     local currentVehicle = GetVehiclePedIsIn(ped)
