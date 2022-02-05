@@ -1,11 +1,11 @@
 ATL = { }
 ATL.Commands = { }
 
-CreateThread(function ()
+CreateThread(function()
     while true do
-        for k, v in pairs(Players) do
-            v:updateCoords()
-            v:savePlayer()
+        for _, player in pairs(Players) do
+            player:setCoords()
+            player:savePlayer()
         end
         Wait(Config.SaveTime)
     end

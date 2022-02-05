@@ -6,10 +6,6 @@ lua54 'yes'
 name 'atl-core'
 author 'Atlas Framework Developers'
 
-shared_scripts {
-    'shared/config.lua'
-}
-
 client_scripts {
     'client/main.lua',
     'client/events.lua',
@@ -17,11 +13,10 @@ client_scripts {
 }
 
 server_scripts {
-
     '@oxmysql/lib/MySQL.lua',
+    'shared/config_sv.lua',
 
     'server/main.lua',
-
     'server/classes/player.lua',
 
     'server/functions/events.lua',
