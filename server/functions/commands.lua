@@ -39,3 +39,11 @@ ATL.RegisterCommand("dv", "Delete a vehicle", "admin", function (source, args)
         DeleteEntity(vehicles[i])
     end
 end)
+
+ATL.RegisterCommand("clear", "Clear chat", "user", function (source, args, playerData)
+    TriggerClientEvent("chat:clear", source)
+end, { }, false)
+
+ATL.RegisterCommand("clearall", "Clear chat for everyone", "admin", function (source, args, playerData)
+    TriggerClientEvent("chat:clear", -1)
+end, { }, false)
