@@ -55,9 +55,9 @@ local function loadPlayer(data)
     ATL.GetLicense(playerId, function(license)
         if license then
             MySQL.single('SELECT * FROM users WHERE license = ? AND character_id = ?', { license, data.character_id }, function(player)
-                if next(player) then
-                    Players[playerId] = ATL.SetData(playerId, license, player[1].character_id, decode(player[1].job_data), player[1].group, decode(player[1].accounts), decode(player[1].inventory), decode(player[1].status), decode(player[1].appearance), decode(player[1].char_data), decode(player[1].phone_data))
-                    TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player[1].char_data).coords)
+                if player and next(player) then
+                    Players[playerId] = ATL.SetData(playerId, license, player.character_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data), decode(player.phone_data))
+                    TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player.char_data).coords)
                 end
             end)
         end
