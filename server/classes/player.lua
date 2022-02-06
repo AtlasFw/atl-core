@@ -83,6 +83,7 @@ end
 
 ---Save player into the database
 function player:savePlayer()
+    self:setCoords()
     MySQL.prepare('UPDATE `users` SET accounts = ?, `group` = ?, status = ?, inventory = ?, phone_data = ?, job_data = ?, char_data = ? WHERE `character_id` = ? ', {{
         encode(self.accounts),
         self.group,
