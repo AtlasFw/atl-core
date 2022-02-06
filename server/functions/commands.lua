@@ -31,19 +31,19 @@ ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(playerI
     end)
 end, { }, false)
 
-ATL.RegisterCommand("dv", "Delete a vehicle", "admin", function (source, args)
-    local coords = GetEntityCoords(GetPlayerPed(source))
-    local dist = tonumber(args[1]) or 1.0 
+ATL.RegisterCommand('dv', 'Delete a vehicle', 'admin', function (playerId, args)
+    local coords = GetEntityCoords(GetPlayerPed(playerId))
+    local dist = tonumber(args[1]) or 1.0
     local vehicles = ATL.GetVehicles(coords, dist)
     for i = 1, #vehicles, 1 do
         DeleteEntity(vehicles[i])
     end
 end)
 
-ATL.RegisterCommand("clear", "Clear chat", "user", function (source, args, playerData)
-    TriggerClientEvent("chat:clear", source)
+ATL.RegisterCommand('clear', 'Clear chat', 'user', function (playerId)
+    TriggerClientEvent('chat:clear', playerId)
 end, { }, false)
 
-ATL.RegisterCommand("clearall", "Clear chat for everyone", "admin", function (source, args, playerData)
-    TriggerClientEvent("chat:clear", -1)
+ATL.RegisterCommand('clearall', 'Clear chat for everyone', 'admin', function()
+    TriggerClientEvent('chat:clear', -1)
 end, { }, false)
