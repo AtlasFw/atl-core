@@ -19,23 +19,21 @@ end
 ---@param exists
 ATL.CreatePlayer = function (playerId, license, exists)
     if not exists or not next(exists) then
-        MySQL.Async.execute('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, phone_data, job_data, char_data) VALUES (@license, @accounts, @appearance, @group, @status, @inventory, @identity, @phone_data, @job_data, @char_data)', {
-            ['@license']    = license,
-            ['@accounts']   = encode(Config.Accounts),
-            ['@appearance'] = encode({}),
-            ['@group']      = Config.Groups[1] or "user",
-            ['@status']     = encode(Config.Status),
-            ['@inventory']  = encode({}),
-            ['@identity']   = encode({}),
-            ['@phone_data'] = encode({}),
-            ['@job_data']   = encode({}),
-            ['@char_data']  = encode({ coords = Config.Others.Coords }),
-        }, function (row)
-            if row then
-                MySQL.Async.fetchScalar('SELECT LAST_INSERT_ID()', {}, function (charId)
-                    Players[playerId] = ATL.SetData(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Others.Coords }, {})
-                    TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Others.Coords)
-                end)
+        MySQL.insert('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, phone_data, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
+            license,
+            encode(Config.Accounts),
+            encode({}),
+            Config.Groups[1] or "user",
+            encode(Config.Status),
+            encode({}),
+            encode({}),
+            encode({}),
+            encode({}),
+            encode({ coords = Config.Others.Coords }),
+        }, function(charId)
+            if charId then
+                Players[playerId] = ATL.SetData(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Others.Coords }, {})
+                TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Others.Coords)
             else
                 print('[ATL] Error while creating player')
                 DropPlayer(playerId, '[ATL] Error while creating player')

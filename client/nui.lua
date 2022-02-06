@@ -27,7 +27,7 @@ RegisterNUICallback('delete_character', function(data, cb)
         if data then
             TriggerServerEvent('atl:server:deletePlayer', data)
             ATL.Active.Multichar = false
-            SetNuiFocus(false, false)
+            SetNuiFocus(true, false)
             cb({ done = true })
             return
         end

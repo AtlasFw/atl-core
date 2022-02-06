@@ -54,10 +54,7 @@ local function loadPlayer(data)
 
     ATL.GetLicense(playerId, function(license)
         if license then
-            MySQL.query('SELECT * FROM `users` WHERE `license` = @license AND `character_id` = @character_id', {
-                ['@license']        = license,
-                ['@character_id']   = data.character_id
-            }, function(player)
+            MySQL.single('SELECT * FROM users WHERE license = ? AND character_id = ?', { license, data.character_id }, function(player)
                 if next(player) then
                     Players[playerId] = ATL.SetData(playerId, license, player[1].character_id, decode(player[1].job_data), player[1].group, decode(player[1].accounts), decode(player[1].inventory), decode(player[1].status), decode(player[1].appearance), decode(player[1].char_data), decode(player[1].phone_data))
                     TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player[1].char_data).coords)
@@ -73,11 +70,12 @@ local function deletePlayer(data)
     if type(data) ~= 'table' or type(data.character_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end
     ATL.GetLicense(playerId, function(license)
         if license then
-            MySQL.query('DELETE FROM `users` WHERE `character_id` = @character_id and `license` = @license', {
-                ['@license'] 	    = license,
-                ['@character_id']   = data.character_id
-            }, function(result)
-                if result and result.affectedRows ~= 0 then
+            MySQL.prepare('DELETE FROM `users` WHERE `character_id` = ? and `license` = ?', {{
+                data.character_id,
+                license
+            }}, function(result)
+                print(result)
+                if result == 1 then
                     playerJoined(playerId)
                 else
                     print('[ATL] Could not delete player with character_id of "' .. data.character_id .. '"" and license of "' .. license .. '"')

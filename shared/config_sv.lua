@@ -11,7 +11,7 @@ Config.Groups = {
 
 -- Needs refactoring to be more dynamic so that admins can give people more slots.
 Config.Identity = {
-    Disable = true, -- Set to true to disable the identity/multicharacter system.
+    Disable = false, -- Set to true to disable the identity/multicharacter system.
     MaxSlots = 3, -- Max amount of slots (official multichar only supports 3)
     AllowedSlots = 3 -- Max amount of slots that can be taken by a player
 }

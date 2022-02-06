@@ -83,18 +83,19 @@ end
 
 ---Save player into the database
 function player:savePlayer()
-    MySQL.Async.execute('UPDATE `users` SET license = @license, accounts = @accounts, appearance = @appearance, `group` = @group, status = @status, inventory = @inventory, identity = @identity, phone_data = @phone_data, job_data = @job_data, char_data = @char_data', {
-        ['@license']    = self.identifier,
-        ['@accounts']   = encode(self.accounts),
-        ['@appearance'] = encode(self.appearance),
-        ['@group']      = self.group,
-        ['@status']     = encode(self.status),
-        ['@inventory']  = encode(self.inventory),
-        ['@identity']   = encode({}),
-        ['@phone_data'] = encode(self.phone_data),
-        ['@job_data']   = encode(self.jobs),
-        ['@char_data']  = encode(self.char_data),
-    }, function ()
+    MySQL.prepare('UPDATE `users` SET accounts = ?, `group` = ?, status = ?, inventory = ?, phone_data = ?, job_data = ?, char_data = ? WHERE `character_id` = ? ', {{
+        encode(self.accounts),
+        self.group,
+        encode(self.status),
+        encode(self.inventory),
+        encode(self.phone_data),
+        encode(self.jobs),
+        encode(self.char_data),
+        self.char_id
+    }}, function(result)
+        if result == 1 then
+            print('[ATL] Player ' .. self.source .. ' saved successfully')
+        end
         -- Add saved player log
     end)
 end
