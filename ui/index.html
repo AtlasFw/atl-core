@@ -5,34 +5,35 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>Atlas Core</title>
-    <!-- <script src="https://unpkg.com/tailwindcss-jit-cdn"></script> -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
     <div id="app">
-        <div v-if="multicharacter.activated" class="w-full h-full grid grid-col-3 gap-6 grid-cols-4 grid-rows-6">
-            <div class="flex flex-col items-start justify-center px-1 rounded col-span-4 font-spline-sans font-bold ml-16 mr-16 border-b-2 border-white text-shadow-black">
-                <span class="text-5xl text-white mb-2 drop-shadow-lg lg:text-4xl">Choose your character</span>
-                <span class="text-xl text-gray-400 font-medium drop-shadow-lg">Select a card and press the button under your character:</span>
+        <transition name="slide-fade">
+            <div v-if="multicharacter.activated" class="w-full h-full grid grid-col-3 gap-6 grid-cols-4 grid-rows-6">
+                <div class="flex flex-col items-start justify-center px-1 rounded col-span-4 font-spline-sans font-bold ml-16 mr-16 border-b-2 border-white text-shadow-black">
+                    <span class="text-5xl text-white mb-2 drop-shadow-lg lg:text-4xl">Choose your character</span>
+                    <span class="text-xl text-gray-400 font-medium drop-shadow-lg">Select a card and press the button under your character:</span>
+                </div>
+                <!-- Reminder to change key to char id -->
+                <char-box
+                    v-for="(char, index) in multicharacter.chars"
+                    :key="index"
+                    :char_id="char.character_id || char"
+                    :char_data="char"
+                    :char_elem_id="'char_' + index"
+                    class="mb-8 ml-16"
+                    @click="setSelected(index)"
+                    @delete-selected="deleteSelected"
+                ></char-box>
+                <div class="flex flex-col items-center justify-between rounded row-span-5 mb-8">
+                    <div class="w-full h-full"></div>
+                    <button ref="creation" @click="checkCharacter" style="background-color: #113A57" class="w-4/6 h-16 rounded bg-shale-600 font-spline-sans text-white text-shadow-black drop-shadow-lg text-xl font-semibold transform hover:scale-105 duration-200">
+                        {{ multicharacter.charSelection }}</button>
+                </div>
             </div>
-            <!-- Reminder to change key to char id -->
-            <char-box
-                v-for="(char, index) in multicharacter.chars"
-                :key="index"
-                :char_id="char.character_id || char"
-                :char_data="char"
-                :char_elem_id="'char_' + index"
-                class="mb-8 ml-16"
-                @click="setSelected(index)"
-                @delete-selected="deleteSelected"
-            ></char-box>
-            <div class="flex flex-col items-center justify-between rounded row-span-5 mb-8">
-                <div class="w-full h-full"></div>
-                <button ref="creation" @click="checkCharacter" style="background-color: #113A57" class="w-4/6 h-16 rounded bg-shale-600 font-spline-sans text-white text-shadow-black drop-shadow-lg text-xl font-semibold transform hover:scale-105 duration-200">
-                    {{ multicharacter.charSelection }}</button>
-            </div>
-        </div>
+        </transition>
     </div>
     <script src="https://unpkg.com/vue@3.2.29/dist/vue.global.prod.js"></script>
     <!-- <script src="https://unpkg.com/vue@next"></script> -->

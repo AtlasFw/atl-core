@@ -3,48 +3,49 @@ local encode, decode = json.encode, json.decode
 
 ATL.GetLicense = function (playerId, cb)
     local identifiers = GetPlayerIdentifiers(playerId)
-    local matchingIdentifier = 'license:'
+    local found = false
     for i=1, #identifiers do
-        if identifiers[i]:match(matchingIdentifier) then
-            if not cb then
-                return identifiers[i]
-            end
-            return cb(identifiers[i])
+        if identifiers[i]:match('license:') then
+            found = identifiers[i]
         end
     end
-    if not cb then
-        return false
-    end
-    return cb(false)
+    if not cb then return found end
+    return cb(found)
 end
 
 ---Create a player with a different method depending if the player exists or not
 ---@param playerId number
 ---@param license string
----@param exists boolean
-ATL.CreatePlayer = function (playerId, license)
-    MySQL.Async.execute('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, phone_data, job_data, char_data) VALUES (@license, @accounts, @appearance, @group, @status, @inventory, @identity, @phone_data, @job_data, @char_data)', {
-        ['@license']    = license,
-        ['@accounts']   = encode(Config.Accounts),
-        ['@appearance'] = encode({}),
-        ['@group']      = Config.Groups[1] or "user",
-        ['@status']     = encode(Config.Status),
-        ['@inventory']  = encode({}),
-        ['@identity']   = encode({}),
-        ['@phone_data'] = encode({}),
-        ['@job_data']   = encode({}),
-        ['@char_data']  = encode({ coords = Config.Others.Coords }),
-    }, function (row)
-        if row then
-            MySQL.Async.fetchScalar('SELECT LAST_INSERT_ID()', {}, function (charId)
-                Players[playerId] = ATL.SetData(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Others.Coords }, {})
-                TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Others.Coords)
-            end)
-        else
-            print('[ATL] Error while creating player')
-            DropPlayer(playerId, '[ATL] Error while creating player')
-        end
-    end)
+---@param exists
+ATL.CreatePlayer = function (playerId, license, exists)
+    if not exists or not next(exists) then
+        MySQL.Async.execute('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, phone_data, job_data, char_data) VALUES (@license, @accounts, @appearance, @group, @status, @inventory, @identity, @phone_data, @job_data, @char_data)', {
+            ['@license']    = license,
+            ['@accounts']   = encode(Config.Accounts),
+            ['@appearance'] = encode({}),
+            ['@group']      = Config.Groups[1] or "user",
+            ['@status']     = encode(Config.Status),
+            ['@inventory']  = encode({}),
+            ['@identity']   = encode({}),
+            ['@phone_data'] = encode({}),
+            ['@job_data']   = encode({}),
+            ['@char_data']  = encode({ coords = Config.Others.Coords }),
+        }, function (row)
+            if row then
+                MySQL.Async.fetchScalar('SELECT LAST_INSERT_ID()', {}, function (charId)
+                    Players[playerId] = ATL.SetData(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Others.Coords }, {})
+                    TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Others.Coords)
+                end)
+            else
+                print('[ATL] Error while creating player')
+                DropPlayer(playerId, '[ATL] Error while creating player')
+            end
+        end)
+    else
+        local player = exists[1]
+        Players[playerId] = ATL.SetData(playerId, license, player.character_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data), decode(player.phone_data))
+        TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player.char_data).coords)
+    end
 end
 
 ---Set group to player

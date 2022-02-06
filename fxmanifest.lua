@@ -18,7 +18,8 @@ client_scripts {
     'client/nui.lua',
     'client/main.lua',
     'client/events.lua',
-    'client/threads.lua'
+    'client/threads.lua',
+    'client/functions/*.lua'
 }
 
 server_scripts {

@@ -14,7 +14,7 @@ const app = Vue.createApp({
 	data() {
 		return {
 			multicharacter: {
-				activated: true,
+				activated: false,
 				charSelection: 'Choose a Slot',
 				selected: null,
 				action: null,
@@ -25,8 +25,8 @@ const app = Vue.createApp({
 	methods: {
 		messageHandler(e) {
 			switch (e.data.action) {
-				case 'open':
-					for (let i = 0; i < 3; i++) {
+				case 'startMulticharacter':
+					for (let i = 0; i < e.data.identity.MaxSlots; i++) {
 						if (e.data.playerData[i]) {
 							const test = {
 								character_id: e.data.playerData[i].character_id,
@@ -51,47 +51,63 @@ const app = Vue.createApp({
 							continue;
 						}
 
-						if (i >= e.data.slots) {
-							const blocked = {
+						if (i >= e.data.identity.AllowedSlots) {
+							this.multicharacter.chars.push({
 								character_id: 'blocked'
-							}
-							this.multicharacter.chars.push(blocked)
+							})
 							continue;
 						}
 
 						if (!e.data.playerData[i]) {
-							const create = {
+							this.multicharacter.chars.push({
 								character_id: 'create'
-							}
-							this.multicharacter.chars.push(create)
+							})
 							continue;
 						}
 					}
 					this.multicharacter.activated = true
 					break;
-				case 'close':
-					this[e.data.type].activated = false
+				case 'endMulticharacter':
+                    this.multicharacter.activated = false
+                    this.multicharacter.chars.length = 0
 					break;
 			}
 		},
-		getCharacter(id) {
-			return this.multicharacter.chars.get(id)
-		},
-		setCharacter(id, character) {
-			this.multicharacter.chars.set(id, character)
-		},
 		checkCharacter() {
-			if (this.multicharacter.action === 'create') {
-				fetchNUI('create_character')
-			} else if (this.multicharacter.action !== null) {
-				console.log('test')
-				fetchNUI('select_character', this.multicharacter.action)
+			if (this.multicharacter.data === 'create') {
+				fetchNUI('create_character').then((data) => {
+                    if (data.done) {
+                        this.clearData()
+                    } else {
+                        console.log('Error: Could not create character. Data was not received')
+                    }
+                })
+			} else if (this.multicharacter.data !== null) {
+				fetchNUI('select_character', {character_id: this.multicharacter.data}).then((data) => {
+                    if (data.done) {
+                        this.clearData()
+                    } else {
+                        console.log('Error: Could not select character. Data was not received')
+                    }
+                })
 			}
 		},
-		deleteSelected(key) {
-			fetchNUI('delete_character', key)
-			console.log(key)
+		deleteSelected(data) {
+			fetchNUI('delete_character', {character_id: data}).then((data) => {
+                if (data.done) {
+                    this.clearData()
+                } else {
+                    console.log('Error: Could not delete character. Data was not received')
+                }
+            })
 		},
+        clearData() {
+            this.multicharacter.activated = false
+            this.multicharacter.data = null
+            this.multicharacter.charSelection = 'Choose a Slot'
+            this.multicharacter.chars.length = 0
+            this.multicharacter.selected = null
+        },
 		setSelected(key) {
 			const target = document.getElementById(`char_${key}`)
 			if (this.$refs.creation.disabled) {
@@ -114,17 +130,17 @@ const app = Vue.createApp({
 			switch (target.getAttribute('data-char-id')) {
 				case 'create':
 					this.multicharacter.charSelection = 'Create Character'
-					this.multicharacter.action = 'create'
+					this.multicharacter.data = 'create'
 					break
 				case 'blocked':
 					target.classList.add('ring-4', 'ring-red-600')
 					this.multicharacter.charSelection = 'Blocked Character'
 					this.$refs.creation.style.backgroundColor = '#d52b2b'
 					this.$refs.creation.disabled = true
-					this.multicharacter.action = null
+					this.multicharacter.data = null
 					return
 				default:
-					this.multicharacter.action = target.getAttribute('data-char-id')
+					this.multicharacter.data = parseInt(target.getAttribute('data-char-id'))
 					this.multicharacter.charSelection = 'Select Character'
 					break
 			}
@@ -136,7 +152,7 @@ const app = Vue.createApp({
 		window.addEventListener('message', this.messageHandler)
 	},
 	unmounted() {
-		window.addEventListener('message', this.messageHandler)
+		window.removeEventListener('message', this.messageHandler)
 	},
 });
 

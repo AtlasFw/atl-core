@@ -22,3 +22,16 @@ body {
 .text-shadow-black {
     text-shadow: 2px 1px black;
 }
+
+.slide-fade-enter-active {
+    transition: opacity 1s;
+}
+
+.slide-fade-leave-active {
+    transition: opacity 1s;
+}
+
+.slide-fade-enter-from,
+.slide-fade-leave-to {
+    opacity: 0;
+}
