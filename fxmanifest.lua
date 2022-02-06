@@ -6,20 +6,10 @@ lua54 'yes'
 name 'atl-core'
 author 'Atlas Framework Developers'
 
-ui_page 'ui/index.html'
-
-files {
-    'ui/index.html',
-    'ui/css/main.css',
-    'ui/js/app.js',
-}
-
 client_scripts {
-    'client/nui.lua',
     'client/main.lua',
     'client/events.lua',
     'client/threads.lua',
-    'client/functions/*.lua'
 }
 
 server_scripts {

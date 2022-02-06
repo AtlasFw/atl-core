@@ -43,21 +43,5 @@ local function setPedSeats(netVehicle, seat)
     end
 end
 
-local function startMulticharacter(playerData, identity)
-    ATL.Active.Multichar = true
-    DoScreenFadeOut(1500)
-    Wait(1500)
-    ShutdownLoadingScreenNui()
-    ShutdownLoadingScreen()
-    SetNuiFocus(true, true)
-    SendNUIMessage({
-        action = 'startMulticharacter',
-        playerData = playerData,
-        identity = identity
-    })
-end
-
-
 RegisterNetEvent('atl:client:spawnPlayer', spawnPlayer)
 RegisterNetEvent('atl:client:setPedSeat', setPedSeats)
-RegisterNetEvent('atl:client:startMulticharacter', startMulticharacter)

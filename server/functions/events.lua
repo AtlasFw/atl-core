@@ -18,7 +18,6 @@ end
 local function playerJoined(playerId)
     local playerId <const> = source or playerId
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
-
     -- Check for license
     ATL.GetLicense(playerId, function(license)
         if license then
