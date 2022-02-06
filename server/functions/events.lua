@@ -74,7 +74,6 @@ local function deletePlayer(data)
                 data.character_id,
                 license
             }}, function(result)
-                print(result)
                 if result == 1 then
                     playerJoined(playerId)
                 else
