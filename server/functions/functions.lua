@@ -57,16 +57,58 @@ ATL.SetGroup = function (playerId, group)
     return player:setGroup(group)
 end
 
+---Add money to a player account
+---@param playerId number
+---@param account string
+---@param quantity number
+---@return boolean
+ATL.AddAccountMoney = function (playerId, account, quantity)
+    if type(player) ~= 'number' then return end
+    local player = Players[playerId]
+
+    if not player then return end
+    return player:addAccountMoney(account, quantity)
+end
+
 ---Get a player object
 ---@param id number
 ---@return table
 ATL.GetPlayer = function (id)
+    if not Players[id] then return error(("The player with id '%s' does not exist"):format(id)) end
     local data = { }
-    data.src = id
+    
     data.group = Players[id].group
+    data.source = Players[id].source
+    data.job = Players[id].jobs
+    data.accounts = Players[id].accounts
+    data.appearance = Players[id].appearance
+    data.char_data = Players[id].char_data
+    data.char_id = Players[id].char_id
+    data.phone_data = Players[id].phone_data
+    data.identifier = Players[id].identifier
+    data.inventory = Players[id].identifier
 
     data.setGroup = function (group)
-        ATL.SetGroup(data.src, group)
+        return ATL.SetGroup(data.src, group)
+    end
+
+    data.triggerEvent = function (name, ...)
+        if not name then return error("Name of the event not specified") end
+        return TriggerClientEvent(name, id, ...)
+    end
+
+    data.addAccountMoney = function (account, quantity)
+        local quantity = tonumber(quantity)
+        if not account then return error("Account not defined") end
+        if not quantity then return error("Quantity not defined") end
+        if type(account) ~= "string" then return error("Account must be string") end
+        if not Config.Accounts[account] then return error(("The account %s does not exist"):format(account)) end
+        ATL.AddAccountMoney(id, account, quantity)
+        return true
+    end
+
+    data.removeAccountMoney = function (account, quantity)
+        
     end
 
     return data
@@ -141,6 +183,7 @@ end
 
 ATL.GetEntities = function (coords, entities, distance)
     local ents = {}
+    local distance = distance or 1.0
     for _, ent in pairs(entities) do
         if not IsPedAPlayer(ent) then
             local entityCoords = GetEntityCoords(ent)

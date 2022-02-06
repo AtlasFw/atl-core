@@ -81,6 +81,13 @@ function player:setCoords(newCoords, newHeading)
     return true
 end
 
+---Add money to an account
+---@param account string
+---@param quantity number
+function player:addAccountMoney(account, quantity)
+    self.accounts[account] = self.accounts + quantity
+end
+
 ---Save player into the database
 function player:savePlayer()
     self:setCoords()
@@ -97,7 +104,6 @@ function player:savePlayer()
         if result == 1 then
             print('[ATL] Player ' .. self.source .. ' saved successfully')
         end
-        -- Add saved player log
     end)
 end
 --#endregion Setters
