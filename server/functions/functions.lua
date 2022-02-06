@@ -16,7 +16,7 @@ end
 ---Create a player with a different method depending if the player exists or not
 ---@param playerId number
 ---@param license string
----@param exists
+---@param exists table
 ATL.CreatePlayer = function (playerId, license, exists)
     if not exists or not next(exists) then
         MySQL.insert('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, phone_data, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
@@ -139,7 +139,25 @@ ATL.GetPassengers = function(ped, vehicle)
     return passengers
 end
 
+ATL.GetEntities = function (coords, entities, distance)
+    local ents = {}
+    for _, ent in pairs(entities) do
+        if not IsPedAPlayer(ent) then
+            local entityCoords = GetEntityCoords(ent)
+            if #(coords - entityCoords) <= distance then
+                ents[#ents + 1] = ent
+            end
+        end
+    end
+    return ents
+end
+
+ATL.GetVehicles = function (coords, dist)
+    return ATL.GetEntities(coords, GetAllVehicles(), dist or 1.0)
+end 
+
 exports('get', function ()
     return ATL
 end)
+
 
