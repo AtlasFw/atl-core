@@ -8,8 +8,7 @@ author 'Atlas Framework Developers'
 
 client_scripts {
     'client/main.lua',
-    'client/events.lua',
-    'client/threads.lua',
+    'client/functions/*.lua',
 }
 
 server_scripts {
@@ -17,11 +16,12 @@ server_scripts {
     'shared/config_sv.lua',
 
     'server/main.lua',
-    'server/classes/player.lua',
+    'server/classes/*.lua',
 
-    'server/functions/events.lua',
-    'server/functions/functions.lua',
-    'server/functions/commands.lua',
+    'server/functions/*.lua',
+
+    -- Holds all the functions relating to the player
+    'server/export.lua'
 }
 
 provide 'atl' -- Instead of saying 'stop atl-core', you can just say 'stop atl'

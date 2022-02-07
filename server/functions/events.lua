@@ -8,7 +8,7 @@ local function DoesPlayerExist(license, cb)
     local p = promise.new()
     MySQL.query('SELECT * FROM `users` WHERE `license` = @license', {
         ['@license'] = license
-    }, function (characters)
+    }, function(characters)
         p:resolve(characters)
     end)
     local result = Citizen.Await(p)
@@ -73,7 +73,6 @@ local function deletePlayer(data)
                 data.character_id,
                 license
             }}, function(result)
-                print(result, data.character_id)
                 if result == 1 then
                     playerJoined(playerId)
                 else

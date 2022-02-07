@@ -31,7 +31,7 @@ ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(playerI
     end)
 end, { }, false)
 
-ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', function (playerId, args)
+ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', function(playerId, args)
     local coords = GetEntityCoords(GetPlayerPed(playerId))
     local dist = tonumber(args[1]) or 1.0
     local vehicles = ATL.GetVehicles(coords, dist)
@@ -40,7 +40,7 @@ ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', functi
     end
 end)
 
-ATL.RegisterCommand('clear', 'Clear chat', 'user', function (playerId)
+ATL.RegisterCommand('clear', 'Clear chat', 'user', function(playerId)
     TriggerClientEvent('chat:clear', playerId)
 end, { }, false)
 

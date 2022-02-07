@@ -43,7 +43,7 @@ end
 ---Returns the source
 ---@return number
 function player:getSource()
-    return self.source
+    return self.source or false
 end
 
 ---Returns the identifier from argument
@@ -85,7 +85,11 @@ end
 ---@param account string
 ---@param quantity number
 function player:addAccountMoney(account, quantity)
+    if not account or type(account) ~= 'string' or not quantity or not type(quantity) ~= 'number' then return false end
+    if not self.accounts[account] then return false end
+
     self.accounts[account] = self.accounts + quantity
+    return true
 end
 
 ---Save player into the database

@@ -1,4 +1,4 @@
-CreateThread(function ()
+CreateThread(function()
     while true do
         if NetworkIsPlayerActive(PlayerId()) then
             TriggerServerEvent('atl:server:playerJoined')

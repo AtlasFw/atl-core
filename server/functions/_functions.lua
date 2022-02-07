@@ -1,7 +1,7 @@
 local CREATE_AUTOMOBILE = GetHashKey('CREATE_AUTOMOBILE')
 local encode, decode = json.encode, json.decode
 
-ATL.GetLicense = function (playerId, cb)
+ATL.GetLicense = function(playerId, cb)
     local identifiers = GetPlayerIdentifiers(playerId)
     local found = false
     for i=1, #identifiers do
@@ -17,7 +17,7 @@ end
 ---@param playerId number
 ---@param license string
 ---@param exists table
-ATL.CreatePlayer = function (playerId, license, exists, identity)
+ATL.CreatePlayer = function(playerId, license, exists, identity)
     if not exists or not next(exists) then
         MySQL.insert('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, phone_data, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
             license,
@@ -26,7 +26,7 @@ ATL.CreatePlayer = function (playerId, license, exists, identity)
             Config.Groups[1] or "user",
             encode(Config.Status),
             encode({}),
-            encode(identity) or encode({}),
+            next(identity) and encode(identity) or encode({}),
             encode({}),
             encode({}),
             encode({ coords = Config.Others.Coords }),
@@ -46,74 +46,6 @@ ATL.CreatePlayer = function (playerId, license, exists, identity)
     end
 end
 
----Set group to player
----@param playerId number
----@param group string
-ATL.SetGroup = function (playerId, group)
-    if type(player) ~= 'number' then return end
-    local player = Players[playerId]
-
-    if not player then return end
-    return player:setGroup(group)
-end
-
----Add money to a player account
----@param playerId number
----@param account string
----@param quantity number
----@return boolean
-ATL.AddAccountMoney = function (playerId, account, quantity)
-    if type(player) ~= 'number' then return end
-    local player = Players[playerId]
-
-    if not player then return end
-    return player:addAccountMoney(account, quantity)
-end
-
----Get a player object
----@param id number
----@return table
-ATL.GetPlayer = function (id)
-    if not Players[id] then return error(("The player with id '%s' does not exist"):format(id)) end
-    local data = { }
-
-    data.group = Players[id].group
-    data.source = Players[id].source
-    data.job = Players[id].jobs
-    data.accounts = Players[id].accounts
-    data.appearance = Players[id].appearance
-    data.char_data = Players[id].char_data
-    data.char_id = Players[id].char_id
-    data.phone_data = Players[id].phone_data
-    data.identifier = Players[id].identifier
-    data.inventory = Players[id].identifier
-
-    data.setGroup = function (group)
-        return ATL.SetGroup(data.src, group)
-    end
-
-    data.triggerEvent = function (name, ...)
-        if not name then return error("Name of the event not specified") end
-        return TriggerClientEvent(name, id, ...)
-    end
-
-    data.addAccountMoney = function (account, quantity)
-        local quantity = tonumber(quantity)
-        if not account then return error("Account not defined") end
-        if not quantity then return error("Quantity not defined") end
-        if type(account) ~= "string" then return error("Account must be string") end
-        if not Config.Accounts[account] then return error(("The account %s does not exist"):format(account)) end
-        ATL.AddAccountMoney(id, account, quantity)
-        return true
-    end
-
-    data.removeAccountMoney = function (account, quantity)
-
-    end
-
-    return data
-end
-
 ---Register a command with the core's permissions
 ---@param name table - Can be a string or a table of strings with command names
 ---@param description string - Description of the command
@@ -121,14 +53,14 @@ end
 ---@param cb function - Callback function
 ---@param suggestions table - Table of suggestions
 ---@param rcon boolean - Can be used by rcon
-ATL.RegisterCommand = function (name, description, group, cb, suggestions, rcon)
+ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
     if type(name) == 'table' then
         for i=1, #name do
             ATL.RegisterCommand(name[i], description, group, cb, suggestions, rcon)
         end
         return
     end
-    RegisterCommand(name, function (source, args)
+    RegisterCommand(name, function(source, args)
         local playerId <const> = source
         if rcon then
             if playerId == 0 then
@@ -181,7 +113,7 @@ ATL.GetPassengers = function(ped, vehicle)
     return passengers
 end
 
-ATL.GetEntities = function (coords, entities, distance)
+ATL.GetEntities = function(coords, entities, distance)
     local ents = {}
     local distance = distance or 1.0
     for _, ent in pairs(entities) do
@@ -195,12 +127,6 @@ ATL.GetEntities = function (coords, entities, distance)
     return ents
 end
 
-ATL.GetVehicles = function (coords, dist)
+ATL.GetVehicles = function(coords, dist)
     return ATL.GetEntities(coords, GetAllVehicles(), dist or 1.0)
 end
-
-exports('get', function ()
-    return ATL
-end)
-
-
