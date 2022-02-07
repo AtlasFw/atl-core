@@ -17,7 +17,7 @@ end
 ---@param playerId number
 ---@param license string
 ---@param exists table
-ATL.CreatePlayer = function (playerId, license, exists)
+ATL.CreatePlayer = function (playerId, license, exists, identity)
     if not exists or not next(exists) then
         MySQL.insert('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, phone_data, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
             license,
@@ -26,7 +26,7 @@ ATL.CreatePlayer = function (playerId, license, exists)
             Config.Groups[1] or "user",
             encode(Config.Status),
             encode({}),
-            encode({}),
+            encode(identity) or encode({}),
             encode({}),
             encode({}),
             encode({ coords = Config.Others.Coords }),
@@ -76,7 +76,7 @@ end
 ATL.GetPlayer = function (id)
     if not Players[id] then return error(("The player with id '%s' does not exist"):format(id)) end
     local data = { }
-    
+
     data.group = Players[id].group
     data.source = Players[id].source
     data.job = Players[id].jobs
@@ -108,7 +108,7 @@ ATL.GetPlayer = function (id)
     end
 
     data.removeAccountMoney = function (account, quantity)
-        
+
     end
 
     return data
@@ -197,7 +197,7 @@ end
 
 ATL.GetVehicles = function (coords, dist)
     return ATL.GetEntities(coords, GetAllVehicles(), dist or 1.0)
-end 
+end
 
 exports('get', function ()
     return ATL

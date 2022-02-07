@@ -35,11 +35,11 @@ local function playerJoined(playerId)
     end)
 end
 
-local function registerPlayer()
+local function registerPlayer(identity)
     local playerId <const> = source
     ATL.GetLicense(playerId, function(license)
         if license then
-            ATL.CreatePlayer(playerId, license)
+            ATL.CreatePlayer(playerId, license, false, identity)
         else
             DropPlayer(playerId, '[ATL] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.')
         end
@@ -73,6 +73,7 @@ local function deletePlayer(data)
                 data.character_id,
                 license
             }}, function(result)
+                print(result, data.character_id)
                 if result == 1 then
                     playerJoined(playerId)
                 else
