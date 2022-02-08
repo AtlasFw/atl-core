@@ -13,7 +13,11 @@ Config.Groups = {
 Config.Identity = {
     Disable = false, -- Set to true to disable the identity/multicharacter system.
     MaxSlots = 3, -- Max amount of slots (official multichar only supports 3)
-    AllowedSlots = 3 -- Max amount of slots that can be taken by a player
+    AllowedSlots = 3, -- Max amount of slots that can be taken by a player.
+    MinYear = 1900, -- Minimum year of birth.
+    MaxYear = 2020, -- Maximum year of birth.
+    MinNameLength = 3, -- Minimum name length.
+    MaxNameLength = 20, -- Maximum name length.
 }
 
 Config.Others = {

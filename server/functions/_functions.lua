@@ -46,6 +46,10 @@ ATL.CreatePlayer = function(playerId, license, exists, identity)
     end
 end
 
+ATL.CheckIdentity = function(identity, cb)
+    return cb(true)
+end
+
 ---Register a command with the core's permissions
 ---@param name table - Can be a string or a table of strings with command names
 ---@param description string - Description of the command

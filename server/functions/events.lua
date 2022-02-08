@@ -37,13 +37,24 @@ end
 
 local function registerPlayer(identity)
     local playerId <const> = source
-    ATL.GetLicense(playerId, function(license)
-        if license then
-            ATL.CreatePlayer(playerId, license, false, identity)
+    if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
+    if type(identity) ~= 'table' then return DropPlayer(playerId, '[ATL] Invalid identity.') end
+
+    ATL.CheckIdentity(identity, function(resp)
+        if resp then
+            ATL.GetLicense(playerId, function(license)
+                if license then
+                    ATL.CreatePlayer(playerId, license, false, identity)
+                else
+                    DropPlayer(playerId, '[ATL] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.')
+                end
+            end)
         else
-            DropPlayer(playerId, '[ATL] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.')
+            DropPlayer(playerId, '[ATL] Invalid identity.')
         end
     end)
+
+
 end
 
 local function loadPlayer(data)
