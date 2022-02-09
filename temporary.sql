@@ -7,7 +7,6 @@ CREATE TABLE `users` (
     `status` longtext,
     `inventory` longtext,
     `identity` longtext,
-    `phone_data` longtext,
     `job_data` longtext,
     `char_data` longtext,
     PRIMARY KEY (`character_id`)

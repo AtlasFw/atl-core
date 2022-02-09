@@ -40,17 +40,16 @@ local function registerPlayer(identity)
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
     if type(identity) ~= 'table' then return DropPlayer(playerId, '[ATL] Invalid identity.') end
     local data = {
-        firstname = identity.firstname,
-        lastname = identity.lastname,
-        dob = identity.dob,
-        sex = identity.sex
+        firstname = identity.data.firstName,
+        lastname = identity.data.lastName,
+        dob = identity.data.dob,
+        sex = identity.data.sex
     }
-    print(data.firstname)
-    ATL.CheckIdentity(identity, function(resp)
+    ATL.CheckIdentity(data, function(resp)
         if resp then
             ATL.GetLicense(playerId, function(license)
                 if license then
-                    ATL.CreatePlayer(playerId, license, false, identity)
+                    ATL.CreatePlayer(playerId, license, false, data)
                 else
                     DropPlayer(playerId, '[ATL] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.')
                 end
@@ -70,7 +69,7 @@ local function loadPlayer(data)
         if license then
             MySQL.single('SELECT * FROM users WHERE license = ? AND character_id = ?', { license, data.character_id }, function(player)
                 if player and next(player) then
-                    Players[playerId] = ATL.SetData(playerId, license, player.character_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data), decode(player.phone_data))
+                    Players[playerId] = ATL.SetData(playerId, license, player.character_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data))
                     TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player.char_data).coords)
                 end
             end)

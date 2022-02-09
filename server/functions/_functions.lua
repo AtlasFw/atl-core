@@ -19,7 +19,7 @@ end
 ---@param exists table
 ATL.CreatePlayer = function(playerId, license, exists, identity)
     if not exists or not next(exists) then
-        MySQL.insert('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, phone_data, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', {
+        MySQL.insert('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', {
             license,
             encode(Config.Accounts),
             encode({}),
@@ -28,11 +28,10 @@ ATL.CreatePlayer = function(playerId, license, exists, identity)
             encode({}),
             next(identity) and encode(identity) or encode({}),
             encode({}),
-            encode({}),
             encode({ coords = Config.Others.Coords }),
         }, function(charId)
             if charId then
-                Players[playerId] = ATL.SetData(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Others.Coords }, {})
+                Players[playerId] = ATL.SetData(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Others.Coords })
                 TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Others.Coords)
             else
                 print('[ATL] Error while creating player')
@@ -41,12 +40,23 @@ ATL.CreatePlayer = function(playerId, license, exists, identity)
         end)
     else
         local player = exists[1]
-        Players[playerId] = ATL.SetData(playerId, license, player.character_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data), decode(player.phone_data))
+        Players[playerId] = ATL.SetData(playerId, license, player.character_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data))
         TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player.char_data).coords)
     end
 end
 
 ATL.CheckIdentity = function(identity, cb)
+    if not identity or not next(identity) then return cb(false) end
+    if not identity.firstname or not identity.lastname or not identity.dob or not identity.sex then return cb(false) end
+    if #identity.firstname > Config.Identity.MaxNameLength or #identity.firstname < Config.Identity.MinNameLength then return cb(false) end
+    if #identity.lastname > Config.Identity.MaxNameLength or #identity.lastname < Config.Identity.MinNameLength then return cb(false) end
+    local dob = { }
+    for k in string.gmatch(identity.dob, "([^".. '/' .."]+)") do
+       table.insert(dob, k)
+    end
+    if #dob ~= 3 then return cb(false) end
+    if #dob[1] ~= 2 or #dob[2] ~= 2 or #dob[3] ~= 4 then return cb(false) end
+    if tonumber(dob[3]) > Config.Identity.MaxYear or tonumber(dob[3]) < Config.Identity.MinYear then return cb(false) end
     return cb(true)
 end
 
