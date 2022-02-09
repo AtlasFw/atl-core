@@ -6,25 +6,22 @@ lua54 'yes'
 name 'atl-core'
 author 'Atlas Framework Developers'
 
-shared_scripts {
-    'shared/config.lua'
-}
-
 client_scripts {
     'client/main.lua',
-    'client/events.lua',
-    'client/threads.lua'
+    'client/functions/*.lua',
 }
 
 server_scripts {
-
     '@oxmysql/lib/MySQL.lua',
+    'shared/config_sv.lua',
 
     'server/main.lua',
+    'server/classes/*.lua',
 
-    'server/classes/player.lua',
+    'server/functions/*.lua',
 
-    'server/functions/events.lua',
-    'server/functions/functions.lua',
-    'server/functions/commands.lua',
+    -- Holds all the functions relating to the player
+    'server/export.lua'
 }
+
+provide 'atl' -- Instead of saying 'stop atl-core', you can just say 'stop atl'

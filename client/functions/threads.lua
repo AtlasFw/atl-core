@@ -1,7 +1,7 @@
-CreateThread(function ()
+CreateThread(function()
     while true do
         if NetworkIsPlayerActive(PlayerId()) then
-            TriggerServerEvent("atl:server:createPlayer")
+            TriggerServerEvent('atl:server:playerJoined')
             break
         end
         Wait(0)

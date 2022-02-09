@@ -1,92 +1,110 @@
+local encode = json.encode
+
 Players = {}
 local player = {}
 setmetatable(Players, player)
-local encode = json.encode
 
 --Sets the player's index to player's table
 player.__index = player
 
----Creates player metadata
+---Sets the player's data
 ---@param source number
 ---@param identifier string
----@param chardid number
+---@param char_id number
 ---@param jobs table
 ---@param group string
 ---@param accounts table
 ---@param inventory table
 ---@param status table
 ---@param appearance table
----@param char any
----@param phonedata any
+---@param char_data table
 ---@return table
-ATL.SetData = function(source, identifier, chardid, jobs, group, accounts, inventory, status, appearance, char, phonedata)
+ATL.SetData = function(source, identifier, char_id, jobs, group, accounts, inventory, status, appearance, char_data)
     local self = {}
     self.source = source
     self.identifier = identifier
-    self.charid =  chardid
+    self.char_id =  char_id
     self.jobs = jobs
     self.group = group
     self.accounts = accounts
     self.inventory = inventory
     self.status = status
     self.appearance = appearance
-    self.char_data = char
-    self.phone_data = phonedata
+    self.char_data = char_data
 
     Players[self.source] = self
     return setmetatable(self, getmetatable(Players))
 end
 
+--#region Getters
+
 ---Returns the source
 ---@return number
-function player:getSource ()
-    return self.source
-end
-
-function player:savePlayer ()
-    MySQL.Async.execute("UPDATE `users` SET license = @license, accounts = @accounts, appearance = @appearance, `group` = @group, status = @status, inventory = @inventory, identity = @identity, phone_data = @phone_data, job_data = @job_data, char_data = @char_data", {
-        ['@license']    = self.identifier,
-        ['@accounts']   = encode(self.accounts),
-        ['@appearance'] = encode(self.appearance),
-        ['@group']      = self.group,
-        ['@status']     = encode(self.status),
-        ['@inventory']  = encode(self.inventory),
-        ['@identity']   = encode({}),
-        ['@phone_data'] = encode(self.phone_data),
-        ['@job_data']   = encode(self.jobs),
-        ['@char_data']  = encode(self.char_data),
-    }, function ()
-        -- Add saved player log
-    end)
-end
-
----Update the player coords on save
-function player:updateCoords ()
-    local ped = GetPlayerPed(self.source)
-    self.char_data.coords = GetEntityCoords(ped)
+function player:getSource()
+    return self.source or false
 end
 
 ---Returns the identifier from argument
----@param identifier string
 ---@return string
-function player:getIdentifier (identifier)
-    local identifiers = self.identifiers
-    local matchingIdentifier = not not identifier and identifier or "license:"
-    for i=1, #identifiers do
-        if identifiers[i]:match(matchingIdentifier) then
-            return identifiers[i]
+function player:getIdentifier()
+    return self.identifier or false
+end
+
+--#endregion Getters
+
+--#region Setters
+---Set the player group
+---@param group string
+function player:setGroup(group)
+    if not group then return false end
+    for i=1, #Config.Groups do
+        if Config.Groups[i] == group then
+            self.group = group
+            return true
         end
     end
-    return "No matching identifier: " .. tostring(matchingIdentifier)
+    return false
 end
 
----Set the player group
----@param group any
-function player:setGroup (group)
-    if not group then return end
-    self.group = group
+---Set new coords for the player table
+---@param newCoords vector3
+---@param newHeading number
+---@return boolean
+function player:setCoords(newCoords, newHeading)
+    local ped = GetPlayerPed(self.source)
+    if ped <= 0 then return false end
+    local coords, heading = type(newCoords) == 'table' and newCoords or GetEntityCoords(ped), newHeading or GetEntityHeading(ped)
+    if coords.x == 0 or coords.y == 0 or coords.z == 0 then return false end
+    self.char_data.coords = vector4(coords.x, coords.y, coords.z, heading)
+    return true
 end
 
-exports('get', function ()
-    return ATL
-end)
+---Add money to an account
+---@param account string
+---@param quantity number
+function player:addAccountMoney(account, quantity)
+    if not account or type(account) ~= 'string' or not quantity or not type(quantity) ~= 'number' then return false end
+    if not self.accounts[account] then return false end
+
+    self.accounts[account] = self.accounts + quantity
+    return true
+end
+
+---Save player into the database
+function player:savePlayer()
+    self:setCoords()
+    MySQL.prepare('UPDATE `users` SET accounts = ?, `group` = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `character_id` = ? ', {{
+        encode(self.accounts),
+        self.group,
+        encode(self.status),
+        encode(self.inventory),
+        encode(self.jobs),
+        encode(self.char_data),
+        self.char_id
+    }}, function(result)
+        if result == 1 then
+            print('[ATL] Player ' .. self.source .. ' saved successfully')
+        end
+    end)
+end
+--#endregion Setters
