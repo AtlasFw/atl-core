@@ -39,7 +39,13 @@ local function registerPlayer(identity)
     local playerId <const> = source
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
     if type(identity) ~= 'table' then return DropPlayer(playerId, '[ATL] Invalid identity.') end
-
+    local data = {
+        firstname = identity.firstname,
+        lastname = identity.lastname,
+        dob = identity.dob,
+        sex = identity.sex
+    }
+    print(data.firstname)
     ATL.CheckIdentity(identity, function(resp)
         if resp then
             ATL.GetLicense(playerId, function(license)
@@ -53,8 +59,6 @@ local function registerPlayer(identity)
             DropPlayer(playerId, '[ATL] Invalid identity.')
         end
     end)
-
-
 end
 
 local function loadPlayer(data)
