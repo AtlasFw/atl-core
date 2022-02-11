@@ -13,14 +13,15 @@ end, { }, true)
 ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(playerId, args)
     local hashModel = GetHashKey(args[1])
     local ped = GetPlayerPed(playerId)
-    local currentVehicle = GetVehiclePedIsIn(ped)
-    local seats = ATL.GetPassengers(ped, currentVehicle)
-    ATL.SpawnVehicle(playerId, hashModel, _, function(_, netVehicle)
+    if not ped or ped <= 0 then return end
+
+    local coords = GetEntityCoords(ped), GetEntityHeading(ped)
+    local seats = ATL.GetPassengers(ped, GetVehiclePedIsIn(ped))
+    ATL.CreateVehicle(hashModel, vector4(coords.x, coords.y, coords.z, heading), function(_, netVehicle)
         if netVehicle then
             local peds = {}
             for _, id in pairs(GetPlayers()) do
-              local pedId = GetPlayerPed(id)
-              peds[pedId] = id
+              peds[GetPlayerPed(id)] = id
             end
 
             for k, v in pairs(seats) do

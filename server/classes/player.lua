@@ -19,11 +19,11 @@ player.__index = player
 ---@param appearance table
 ---@param char_data table
 ---@return table
-ATL.SetData = function(source, identifier, char_id, jobs, group, accounts, inventory, status, appearance, char_data)
+ATL.new = function(source, identifier, char_id, jobs, group, accounts, inventory, status, appearance, char_data)
     local self = {}
     self.source = source
     self.identifier = identifier
-    self.char_id =  char_id
+    self.char_id = char_id
     self.jobs = jobs
     self.group = group
     self.accounts = accounts
@@ -93,7 +93,7 @@ end
 ---Save player into the database
 function player:savePlayer()
     self:setCoords()
-    MySQL.prepare('UPDATE `users` SET accounts = ?, `group` = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `character_id` = ? ', {{
+    MySQL.prepare('UPDATE `users` SET accounts = ?, `group` = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ', {{
         encode(self.accounts),
         self.group,
         encode(self.status),

@@ -1,5 +1,5 @@
-CREATE TABLE `users` (
-    `character_id` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE users` (
+    `char_id` int NOT NULL AUTO_INCREMENT,
     `license` VARCHAR(60) NOT NULL,
     `group` VARCHAR(60) NOT NULL,
     `accounts` longtext,
@@ -9,5 +9,5 @@ CREATE TABLE `users` (
     `identity` longtext,
     `job_data` longtext,
     `char_data` longtext,
-    PRIMARY KEY (`character_id`)
+    PRIMARY KEY (`char_id`)
 ) DEFAULT CHARSET=utf8;

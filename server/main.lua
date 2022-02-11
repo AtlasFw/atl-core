@@ -1,5 +1,6 @@
-ATL = { }
-ATL.Commands = { }
+ATL = {
+    Commands = {},
+}
 
 CreateThread(function()
     while true do
@@ -12,12 +13,10 @@ end)
 
 AddEventHandler('playerConnecting', function(_, _, deferrals)
     deferrals.defer()
-
     local playerId <const> = source
     deferrals.update("[ATL] Checking player...")
 
     local license = ATL.GetLicense(playerId)
-
     Wait(500)
     if not license then
         deferrals.done('[ATL] No license found.')
