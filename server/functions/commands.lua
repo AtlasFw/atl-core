@@ -15,7 +15,7 @@ ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(playerI
     local ped = GetPlayerPed(playerId)
     if not ped or ped <= 0 then return end
 
-    local coords = GetEntityCoords(ped), GetEntityHeading(ped)
+    local coords, heading = GetEntityCoords(ped), GetEntityHeading(ped)
     local seats = ATL.GetPassengers(ped, GetVehiclePedIsIn(ped))
     ATL.CreateVehicle(hashModel, vector4(coords.x, coords.y, coords.z, heading), function(_, netVehicle)
         if netVehicle then

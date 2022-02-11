@@ -7,18 +7,6 @@ setmetatable(Players, player)
 --Sets the player's index to player's table
 player.__index = player
 
----Sets the player's data
----@param source number
----@param identifier string
----@param char_id number
----@param jobs table
----@param group string
----@param accounts table
----@param inventory table
----@param status table
----@param appearance table
----@param char_data table
----@return table
 ATL.new = function(source, identifier, char_id, jobs, group, accounts, inventory, status, appearance, char_data)
     local self = {}
     self.source = source
@@ -38,23 +26,16 @@ end
 
 --#region Getters
 
----Returns the source
----@return number
 function player:getSource()
     return self.source or false
 end
 
----Returns the identifier from argument
----@return string
 function player:getIdentifier()
     return self.identifier or false
 end
 
 --#endregion Getters
 
---#region Setters
----Set the player group
----@param group string
 function player:setGroup(group)
     if not group then return false end
     for i=1, #Config.Groups do
@@ -66,22 +47,12 @@ function player:setGroup(group)
     return false
 end
 
----Set new coords for the player table
----@param newCoords vector3
----@param newHeading number
----@return boolean
-function player:setCoords(newCoords, newHeading)
-    local ped = GetPlayerPed(self.source)
-    if ped <= 0 then return false end
-    local coords, heading = type(newCoords) == 'table' and newCoords or GetEntityCoords(ped), newHeading or GetEntityHeading(ped)
-    if coords.x == 0 or coords.y == 0 or coords.z == 0 then return false end
-    self.char_data.coords = vector4(coords.x, coords.y, coords.z, heading)
+function player:setCoords(coords)
+    if not coords or type(coords) ~= 'vector4' then return false end
+    self.char_data.coords = vector4(coords.x, coords.y, coords.z, coords.w)
     return true
 end
 
----Add money to an account
----@param account string
----@param quantity number
 function player:addAccountMoney(account, quantity)
     if not account or type(account) ~= 'string' or not quantity or not type(quantity) ~= 'number' then return false end
     if not self.accounts[account] then return false end
@@ -90,9 +61,11 @@ function player:addAccountMoney(account, quantity)
     return true
 end
 
----Save player into the database
 function player:savePlayer()
-    self:setCoords()
+    local coords = GetEntityCoords(GetPlayerPed(self.source))
+    self:setCoords(vector4(coords.x, coords.y, coords.z, GetEntityHeading(ped)))
+
+    -- Update data in database
     MySQL.prepare('UPDATE `users` SET accounts = ?, `group` = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ', {{
         encode(self.accounts),
         self.group,

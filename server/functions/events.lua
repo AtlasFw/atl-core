@@ -1,5 +1,3 @@
--- Character id has to be changed to char_id later on.
-
 local decode = json.decode
 
 local function playerJoined(playerId)
@@ -22,6 +20,9 @@ local function registerPlayer(identity)
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
     if type(identity) ~= 'table' then return DropPlayer(playerId, '[ATL] Invalid identity.') end
 
+    local license = ATL.GetLicense(playerId)
+    if not license then return DropPlayer(playerId, '[ATL] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.') end
+
     local newIdentity = ATL.CheckIdentity({
         firstname = identity.data.firstName,
         lastname = identity.data.lastName,
@@ -29,7 +30,7 @@ local function registerPlayer(identity)
         sex = identity.data.sex
     })
     if not newIdentity then return DropPlayer(playerId, '[ATL] Invalid identity.') end
-    ATL.CreatePlayer(playerId, license, false, newIdentity)
+    ATL.CreatePlayer(playerId, license, {}, newIdentity)
 end
 
 local function loadPlayer(data)

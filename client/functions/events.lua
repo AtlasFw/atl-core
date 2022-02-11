@@ -1,4 +1,3 @@
----Set some basic spawn things as pvp or wanted level
 local function setSpawnParams()
     local ped = PlayerPedId()
     SetCanAttackFriendly(ped, true, false)
@@ -7,8 +6,6 @@ local function setSpawnParams()
     SetPedDefaultComponentVariation(ped)
 end
 
----Function to spawn the player (Using spawnmanager default resource)
----@param coords vector3
 local function spawnPlayer(coords)
     exports["spawnmanager"]:spawnPlayer({
         model = 'mp_m_freemode_01',
@@ -21,9 +18,6 @@ local function spawnPlayer(coords)
     end)
 end
 
----Sets a ped into a vehicle seat
----@param netVehicle number
----@param seat number
 local function setPedSeats(netVehicle, seat)
     if type(netVehicle) ~= 'number' or type(seat) ~= "number" then return end
 

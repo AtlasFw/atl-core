@@ -9,31 +9,32 @@ ATL.CheckIdentity = function(identity)
 
     if #dob ~= 3 then return false end
     if #dob[1] ~= 2 or #dob[2] ~= 2 or #dob[3] ~= 4 then return false end
-    return true
+    return identity
 end
 
 ATL.CreatePlayer = function(playerId, license, chars, identity)
-    if chars or next(chars) then
+    if chars and next(chars) then
         local player = chars[1]
         Players[playerId] = ATL.new(playerId, license, player.char_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data))
         TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player.char_data).coords)
         return
     end
 
+    local newIdentity = next(identity) and identity or { }
     MySQL.insert('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', {
         license,
         encode(Config.Accounts),
         encode({}),
-        Config.Groups[1] or "user",
+        Config.Groups[1] or 'user',
         encode(Config.Status),
         encode({}),
-        next(identity) and encode(identity) or encode({}),
+        encode(newIdentity),
         encode({}),
-        encode({ coords = Config.Others.Coords }),
+        encode({ coords = Config.Spawn }),
     }, function(charId)
         if charId then
-            Players[playerId] = ATL.new(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Others.Coords })
-            TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Others.Coords)
+            Players[playerId] = ATL.new(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Spawn })
+            TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Spawn)
         else
             print('[ATL] Error while creating player')
             DropPlayer(playerId, '[ATL] Error while creating player')
@@ -63,16 +64,14 @@ ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
     end)
 end
 
-ATL.CreateVehicle = function(model, spawnCoords, cb)
-    local coords, heading = type(spawnCoords) == 'table' and spawnCoords, spawnCoords and spawnCoords.w
-    if not coords or not heading then return false end
-
-    local vehicle = Citizen.InvokeNative(CREATE_AUTOMOBILE, model, coords.x, coords.y, coords.z, heading)
+ATL.CreateVehicle = function(model, coords, cb)
+    if not coords or type(coords) ~= 'vector4' then return cb(false, false) end
+    local vehicle = Citizen.InvokeNative(CREATE_AUTOMOBILE, model, coords.x, coords.y, coords.z, coords.w)
     local timeout = false
     SetTimeout(250, function() timeout = true end)
     repeat
         Wait(0)
-        if timeout then return cb(false) end
+        if timeout then return cb(false, false) end
     until DoesEntityExist(vehicle)
 
     return cb(vehicle, NetworkGetNetworkIdFromEntity(vehicle))
