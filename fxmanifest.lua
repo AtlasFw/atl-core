@@ -8,7 +8,7 @@ author 'Atlas Framework Developers'
 
 client_scripts {
     'client/main.lua',
-    'client/functions/*.lua',
+    'client/events.lua'
 }
 
 server_scripts {
@@ -24,4 +24,4 @@ server_scripts {
     'server/export.lua'
 }
 
-provide 'atl' -- Instead of saying 'stop atl-core', you can just say 'stop atl'
+provide 'core' -- Instead of saying 'stop atl-core', you can just say 'stop atl'
