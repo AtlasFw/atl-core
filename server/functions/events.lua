@@ -27,7 +27,8 @@ local function registerPlayer(identity)
         firstname = identity.data.firstName,
         lastname = identity.data.lastName,
         dob = identity.data.dob,
-        sex = identity.data.sex
+        sex = identity.data.sex,
+        quote = identity.data.quote
     })
     if not newIdentity then return DropPlayer(playerId, '[ATL] Invalid identity.') end
     ATL.CreatePlayer(playerId, license, {}, newIdentity)
@@ -36,11 +37,11 @@ end
 local function loadPlayer(data)
     local playerId <const> = source
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
-    if type(data) ~= 'table' or type(data.character_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end
+    if type(data) ~= 'table' or type(data.char_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end
 
     local license = ATL.GetLicense(playerId)
     if license then
-        MySQL.single('SELECT * FROM users WHERE license = ? AND char_id = ?', { license, data.character_id }, function(player)
+        MySQL.single('SELECT * FROM users WHERE license = ? AND char_id = ?', { license, data.char_id }, function(player)
             if player and next(player) then
                 Players[playerId] = ATL.new(playerId, license, player.char_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data))
                 TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player.char_data).coords)
@@ -52,18 +53,18 @@ end
 local function deletePlayer(data)
     local playerId <const> = source
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
-    if type(data) ~= 'table' or type(data.character_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end
+    if type(data) ~= 'table' or type(data.char_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end
 
     local license = ATL.GetLicense(playerId)
     if license then
         MySQL.prepare('DELETE FROM `users` WHERE `char_id` = ? and `license` = ?', {{
-            data.character_id,
+            data.char_id,
             license
         }}, function(result)
             if result == 1 then
                 playerJoined(playerId)
             else
-                print('[ATL] Could not delete player with char_id of "' .. data.character_id .. '"" and license of "' .. license .. '"')
+                print('[ATL] Could not delete player with char_id of "' .. data.char_id .. '"" and license of "' .. license .. '"')
                 DropPlayer(playerId, '[ATL] There was an error when deleting your character. Please contact administration.')
             end
         end)

@@ -3,12 +3,7 @@ local encode, decode = json.encode, json.decode
 
 ATL.CheckIdentity = function(identity)
     if not identity or not next(identity) then return false end
-    if not identity.firstname or not identity.lastname or not identity.dob or not identity.sex then return false end
-    local dob = { }
-    for k in string.gmatch(identity.dob, "([^".. '/' .."]+)") do table.insert(dob, k) end
-
-    if #dob ~= 3 then return false end
-    if #dob[1] ~= 2 or #dob[2] ~= 2 or #dob[3] ~= 4 then return false end
+    if not identity.firstname or not identity.lastname or not identity.dob or not identity.sex or not identity.quote then return false end
     return identity
 end
 
