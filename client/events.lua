@@ -1,4 +1,5 @@
 local function spawnPlayer(coords)
+    SetEntityVisible(PlayerPedId(), true)
     SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z)
 end
 
