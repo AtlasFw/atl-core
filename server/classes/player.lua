@@ -7,7 +7,7 @@ setmetatable(Players, player)
 --Sets the player's index to player's table
 player.__index = player
 
-ATL.new = function(source, identifier, char_id, jobs, group, accounts, inventory, status, appearance, char_data)
+ATL.new = function(source, identifier, char_id, jobs, group, accounts, inventory, status, appearance, char_data, identity)
     local self = {}
     self.source = source
     self.identifier = identifier
@@ -19,6 +19,7 @@ ATL.new = function(source, identifier, char_id, jobs, group, accounts, inventory
     self.status = status
     self.appearance = appearance
     self.char_data = char_data
+    self.identity = identity
 
     Players[self.source] = self
     return setmetatable(self, getmetatable(Players))
