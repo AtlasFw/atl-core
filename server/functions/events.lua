@@ -8,11 +8,11 @@ local function playerJoined(playerId)
     if not license then return DropPlayer(playerId, '[ATL] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.') end
 
     local characters = ATL.GetCharacters(license)
-    if Config.Identity.Disable then
-        ATL.CreatePlayer(playerId, license, characters)
-        return
-    end
     TriggerClientEvent('atl:client:startMulticharacter', playerId, characters, Config.Identity)
+    -- if Config.Identity.Disable then
+    --     ATL.CreatePlayer(playerId, license, characters)
+    --     return
+    -- end
 end
 
 local function registerPlayer(identity)

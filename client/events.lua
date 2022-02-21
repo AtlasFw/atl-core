@@ -1,21 +1,5 @@
-local function setSpawnParams()
-    local ped = PlayerPedId()
-    SetCanAttackFriendly(ped, true, false)
-    NetworkSetFriendlyFireOption(true)
-    SetMaxWantedLevel(0)
-    SetPedDefaultComponentVariation(ped)
-end
-
 local function spawnPlayer(coords)
-    exports["spawnmanager"]:spawnPlayer({
-        model = 'mp_m_freemode_01',
-        heading = coords.w,
-        x = coords.x,
-        y = coords.y,
-        z = coords.z
-    }, function()
-        setSpawnParams()
-    end)
+    SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z)
 end
 
 local function setPedSeats(netVehicle, seat)

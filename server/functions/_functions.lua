@@ -25,11 +25,11 @@ ATL.CreatePlayer = function(playerId, license, chars, identity)
         encode({}),
         encode(newIdentity),
         encode({}),
-        encode({ coords = Config.Spawn }),
+        encode({ coords = Config.Identity.Spawn }),
     }, function(charId)
         if charId then
-            Players[playerId] = ATL.new(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Spawn }, newIdentity)
-            TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Spawn)
+            Players[playerId] = ATL.new(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Identity.Spawn }, newIdentity)
+            TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Identity.Spawn)
         else
             print('[ATL] Error while creating player')
             DropPlayer(playerId, '[ATL] Error while creating player')
