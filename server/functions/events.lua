@@ -71,7 +71,17 @@ local function deletePlayer(data)
     end
 end
 
+local function leaveServer()
+    local playerId <const> = source
+    if Players[playerId] then
+        Players[playerId]:Save()
+        Players[playerId] = nil
+    end
+    DropPlayer(playerId, '[ATL] You have left the server. Come back soon!')
+end
+
 RegisterNetEvent('atl:server:registerNewPlayer', registerPlayer)
 RegisterNetEvent('atl:server:loadPlayer', loadPlayer)
 RegisterNetEvent('atl:server:playerJoined', playerJoined)
 RegisterNetEvent('atl:server:deletePlayer', deletePlayer)
+RegisterNetEvent('atl:server:leaveServer', leaveServer)
