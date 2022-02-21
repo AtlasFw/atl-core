@@ -24,8 +24,8 @@ local function registerPlayer(identity)
     if not license then return DropPlayer(playerId, '[ATL] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.') end
 
     local newIdentity = ATL.CheckIdentity({
-        firstname = identity.data.firstName,
-        lastname = identity.data.lastName,
+        firstname = identity.data.firstname,
+        lastname = identity.data.lastname,
         dob = identity.data.dob,
         sex = identity.data.sex,
         quote = identity.data.quote

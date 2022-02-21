@@ -5,7 +5,7 @@ Config = {
     Status = { hunger = 100, thirst = 100 },
     Groups = { 'user', 'support', 'mod', 'admin'},
     Identity = {
-        Disable = true,
+        Disable = false,
         MaxSlots = 3,
         AllowedSlots = 3,
     }
