@@ -48,7 +48,9 @@ function player:getCharacterId()
 end
 
 function player:getAccount(account)
-    return self.accounts[account]
+    if Config.Accounts[account] then
+        return self.accounts[account]
+    end
 end
 
 --#endregion Getters
