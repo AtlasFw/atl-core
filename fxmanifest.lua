@@ -24,4 +24,4 @@ server_scripts {
     'server/export.lua'
 }
 
-provide 'core' -- Instead of saying 'stop atl-core', you can just say 'stop atl'
+provide 'core' -- Instead of saying 'stop atl-core', you can just say 'stop core'
