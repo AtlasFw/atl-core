@@ -48,6 +48,30 @@ function player:setGroup(group)
     return false
 end
 
+function player:getGroup()
+    return self.group
+end
+
+function player:getPlayerName(playerId)
+    return GetPlayerName(playerId)
+end
+
+function player:getCharacterName()
+    return self.identity.firstname.. ' ' ..self.identity.lastname
+end
+
+function player:getCharacterId()
+    return self.char_id
+end
+
+function player:getMoney()
+    return self.accounts['cash']
+end
+
+function player:getBankMoney()
+    return self.accounts['bank']
+end
+
 function player:setCoords(coords)
     if not coords or type(coords) ~= 'vector4' then return false end
     self.char_data.coords = vector4(coords.x, coords.y, coords.z, coords.w)
