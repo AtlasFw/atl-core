@@ -41,7 +41,7 @@ local function loadPlayer(data)
     if license then
         MySQL.single('SELECT * FROM users WHERE license = ? AND char_id = ?', { license, data.char_id }, function(player)
             if player and next(player) then
-                Players[playerId] = ATL.new(playerId, license, player.char_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data))
+                Players[playerId] = ATL.new(playerId, license, player.char_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data), decode(player.identity))
                 TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player.char_data).coords)
             end
         end)
