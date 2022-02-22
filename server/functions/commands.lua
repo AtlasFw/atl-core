@@ -10,6 +10,19 @@ ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(args)
     if not newGroup then error('Group does not exist!') end
 end, { }, true)
 
+ATL.RegisterCommand('giveaccount', 'Give account money to player', 'admin', function(_, args)
+    local playerId = tonumber(args[1])
+    local account = args[2]
+    local quantity = tonumber(args[3])
+
+    if not playerId or not account or not quantity then error('Missing an id or account or quantity (Use giveaccount + id + account + quantity)') end
+
+    local player = Players[playerId]
+    if not player then error('Player not found') end
+
+    ATL.AddAccountMoney(playerId, account, quantity)
+end, {}, false)
+
 ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(playerId, args)
     local hashModel = GetHashKey(args[1])
     local ped = GetPlayerPed(playerId)
@@ -40,6 +53,10 @@ ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', functi
         DeleteEntity(vehicles[i])
     end
 end)
+
+ATL.RegisterCommand('info', 'My character info', 'admin', function(playerId)
+    print('[ATL]: License: ' ..ATL.GetLicense(playerId).. ' | Name: ' ..GetPlayerName(playerId).. ' | Character ID: ' ..ATL.GetCharacterId(playerId).. ' | Character Name: ' ..ATL.GetCharacterName(playerId).. ' | Group: ' ..ATL.GetGroup(playerId).. ' | Money: ' ..ATL.GetMoney(playerId).. '$ | Bank: ' ..ATL.GetBankMoney(playerId).. '$')
+end, {}, false)
 
 ATL.RegisterCommand('clear', 'Clear chat', 'user', function(playerId)
     TriggerClientEvent('chat:clear', playerId)
