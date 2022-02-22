@@ -4,6 +4,8 @@ local function playerJoined(playerId)
     local playerId <const> = source or playerId
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
 
+    local license = ATL.GetLicense(playerId)
+    
     local characters = ATL.GetCharacters(license)
     TriggerClientEvent('atl:client:startMulticharacter', playerId, characters, Config.Identity)
     -- if Config.Identity.Disable then
@@ -16,7 +18,9 @@ local function registerPlayer(identity)
     local playerId <const> = source
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
     if type(identity) ~= 'table' then return DropPlayer(playerId, '[ATL] Invalid identity.') end
-
+    
+    local license = ATL.GetLicense(playerId)
+    
     local newIdentity = ATL.CheckIdentity({
         firstname = identity.data.firstname,
         lastname = identity.data.lastname,
