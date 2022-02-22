@@ -40,6 +40,7 @@ end
 ---Get character accounts
 ---@param playerId number
 ATL.GetAccount = function(playerId, account)
+    if not playerId or not account then return false end
     local player = Players[playerId]
 
     if not player then return false end
@@ -52,7 +53,7 @@ end
 ---@param quantity number
 ---@return boolean
 ATL.AddAccountMoney = function(playerId, account, quantity)
-    if not playerId then return end
+    if not playerId or not account or not quantity then return false end
 
     local player = Players[playerId]
     if not player then return end
