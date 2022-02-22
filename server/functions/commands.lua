@@ -20,7 +20,7 @@ ATL.RegisterCommand('giveaccount', 'Give account money to player', 'admin', func
     local player = Players[playerId]
     if not player then error('Player not found') end
 
-    ATL.AddAccountMoney(playerId, account, quantity)
+    player:addAccountMoney(account, quantity)
 end, {}, false)
 
 ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(playerId, args)
@@ -55,7 +55,9 @@ ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', functi
 end)
 
 ATL.RegisterCommand('info', 'My character info', 'admin', function(playerId)
-    print('[ATL]: License: ' ..ATL.GetLicense(playerId).. ' | Name: ' ..GetPlayerName(playerId).. ' | Character ID: ' ..ATL.GetCharacterId(playerId).. ' | Character Name: ' ..ATL.GetCharacterName(playerId).. ' | Group: ' ..ATL.GetGroup(playerId).. ' | Money: ' ..ATL.GetAccount(playerId, 'cash').. '$ | Bank: ' ..ATL.GetAccount(playerId, 'bank').. '$')
+    local player = Players[playerId]
+
+    print('[ATL]: License: ' ..player:getIdentifier().. ' | Name: ' ..GetPlayerName(playerId).. ' | Character ID: ' ..player:getCharacterId().. ' | Character Name: ' ..player:getCharacterName().. ' | Group: ' ..player:getGroup().. ' | Money: ' ..player:getAccount('cash').. '$ | Bank: ' ..player:getAccount('bank').. '$')
 end, {}, false)
 
 ATL.RegisterCommand('clear', 'Clear chat', 'user', function(playerId)
