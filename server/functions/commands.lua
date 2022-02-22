@@ -1,4 +1,4 @@
-ATL.RegisterCommand('setgroup', 'Set player group', 'guillewashere', function(args)
+ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(args)
     local playerId = tonumber(args[1])
     local group = args[2]
     if not playerId or not group then error('Missing an id to set the group (Use setgroup + id + group)') end
