@@ -55,7 +55,7 @@ ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', functi
 end)
 
 ATL.RegisterCommand('info', 'My character info', 'admin', function(playerId)
-    print('[ATL]: License: ' ..ATL.GetLicense(playerId).. ' | Name: ' ..GetPlayerName(playerId).. ' | Character ID: ' ..ATL.GetCharacterId(playerId).. ' | Character Name: ' ..ATL.GetCharacterName(playerId).. ' | Group: ' ..ATL.GetGroup(playerId).. ' | Money: ' ..ATL.GetMoney(playerId).. '$ | Bank: ' ..ATL.GetBankMoney(playerId).. '$')
+    print('[ATL]: License: ' ..ATL.GetLicense(playerId).. ' | Name: ' ..GetPlayerName(playerId).. ' | Character ID: ' ..ATL.GetCharacterId(playerId).. ' | Character Name: ' ..ATL.GetCharacterName(playerId).. ' | Group: ' ..ATL.GetGroup(playerId).. ' | Money: ' ..ATL.GetAccount(playerId, 'cash').. '$ | Bank: ' ..ATL.GetAccount(playerId, 'bank').. '$')
 end, {}, false)
 
 ATL.RegisterCommand('clear', 'Clear chat', 'user', function(playerId)
