@@ -1,3 +1,7 @@
+CREATE DATABASE IF NOT EXISTS `atlas`;
+
+USE `atlas`;
+
 CREATE TABLE `users` (
     `char_id` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `license` VARCHAR(60) NOT NULL,
