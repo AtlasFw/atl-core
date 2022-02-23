@@ -9,6 +9,7 @@ setmetatable(Players, player)
 player.__index = player
 
 ATL.new = function(source, identifier, char_id, player)
+    print(player.group)
     local self = {}
     self.source = source
     self.identifier = identifier
@@ -86,9 +87,8 @@ function player:savePlayer()
     self:setCoords(vector4(coords.x, coords.y, coords.z, GetEntityHeading(ped)))
 
     -- Update data in database
-    MySQL.prepare('UPDATE `users` SET accounts = ?, `group` = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ', {{
+    MySQL.prepare('UPDATE `characters` SET accounts = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ', {{
         encode(self.accounts),
-        self.group,
         encode(self.status),
         encode(self.inventory),
         encode(self.jobs),

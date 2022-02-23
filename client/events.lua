@@ -17,5 +17,4 @@ local function setPedSeats(netVehicle, seat)
     end
 end
 
-RegisterNetEvent('atl:client:spawnPlayer', spawnPlayer)
 RegisterNetEvent('atl:client:setPedSeat', setPedSeats)
