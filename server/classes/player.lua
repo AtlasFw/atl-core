@@ -1,4 +1,5 @@
 local encode = json.encode
+local decode = json.decode
 
 Players = {}
 local player = {}
@@ -7,19 +8,19 @@ setmetatable(Players, player)
 --Sets the player's index to player's table
 player.__index = player
 
-ATL.new = function(source, identifier, char_id, jobs, group, accounts, inventory, status, appearance, char_data, identity)
+ATL.new = function(source, identifier, char_id, player)
     local self = {}
     self.source = source
     self.identifier = identifier
     self.char_id = char_id
-    self.jobs = jobs
-    self.group = group
-    self.accounts = accounts
-    self.inventory = inventory
-    self.status = status
-    self.appearance = appearance
-    self.char_data = char_data
-    self.identity = identity
+    self.jobs = decode(player.job_data) or {}
+    self.group = player.group or Config.Groups[1] or 'user'
+    self.accounts = decode(player.accounts) or Config.Accounts
+    self.inventory = decode(player.inventory) or {}
+    self.status = decode(player.status) or Config.Status
+    self.appearance = decode(player.appearance) or {}
+    self.char_data = decode(player.char_data) or { coords = Config.Spawn }
+    self.identity = decode(player.identity) or {}
 
     Players[self.source] = self
     return setmetatable(self, getmetatable(Players))

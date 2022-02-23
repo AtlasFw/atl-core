@@ -18,12 +18,13 @@ local function GetCharacters(license)
     return Citizen.Await(p)
 end
 
-local function CreatePlayer(playerId, license, identity)
+local function CreatePlayer(playerId, license, identity, appearance)
     local newIdentity = next(identity) and identity or { }
+    local newAppearance = { }
     MySQL.insert('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', {
         license,
         encode(Config.Accounts),
-        encode({}),
+        encode(appearance),
         Config.Groups[1] or 'user',
         encode(Config.Status),
         encode({}),
@@ -32,7 +33,11 @@ local function CreatePlayer(playerId, license, identity)
         encode({ coords = Config.Spawn }),
     }, function(charId)
         if charId then
-            Players[playerId] = ATL.new(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Spawn }, newIdentity)
+            local player = {
+                identity = json.encode(newIdentity),
+                appearance = json.encode(newAppearance), -- TODO: Add appearance
+            }
+            Players[playerId] = ATL.new(playerId, license, charId, player)
             SetEntityCoords(GetPlayerPed(playerId), Config.Spawn.x, Config.Spawn.y, Config.Spawn.z)
         else
             print('[ATL] Error while creating player')
@@ -81,7 +86,7 @@ local function loadPlayer(data)
         MySQL.single('SELECT * FROM users WHERE license = ? AND char_id = ?', { license, data.char_id }, function(player)
             if player and next(player) then
                 local coords = decode(player.char_data).coords
-                Players[playerId] = ATL.new(playerId, license, player.char_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data), decode(player.identity))
+                Players[playerId] = ATL.new(playerId, license, player.char_id, player)
                 SetEntityCoords(GetPlayerPed(playerId), coords.x, coords.y, coords.z)
             end
         end)
