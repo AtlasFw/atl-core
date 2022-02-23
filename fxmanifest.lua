@@ -6,14 +6,19 @@ lua54 'yes'
 name 'atl-core'
 author 'Atlas Framework Developers'
 
+shared_scripts {
+    'data/locale.lua'
+}
+
 client_scripts {
+    'data/config/client.lua',
     'client/main.lua',
     'client/events.lua'
 }
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
-    'shared/config_sv.lua',
+    'data/config/server.lua',
 
     'server/main.lua',
     'server/classes/*.lua',
@@ -24,4 +29,10 @@ server_scripts {
     'server/export.lua'
 }
 
+files {
+    'data/locales/*.lua'
+}
+
 provide 'core' -- Instead of saying 'stop atl-core', you can just say 'stop atl'
+
+locale 'es'
