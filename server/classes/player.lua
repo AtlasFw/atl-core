@@ -16,6 +16,7 @@ ATL.new = function(source, identifier, char_id, player)
     self.char_id = char_id
     self.jobs = decode(player.job_data) or {}
     self.group = player.group or Config.Groups[1] or 'user'
+    self.slots = player.slots or Config.Identity.AllowedSlots
     self.accounts = decode(player.accounts) or Config.Accounts
     self.inventory = decode(player.inventory) or {}
     self.status = decode(player.status) or Config.Status
@@ -86,18 +87,14 @@ function player:savePlayer()
     local coords = GetEntityCoords(GetPlayerPed(self.source))
     self:setCoords(vector4(coords.x, coords.y, coords.z, GetEntityHeading(ped)))
 
-    -- Update data in database
-    MySQL.prepare('UPDATE `characters` SET accounts = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ', {{
-        encode(self.accounts),
-        encode(self.status),
-        encode(self.inventory),
-        encode(self.jobs),
-        encode(self.char_data),
-        self.char_id
-    }}, function(result)
-        if result == 1 then
-            print('[ATL] Player ' .. self.source .. ' saved successfully')
+    local queries = {
+        { query = 'UPDATE `users` SET `group` = ?, `slots` = ? WHERE `license` = ?', values = { self.group, self.slots, self.identifier }},
+        { query = 'UPDATE `characters` SET accounts = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ', values = { encode(self.accounts), encode(self.status), encode(self.inventory), encode(self.jobs), encode(self.char_data), self.char_id }}
+    } 
+    
+    exports.oxmysql:transaction(queries, function(result) 
+        if result then
+            print('[ATL] User and Character ' .. self.source .. ' saved successfully')
         end
     end)
 end
---#endregion Setters

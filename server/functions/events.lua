@@ -67,6 +67,7 @@ local function CreateCharacter(playerId, license, identity, appearance)
                 identity = json.encode(newIdentity),
                 appearance = json.encode(newAppearance), -- TODO: Add appearance
                 group = user.group,
+                slots = user.slots,
             }
             Players[playerId] = ATL.new(playerId, license, charId, player)
             SetEntityCoords(GetPlayerPed(playerId), Config.Spawn.x, Config.Spawn.y, Config.Spawn.z)
@@ -114,12 +115,12 @@ local function loadCharacter(data)
     if type(data) ~= 'table' or type(data.char_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end
 
     local license = ATL.GetLicense(playerId)
-    local group = GetUser(playerId, license).group
+    local user = GetUser(playerId, license)
     if license then
         MySQL.single('SELECT * FROM characters WHERE license = ? AND char_id = ?', { license, data.char_id }, function(player)
             if player and next(player) then
                 local coords = decode(player.char_data).coords
-                player.group = group
+                player = { group = user.group, slots = user.slots}
                 Players[playerId] = ATL.new(playerId, license, player.char_id, player)
                 SetEntityCoords(GetPlayerPed(playerId), coords.x, coords.y, coords.z)
             end
