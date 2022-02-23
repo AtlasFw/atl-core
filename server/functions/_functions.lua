@@ -1,41 +1,4 @@
 local CREATE_AUTOMOBILE = GetHashKey('CREATE_AUTOMOBILE')
-local encode, decode = json.encode, json.decode
-
-ATL.CheckIdentity = function(identity)
-    if not identity or not next(identity) then return false end
-    if not identity.firstname or not identity.lastname or not identity.dob or not identity.sex or not identity.quote then return false end
-    return identity
-end
-
-ATL.CreatePlayer = function(playerId, license, chars, identity)
-    if chars and next(chars) then
-        local player = chars[1]
-        Players[playerId] = ATL.new(playerId, license, player.char_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data), decode(player.identity))
-        TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player.char_data).coords)
-        return
-    end
-
-    local newIdentity = next(identity) and identity or { }
-    MySQL.insert('INSERT INTO users (license, accounts, appearance, `group`, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', {
-        license,
-        encode(Config.Accounts),
-        encode({}),
-        Config.Groups[1] or 'user',
-        encode(Config.Status),
-        encode({}),
-        encode(newIdentity),
-        encode({}),
-        encode({ coords = Config.Spawn }),
-    }, function(charId)
-        if charId then
-            Players[playerId] = ATL.new(playerId, license, charId, {}, Config.Groups[1] or "user", Config.Accounts, {}, Config.Status, {}, { coords = Config.Spawn }, newIdentity)
-            TriggerClientEvent('atl:client:spawnPlayer', playerId, Config.Spawn)
-        else
-            print('[ATL] Error while creating player')
-            DropPlayer(playerId, '[ATL] Error while creating player')
-        end
-    end)
-end
 
 ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
     if type(name) == 'table' then
@@ -84,18 +47,6 @@ ATL.GetLicense = function(playerId)
         end
     end
     return found
-end
-
-ATL.GetCharacters = function(license)
-    if not license then return {} end
-    local p = promise.new()
-    MySQL.query('SELECT * FROM `users` WHERE `license` = @license', {
-        ['@license'] = license
-    }, function(characters)
-        p:resolve(characters)
-    end)
-    local result = Citizen.Await(p)
-    return result
 end
 
 ATL.GetPassengers = function(ped, vehicle)

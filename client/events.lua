@@ -1,8 +1,3 @@
-local function spawnPlayer(coords)
-    SetEntityVisible(PlayerPedId(), true)
-    SetEntityCoords(PlayerPedId(), coords.x, coords.y, coords.z)
-end
-
 local function setPedSeats(netVehicle, seat)
     if type(netVehicle) ~= 'number' or type(seat) ~= "number" then return end
 
