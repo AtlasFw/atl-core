@@ -35,6 +35,24 @@ function player:getIdentifier()
     return self.identifier or false
 end
 
+function player:getGroup()
+    return self.group
+end
+
+function player:getCharacterName()
+    return self.identity.firstname, self.identity.lastname
+end
+
+function player:getCharacterId()
+    return self.char_id
+end
+
+function player:getAccount(account)
+    if Config.Accounts[account] then
+        return self.accounts[account]
+    end
+end
+
 --#endregion Getters
 
 function player:setGroup(group)
@@ -55,10 +73,10 @@ function player:setCoords(coords)
 end
 
 function player:addAccountMoney(account, quantity)
-    if not account or type(account) ~= 'string' or not quantity or not type(quantity) ~= 'number' then return false end
+    if not account or not quantity then return false end
     if not self.accounts[account] then return false end
 
-    self.accounts[account] = self.accounts + quantity
+    self.accounts[account] = self.accounts[account] + quantity
     return true
 end
 

@@ -17,7 +17,7 @@ local function setPedSeats(netVehicle, seat)
     if vehicle and vehicle > 0 then
         SetPedIntoVehicle(PlayerPedId(), vehicle, seat)
         if seat == -1 then
-            SetVehicleOnGroundProperly(veh)
+            SetVehicleOnGroundProperly(vehicle)
         end
     end
 end

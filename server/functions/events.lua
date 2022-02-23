@@ -5,8 +5,7 @@ local function playerJoined(playerId)
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
 
     local license = ATL.GetLicense(playerId)
-    if not license then return DropPlayer(playerId, '[ATL] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.') end
-
+    
     local characters = ATL.GetCharacters(license)
     TriggerClientEvent('atl:client:startMulticharacter', playerId, characters, Config.Identity)
     -- if Config.Identity.Disable then
@@ -19,10 +18,9 @@ local function registerPlayer(identity)
     local playerId <const> = source
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
     if type(identity) ~= 'table' then return DropPlayer(playerId, '[ATL] Invalid identity.') end
-
+    
     local license = ATL.GetLicense(playerId)
-    if not license then return DropPlayer(playerId, '[ATL] License not found. Please make sure you are using an official license. If you think this is an error, please contact the server owner.') end
-
+    
     local newIdentity = ATL.CheckIdentity({
         firstname = identity.data.firstname,
         lastname = identity.data.lastname,
@@ -43,7 +41,7 @@ local function loadPlayer(data)
     if license then
         MySQL.single('SELECT * FROM users WHERE license = ? AND char_id = ?', { license, data.char_id }, function(player)
             if player and next(player) then
-                Players[playerId] = ATL.new(playerId, license, player.char_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data))
+                Players[playerId] = ATL.new(playerId, license, player.char_id, decode(player.job_data), player.group, decode(player.accounts), decode(player.inventory), decode(player.status), decode(player.appearance), decode(player.char_data), decode(player.identity))
                 TriggerClientEvent('atl:client:spawnPlayer', playerId, decode(player.char_data).coords)
             end
         end)
