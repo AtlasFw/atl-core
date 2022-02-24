@@ -19,6 +19,16 @@ ATL.GetGroup = function(playerId)
     return player:getGroup()
 end
 
+---Get the user slots
+---@param playerId number
+ATL.GetSlots = function(playerId)
+    if not playerId then return end
+    local player = Players[playerId]
+
+    if not player then return false end
+    return player:getSlots()
+end
+
 ---Get character name
 ---@param playerId number
 ATL.GetCharacterName = function(playerId)
@@ -60,3 +70,7 @@ ATL.AddAccountMoney = function(playerId, account, quantity)
 
     return player:addAccountMoney(account, quantity)
 end
+
+exports('get', function()
+    return ATL
+end)

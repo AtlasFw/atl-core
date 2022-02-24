@@ -42,6 +42,10 @@ function player:getGroup()
     return self.group
 end
 
+function player:getSlots()
+    return self.slots
+end
+
 function player:getCharacterName()
     return self.identity.firstname, self.identity.lastname
 end
