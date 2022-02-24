@@ -1,34 +1,28 @@
-ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(args)
+ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(player, args)
     local playerId = tonumber(args[1])
     local group = args[2]
     if not playerId or not group then error('Missing an id to set the group (Use setgroup + id + group)') end
 
-    local player = Players[playerId]
-    if not player then error('Player not found') end
-
-    local newGroup = player:setGroup(group)
+    local targetPlayer = Players[playerId]
+    local newGroup = targetPlayer:setGroup(group)
     if not newGroup then error('Group does not exist!') end
 end, { }, true)
 
-ATL.RegisterCommand('giveaccount', 'Give account money to player', 'admin', function(_, args)
+ATL.RegisterCommand('giveaccount', 'Give account money to player', 'admin', function(player, args)
     local playerId = tonumber(args[1])
     local account = args[2]
     local quantity = tonumber(args[3])
-
     if not playerId or not account or not quantity then error('Missing an id or account or quantity (Use giveaccount + id + account + quantity)') end
-
-    local player = Players[playerId]
-    if not player then error('Player not found') end
 
     player:addAccountMoney(account, quantity)
 end, {}, false)
 
-ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(playerId, args)
+ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(player, args)
     local vehicle = args[1]
     if not vehicle then error('Missing a vehicle name (Use car + vehicle name)') end
 
     local hashModel = GetHashKey(vehicle)
-    local ped = GetPlayerPed(playerId)
+    local ped = GetPlayerPed(player.source)
     if not ped or ped <= 0 then return end
 
     local coords, heading = GetEntityCoords(ped), GetEntityHeading(ped)
@@ -48,8 +42,8 @@ ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(playerI
     end)
 end, { }, false)
 
-ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', function(playerId, args)
-    local coords = GetEntityCoords(GetPlayerPed(playerId))
+ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', function(player, args)
+    local coords = GetEntityCoords(GetPlayerPed(player.source))
     local dist = tonumber(args[1]) or 1.0
     local vehicles = ATL.GetVehicles(coords, dist)
     for i = 1, #vehicles, 1 do
@@ -57,14 +51,12 @@ ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', functi
     end
 end)
 
-ATL.RegisterCommand('info', 'My character info', 'admin', function(playerId)
-    local player = Players[playerId]
-
-    print('[ATL]: License: ' ..player:getIdentifier().. ' | Name: ' ..GetPlayerName(playerId).. ' | Character ID: ' ..player:getCharacterId().. ' | Character Name: ' ..player:getCharacterName().. ' | Group: ' ..player:getGroup().. ' | Money: ' ..player:getAccount('cash').. '$ | Bank: ' ..player:getAccount('bank').. '$')
+ATL.RegisterCommand('info', 'My character info', 'admin', function(player, args)
+    print(("[ATL]: License: %s | Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: %s$"):format(player:getIdentifier(), GetPlayerName(player.source), player:getCharacterId(), player:getCharacterName(), player:getGroup(), player:getAccount('cash'), player:getAccount('bank')))
 end, {}, false)
 
-ATL.RegisterCommand('clear', 'Clear chat', 'user', function(playerId)
-    TriggerClientEvent('chat:clear', playerId)
+ATL.RegisterCommand('clear', 'Clear chat', 'user', function(player, args)
+    TriggerClientEvent('chat:clear', player.source)
 end, { }, false)
 
 ATL.RegisterCommand('clearall', 'Clear chat for everyone', 'admin', function()

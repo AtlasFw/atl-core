@@ -11,12 +11,12 @@ ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
         local playerId <const> = source
         if rcon then
             if playerId == 0 then
-                cb(args)
+                cb(nil, args)
             end
         else
             local player = Players[playerId]
-            if player.group == group then
-                cb(playerId, args, player)
+            if player and player:isAuthorized(group) then
+                cb(player, args)
             end
         end
     end)
