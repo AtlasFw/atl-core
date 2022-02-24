@@ -22,7 +22,6 @@ ATL.new = function(source, identifier, char_id, player)
     self.appearance = decode(player.appearance) or {}
     self.char_data = decode(player.char_data) or { coords = Config.Spawn }
     self.identity = decode(player.identity) or {}
-
     Players[self.source] = self
     return setmetatable(self, getmetatable(Players))
 end
@@ -63,11 +62,17 @@ end
 
 function player:setGroup(group)
     if not group then return false end
-    for i=1, #Config.Groups do
-        if Config.Groups[i] == group then
-            self.group = group
-            return true
-        end
+    if not Config.Groups[group] then return false end
+    self.group = group
+    return true
+end
+
+function player:isAuthorized(group)
+    if not group then return false end
+    if not Config.Groups[group] then return false end
+
+    if Config.Groups[self.group] >= Config.Groups[group] then
+        return true
     end
     return false
 end

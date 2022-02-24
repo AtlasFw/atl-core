@@ -3,7 +3,12 @@ Config = {
     SaveTime = 10000,
     Accounts = { cash = 0, bank = 0, black = 0, tebex = 0 },
     Status = { hunger = 100, thirst = 100 },
-    Groups = { 'user', 'support', 'mod', 'admin'},
+    Groups = { 
+        user = 1,
+        support = 2,
+        moderator = 3,
+        admin = 4,
+    },
     Identity = {
         AllowedSlots = 3,
         MaxSlots = 5,
