@@ -51,6 +51,18 @@ ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', functi
     end
 end)
 
+ATL.RegisterCommand('setcoords', 'Set to coords', 'admin', function(player, args)
+    local coords = {
+        x = args[1],
+        y = args[2],
+        z = args[3]
+    }
+
+    if not coords then error('Missing an coords, use (setcoords + x + y + z)') end
+    
+    SetEntityCoords(GetPlayerPed(player.source), coords.x + 1, coords.y + 1, coords.z + 1)
+end)
+
 ATL.RegisterCommand('info', 'My character info', 'admin', function(player, args)
     print(("[ATL]: License: %s | Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: %s$"):format(player:getIdentifier(), GetPlayerName(player.source), player:getCharacterId(), player:getCharacterName(), player:getGroup(), player:getAccount('cash'), player:getAccount('bank')))
 end, {}, false)
