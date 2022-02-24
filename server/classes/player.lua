@@ -92,7 +92,8 @@ function player:addAccountMoney(account, quantity)
 end
 
 function player:savePlayer()
-    local coords = GetEntityCoords(GetPlayerPed(self.source))
+    local ped = GetPlayerPed(self.source)
+    local coords = GetEntityCoords(ped)
     self:setCoords(vector4(coords.x, coords.y, coords.z, GetEntityHeading(ped)))
 
     local queries = {
