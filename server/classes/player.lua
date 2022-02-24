@@ -100,7 +100,7 @@ function player:savePlayer()
         { query = 'UPDATE `characters` SET accounts = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ', values = { encode(self.accounts), encode(self.status), encode(self.inventory), encode(self.jobs), encode(self.char_data), self.char_id }}
     } 
     
-    exports.oxmysql:transaction(queries, function(result) 
+    MySQL.Async.transaction(queries, function(result) 
         if result then
             print('[ATL] User and Character ' .. self.source .. ' saved successfully')
         end
