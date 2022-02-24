@@ -120,7 +120,8 @@ local function loadCharacter(data)
         MySQL.single('SELECT * FROM characters WHERE license = ? AND char_id = ?', { license, data.char_id }, function(player)
             if player and next(player) then
                 local coords = decode(player.char_data).coords
-                player = { group = user.group, slots = user.slots}
+                player.group = user.group
+                player.slots = user.slots
                 Players[playerId] = ATL.new(playerId, license, player.char_id, player)
                 SetEntityCoords(GetPlayerPed(playerId), coords.x, coords.y, coords.z)
             end
