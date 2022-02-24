@@ -21,6 +21,7 @@ server_scripts {
     'data/config/server.lua',
 
     'server/main.lua',
+    'server/hotreload.lua',
     'server/classes/*.lua',
 
     'server/functions/*.lua',

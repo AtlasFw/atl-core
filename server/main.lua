@@ -1,5 +1,6 @@
 ATL = {
     Commands = {},
+    Resources = {},
 }
 
 CreateThread(function()
