@@ -24,7 +24,10 @@ ATL.RegisterCommand('giveaccount', 'Give account money to player', 'admin', func
 end, {}, false)
 
 ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(playerId, args)
-    local hashModel = GetHashKey(args[1])
+    local vehicle = args[1]
+    if not vehicle then error('Missing a vehicle name (Use car + vehicle name)') end
+
+    local hashModel = GetHashKey(vehicle)
     local ped = GetPlayerPed(playerId)
     if not ped or ped <= 0 then return end
 
