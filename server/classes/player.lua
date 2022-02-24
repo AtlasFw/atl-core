@@ -9,7 +9,6 @@ setmetatable(Players, player)
 player.__index = player
 
 ATL.new = function(source, identifier, char_id, player)
-    print(player.group)
     local self = {}
     self.source = source
     self.identifier = identifier
