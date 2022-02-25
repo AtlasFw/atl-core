@@ -53,14 +53,14 @@ end)
 
 ATL.RegisterCommand('setcoords', 'Set to coords', 'admin', function(player, args)
     local coords = {
-        x = args[1],
-        y = args[2],
-        z = args[3]
+        x = tonumber(args[1]),
+        y = tonumber(args[2]),
+        z = tonumber(args[3])
     }
 
     if not coords then error('Missing an coords, use (setcoords + x + y + z)') end
     
-    SetEntityCoords(GetPlayerPed(player.source), coords.x + 1, coords.y + 1, coords.z + 1)
+    SetEntityCoords(GetPlayerPed(player.source), coords.x, coords.y, coords.z)
 end)
 
 ATL.RegisterCommand('info', 'My character info', 'admin', function(player, args)
