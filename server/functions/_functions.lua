@@ -1,5 +1,3 @@
-local CREATE_AUTOMOBILE = GetHashKey('CREATE_AUTOMOBILE')
-
 ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
     if type(name) == 'table' then
         for i=1, #name do

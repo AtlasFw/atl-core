@@ -1,4 +1,3 @@
-
 ATL.GetEntities = function(coords, entities, distance)
   local foundEntities = {}
   local distance = distance or 1.0
@@ -20,7 +19,7 @@ end
 ATL.CreateVehicle = function(model, coords, cb)
   if type(coords) ~= 'vector4' then return cb(false, false) end
 
-  local vehicle = Citizen.InvokeNative(CREATE_AUTOMOBILE, model, coords.x, coords.y, coords.z, coords.w)
+  local vehicle = Citizen.InvokeNative(`CREATE_AUTOMOBILE`, model, coords.x, coords.y, coords.z, coords.w)
   local timeout = false
   SetTimeout(250, function() timeout = true end)
 
