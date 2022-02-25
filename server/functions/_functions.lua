@@ -22,19 +22,6 @@ ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
     end)
 end
 
-ATL.CreateVehicle = function(model, coords, cb)
-    if not coords or type(coords) ~= 'vector4' then return cb(false, false) end
-    local vehicle = Citizen.InvokeNative(CREATE_AUTOMOBILE, model, coords.x, coords.y, coords.z, coords.w)
-    local timeout = false
-    SetTimeout(250, function() timeout = true end)
-    repeat
-        Wait(0)
-        if timeout then return cb(false, false) end
-    until DoesEntityExist(vehicle)
-
-    return cb(vehicle, NetworkGetNetworkIdFromEntity(vehicle))
-end
-
 ATL.GetLicense = function(playerId)
     if not playerId then return false end
 
@@ -62,22 +49,4 @@ ATL.GetPassengers = function(ped, vehicle)
         passengers[-1] = ped
     end
     return passengers
-end
-
-ATL.GetEntities = function(coords, entities, distance)
-    local foundEntities = {}
-    local distance = distance or 1.0
-    for _, entity in pairs(entities) do
-        if not IsPedAPlayer(entity) then
-            local entityCoords = GetEntityCoords(entity)
-            if #(coords - entityCoords) <= distance then
-                foundEntities[#foundEntities + 1] = entity
-            end
-        end
-    end
-    return foundEntities
-end
-
-ATL.GetVehicles = function(coords, dist)
-    return ATL.GetEntities(coords, GetAllVehicles(), dist or 1.0)
 end
