@@ -8,6 +8,17 @@ ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(player, ar
     if not newGroup then error('Group does not exist!') end
 end, { }, true)
 
+ATL.RegisterCommand('setjob', 'Set player job', 'admin', function(player, args)
+    local playerId = tonumber(args[1])
+    local jobName = args[2]
+    local jobRank = tonumber(args[3])
+
+    if not playerId or not jobName or not jobRank then error('Missing an id or jobName or jobRank (Use setjob + id + jobName + jobRank)') end
+
+    local targetPlayer = Players[playerId]
+    targetPlayer:setJob(jobName, jobRank)
+end)
+
 ATL.RegisterCommand('giveaccount', 'Give account money to player', 'admin', function(player, args)
     local playerId = tonumber(args[1])
     local account = args[2]

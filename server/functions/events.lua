@@ -52,6 +52,7 @@ local function CreateCharacter(playerId, license, identity, appearance)
     local user = GetUser(playerId, license)
     local newIdentity = next(identity) and identity or { }
     local newAppearance = { }
+    local jobs = {jobname = 'unemployed', joblabel = Jobs['unemployed'].label, rank = 0, ranklabel = Jobs['unemployed'].ranks[0].label, paycheck = Jobs['unemployed'].ranks[0].paycheck}
     MySQL.insert('INSERT INTO characters (license, accounts, appearance, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
         license,
         encode(Config.Accounts),
@@ -59,15 +60,16 @@ local function CreateCharacter(playerId, license, identity, appearance)
         encode(Config.Status),
         encode({}),
         encode(newIdentity),
-        encode({}),
+        encode(jobs),
         encode({ coords = Config.Spawn }),
     }, function(charId)
         if charId then
             local player = {
-                identity = json.encode(newIdentity),
-                appearance = json.encode(newAppearance), -- TODO: Add appearance
+                identity = encode(newIdentity),
+                appearance = encode(newAppearance), -- TODO: Add appearance
+                job_data = encode(jobs),
                 group = user.group,
-                slots = user.slots,
+                slots = user.slots
             }
             Players[playerId] = ATL.new(playerId, license, charId, player)
             SetEntityCoords(GetPlayerPed(playerId), Config.Spawn.x, Config.Spawn.y, Config.Spawn.z)

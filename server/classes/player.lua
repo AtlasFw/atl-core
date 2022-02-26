@@ -40,6 +40,10 @@ function player:getGroup()
     return self.group
 end
 
+function player:getJob()
+    return self.jobs
+end
+
 function player:getSlots()
     return self.slots
 end
@@ -79,6 +83,19 @@ function player:isAuthorized(group)
         return true
     end
     return false
+end
+
+function player:setJob(jobname, jobrank)
+    if not jobname or not jobrank then return false end
+    if not Jobs[jobname] or not Jobs[jobname].ranks[jobrank] then return false end
+    local job = Jobs[jobname]
+
+    self.jobs.jobname = jobname
+    self.jobs.joblabel = job.label
+    self.jobs.rank = jobrank
+    self.jobs.ranklabel = job.ranks[jobrank].label
+    self.jobs.paycheck = job.ranks[jobrank].paycheck
+    return true
 end
 
 function player:setCoords(coords)
