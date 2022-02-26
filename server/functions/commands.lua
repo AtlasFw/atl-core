@@ -17,6 +17,15 @@ ATL.RegisterCommand('giveaccount', 'Give account money to player', 'admin', func
     player:addAccountMoney(account, quantity)
 end, {}, false)
 
+ATL.RegisterCommand('removeaccount', 'Remove account money to player', 'admin', function(player, args)
+    local playerId = tonumber(args[1])
+    local account = args[2]
+    local quantity = tonumber(args[3])
+    if not playerId or not account or not quantity then error('Missing an id or account or quantity (Use removeaccount + id + account + quantity)') end
+
+    player:removeAccountMoney(account, quantity)
+end, {}, false)
+
 ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(player, args)
     local vehicle = args[1]
     if not vehicle then error('Missing a vehicle name (Use car + vehicle name)') end
@@ -63,8 +72,12 @@ ATL.RegisterCommand('setcoords', 'Set to coords', 'admin', function(player, args
     SetEntityCoords(GetPlayerPed(player.source), coords.x, coords.y, coords.z)
 end)
 
-ATL.RegisterCommand('info', 'My character info', 'admin', function(player, args)
+ATL.RegisterCommand('info', 'My character info', 'user', function(player, args)
     print(("[ATL]: License: %s | Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: %s$"):format(player:getIdentifier(), GetPlayerName(player.source), player:getCharacterId(), player:getCharacterName(), player:getGroup(), player:getAccount('cash'), player:getAccount('bank')))
+end, {}, false)
+
+ATL.RegisterCommand('coords', 'Get coords', 'admin', function(player)
+    print(player:getCoords())
 end, {}, false)
 
 ATL.RegisterCommand('clear', 'Clear chat', 'user', function(player, args)
