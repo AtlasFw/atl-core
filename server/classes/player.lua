@@ -58,6 +58,11 @@ function player:getAccount(account)
     end
 end
 
+function player:getCoords()
+    local coords, heading = GetEntityCoords(GetPlayerPed(self.source)), GetEntityHeading(GetPlayerPed(self.source))
+    return vec(coords.x, coords.y, coords.z, heading)
+end
+
 --#endregion Getters
 
 function player:setGroup(group)
@@ -88,6 +93,14 @@ function player:addAccountMoney(account, quantity)
     if not self.accounts[account] then return false end
 
     self.accounts[account] = self.accounts[account] + quantity
+    return true
+end
+
+function player:removeAccountMoney(account, quantity)
+    if not account or not quantity then return false end
+    if not self.accounts[account] then return false end
+
+    self.accounts[account] = self.accounts[account] - quantity
     return true
 end
 
