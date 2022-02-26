@@ -93,6 +93,7 @@ function player:setJob(jobname, jobrank)
     self.jobs.jobname = jobname
     self.jobs.joblabel = job.label
     self.jobs.rank = jobrank
+    self.jobs.rankname = job.ranks[jobrank].name
     self.jobs.ranklabel = job.ranks[jobrank].label
     self.jobs.paycheck = job.ranks[jobrank].paycheck
     return true
