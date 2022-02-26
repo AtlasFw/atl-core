@@ -11,6 +11,7 @@ shared_scripts {
 }
 
 client_scripts {
+    'data/models.lua',
     'data/config/client.lua',
     'client/main.lua',
     'client/events.lua'
