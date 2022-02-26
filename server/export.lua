@@ -71,6 +71,20 @@ ATL.AddAccountMoney = function(playerId, account, quantity)
     return player:addAccountMoney(account, quantity)
 end
 
+---Remove money to a player account
+---@param playerId number
+---@param account string
+---@param quantity number
+---@return boolean
+ATL.RemoveAccountMoney = function(playerId, account, quantity)
+    if not playerId or not account or not quantity then return false end
+
+    local player = Players[playerId]
+    if not player then return end
+
+    return player:removeAccountMoney(account, quantity)
+end
+
 exports('get', function()
     local resourceName = GetInvokingResource()
     if not ATL.Resources[resourceName] then
