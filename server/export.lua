@@ -62,13 +62,13 @@ end
 ---@param account string
 ---@param quantity number
 ---@return boolean
-ATL.AddAccount = function(playerId, account, quantity)
+ATL.AddAccountMoney = function(playerId, account, quantity)
     if not playerId or not account or not quantity then return false end
 
     local player = Players[playerId]
     if not player then return end
 
-    return player:addAccount(account, quantity)
+    return player:addAccountMoney(account, quantity)
 end
 
 ---Remove money to a player account
@@ -76,13 +76,13 @@ end
 ---@param account string
 ---@param quantity number
 ---@return boolean
-ATL.RemoveAccount = function(playerId, account, quantity)
+ATL.RemoveAccountMoney = function(playerId, account, quantity)
     if not playerId or not account or not quantity then return false end
 
     local player = Players[playerId]
     if not player then return end
 
-    return player:removeAccount(account, quantity)
+    return player:removeAccountMoney(account, quantity)
 end
 
 exports('get', function()
