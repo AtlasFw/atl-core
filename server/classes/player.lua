@@ -119,8 +119,8 @@ end
 
 function player:savePlayer()
     local ped = GetPlayerPed(self.source)
-    local coords = GetEntityCoords(ped)
-    self:setCoords(vector4(coords.x, coords.y, coords.z, GetEntityHeading(ped)))
+    local coords, heading = GetEntityCoords(ped), GetEntityHeading(ped)
+    self:setCoords(vector4(coords.x, coords.y, coords.z, heading))
 
     local queries = {
         { query = 'UPDATE `users` SET `group` = ?, `slots` = ? WHERE `license` = ?', values = { self.group, self.slots, self.identifier }},
