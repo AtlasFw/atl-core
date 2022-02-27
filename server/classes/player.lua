@@ -78,11 +78,7 @@ end
 function player:isAuthorized(group)
     if not group then return false end
     if not Config.Groups[group] then return false end
-
-    if Config.Groups[self.group] >= Config.Groups[group] then
-        return true
-    end
-    return false
+    return Config.Groups[self.group] >= Config.Groups[group]
 end
 
 function player:setJob(jobname, jobrank)
