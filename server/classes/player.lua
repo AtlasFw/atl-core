@@ -72,6 +72,7 @@ function player:setGroup(group)
     if not group then return false end
     if not Config.Groups[group] then return false end
     self.group = group
+    ATL.RefreshCommands(self.source)
     return true
 end
 

@@ -5,6 +5,15 @@ ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
         end
         return
     end
+
+    if suggestions and #suggestions > 1 then
+        ATL.Commands[name] = {
+            description = description,
+            group = group,
+            suggestions = suggestions,
+        }
+    end
+
     RegisterCommand(name, function(source, args)
         local playerId <const> = source
         if rcon then
@@ -18,6 +27,25 @@ ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
             end
         end
     end)
+end
+
+ATL.RefreshCommands = function(playerId)
+    local player = Players[playerId]
+    if not player then return end
+
+    local suggestions = {}
+    for name, command in pairs(ATL.Commands) do
+        if player:isAuthorized(command.group) then
+            suggestions[#suggestions + 1] = {
+                name = '/' .. name,
+                help = command.description,
+                params = command.suggestions 
+            }
+        else
+            TriggerClientEvent('chat:removeSuggestion', player.source, '/' .. name)
+        end
+    end
+    TriggerClientEvent('chat:addSuggestions', player.source, suggestions)
 end
 
 ATL.GetLicense = function(playerId)

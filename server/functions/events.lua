@@ -125,6 +125,7 @@ local function loadCharacter(data)
                 player.slots = user.slots
                 Players[playerId] = ATL.new(playerId, license, player.char_id, player)
                 SetEntityCoords(GetPlayerPed(playerId), coords.x, coords.y, coords.z)
+                ATL.RefreshCommands(playerId)
             end
         end)
     end
