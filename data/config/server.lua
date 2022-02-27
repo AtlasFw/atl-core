@@ -20,6 +20,8 @@ Config = {
         joblabel = 'Unemployed',
         rank = 0,
         rankname = 'unemployed',
-        ranklabel = 'Unemployed'
+        ranklabel = 'Unemployed',
+        paycheck = 100,
+        taxes = 10
     }
 }
