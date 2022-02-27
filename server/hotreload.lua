@@ -6,7 +6,7 @@ end
 local function handleHotReloadStart(resource)
     if resource ~= GetCurrentResourceName() then return false end
     CreateThread(function ()
-        Wait(1000) -- Pending to add promise
+        local p = promise.new()
         local resources = json.decode(GetResourceKvpString("resources"))
         if not resources then return end
         for _, resource in pairs(resources) do
@@ -15,6 +15,8 @@ local function handleHotReloadStart(resource)
         end
         SetResourceKvp("resources", "")
         ATL.Resources = {}
+        p:resolve(true)
+        Citizen.Await(p)
     end)
 end
 
