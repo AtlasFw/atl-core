@@ -25,7 +25,7 @@ ATL.RegisterCommand('giveaccount', 'Give account money to player', 'admin', func
     local quantity = tonumber(args[3])
     if not playerId or not account or not quantity then error('Missing an id or account or quantity (Use giveaccount + id + account + quantity)') end
 
-    Players[playerId]:addAccountMoney(account, quantity)
+    Players[playerId]:addAccount(account, quantity)
 end, {}, false)
 
 ATL.RegisterCommand('removeaccount', 'Remove account money to player', 'admin', function(player, args)
@@ -34,7 +34,7 @@ ATL.RegisterCommand('removeaccount', 'Remove account money to player', 'admin', 
     local quantity = tonumber(args[3])
     if not playerId or not account or not quantity then error('Missing an id or account or quantity (Use removeaccount + id + account + quantity)') end
 
-    Players[playerId]:removeAccountMoney(account, quantity)
+    Players[playerId]:removeAccount(account, quantity)
 end, {}, false)
 
 ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(player, args)
