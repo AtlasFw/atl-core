@@ -101,7 +101,7 @@ function player:setCoords(coords)
     return true
 end
 
-function player:addAccount(account, quantity)
+function player:addAccountMoney(account, quantity)
     if not account or not quantity then return false end
     if not self.accounts[account] then return false end
 
@@ -109,7 +109,7 @@ function player:addAccount(account, quantity)
     return true
 end
 
-function player:removeAccount(account, quantity)
+function player:removeAccountMoney(account, quantity)
     if not account or not quantity then return false end
     if not self.accounts[account] then return false end
 
