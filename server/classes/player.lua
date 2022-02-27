@@ -63,7 +63,8 @@ function player:getAccount(account)
 end
 
 function player:getCoords()
-    return self.char_data.coords
+    local coords, heading = GetEntityCoords(GetPlayerPed(self.source)), GetEntityHeading(GetPlayerPed(self.source))
+    return vec(coords.x, coords.y, coords.z, heading)
 end
 
 --#endregion Getters
