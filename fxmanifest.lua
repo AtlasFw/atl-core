@@ -41,7 +41,7 @@ files {
 }
 
 dependencies {
-    '/onesync'
+    '/onesync',
     'oxmysql'
 }
 
