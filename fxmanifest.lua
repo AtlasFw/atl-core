@@ -40,6 +40,11 @@ files {
     'data/locales/*.lua'
 }
 
+dependencies {
+    '/onesync'
+    'oxmysql'
+}
+
 provide 'core' -- Instead of saying 'stop atl-core', you can just say 'stop core'
 
 locale 'es' -- Change core language
