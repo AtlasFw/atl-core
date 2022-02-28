@@ -1,3 +1,5 @@
+ATL = {}
+
 CreateThread(function()
     while true do
         if NetworkIsPlayerActive(PlayerId()) then

@@ -14,7 +14,10 @@ client_scripts {
     'data/models.lua',
     'data/config/client.lua',
     'client/main.lua',
-    'client/events.lua'
+    'client/events.lua',
+    'client/functions/*.lua',
+
+    'client/export.lua'
 }
 
 server_scripts {
@@ -33,6 +36,7 @@ server_scripts {
 }
 
 files {
+    'import.lua',
     'data/locales/*.lua'
 }
 
