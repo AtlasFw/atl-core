@@ -86,6 +86,14 @@ ATL.RegisterCommand('setcoords', 'Set to coords', 'admin', function(player, args
     SetEntityCoords(GetPlayerPed(player.source), coords.x, coords.y, coords.z)
 end)
 
+ATL.RegisterCommand("startmulti", "Open the identity/multichar again", 'user', function(player, args)
+    if player then
+        player:savePlayer()
+        Players[player.source] = nil
+        playerJoined(player.source)
+    end
+end, {}, false)
+
 ATL.RegisterCommand('info', 'My character info', 'user', function(player, args)
     print(("[ATL]: License: %s | Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: %s$"):format(player:getIdentifier(), GetPlayerName(player.source), player:getCharacterId(), player:getCharacterName(), player:getGroup(), player:getAccount('cash'), player:getAccount('bank')))
 end, {}, false)

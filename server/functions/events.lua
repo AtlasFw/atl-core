@@ -81,7 +81,7 @@ end
 --#endregion Core functions
 
 --#region Events
-local function playerJoined(playerId)
+function playerJoined(playerId)
     local playerId <const> = source or playerId
     if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
 
@@ -155,7 +155,7 @@ end
 local function leaveServer()
     local playerId <const> = source
     if Players[playerId] then
-        Players[playerId]:Save()
+        Players[playerId]:savePlayer()
         Players[playerId] = nil
     end
     DropPlayer(playerId, '[ATL] You have left the server. Come back soon!')
