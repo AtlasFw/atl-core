@@ -5,8 +5,7 @@ ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
         end
         return
     end
-
-    if suggestions and #suggestions > 1 then
+    if suggestions and #suggestions > 0 then
         ATL.Commands[name] = {
             description = description,
             group = group,
@@ -32,7 +31,6 @@ end
 ATL.RefreshCommands = function(playerId)
     local player = Players[playerId]
     if not player then return end
-
     local suggestions = {}
     for name, command in pairs(ATL.Commands) do
         if player:isAuthorized(command.group) then
