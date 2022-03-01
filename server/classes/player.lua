@@ -62,8 +62,7 @@ function player:getAccount(account)
 end
 
 function player:getCoords()
-    local coords, heading = GetEntityCoords(GetPlayerPed(self.source)), GetEntityHeading(GetPlayerPed(self.source))
-    return vec(coords.x, coords.y, coords.z, heading)
+    return self.char_data.coords
 end
 
 --#endregion Getters
@@ -99,6 +98,18 @@ end
 function player:setCoords(coords)
     if not coords or type(coords) ~= 'vector4' then return false end
     self.char_data.coords = vector4(coords.x, coords.y, coords.z, coords.w)
+    return true
+end
+
+function player:addSlots(slots)
+    if not slots then return false end
+    self.slots = self.slots + slots
+    return true
+end
+
+function player:removeSlots(slots)
+    if not slots then return false end
+    self.slots = self.slots - slots
     return true
 end
 
