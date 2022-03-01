@@ -35,6 +35,10 @@ function player:getIdentifier()
     return self.identifier or false
 end
 
+function player:getCharData()
+    return self.char_data or false
+end
+
 function player:getGroup()
     return self.group
 end
