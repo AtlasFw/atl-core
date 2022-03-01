@@ -132,6 +132,7 @@ end,  {
 ATL.RegisterCommand("startmulti", "Open the identity/multichar again", 'user', function(player, args)
     if player then
         player:savePlayer()
+        Wait(100)
         Players[player.source] = nil
         playerJoined(player.source)
     end
