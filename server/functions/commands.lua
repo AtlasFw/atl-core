@@ -111,8 +111,7 @@ ATL.RegisterCommand('addslots', 'Add slots to player', 'admin', function(player,
 
     if not playerId or not slots then error('Missing an id or slots (Use addslots + id + slots)') end
 
-    local targetPlayer = Players[playerId]
-    targetPlayer:addSlots(slots)
+    Players[playerId]:addSlots(slots)
 end,  { 
     { name="playerId", help="Player id" },
     { name="slots", help="Slots" }
@@ -124,8 +123,7 @@ ATL.RegisterCommand('removeslots', 'Remove slots to player', 'admin', function(p
 
     if not playerId or not slots then error('Missing an id or slots (Use removeslots + id + slots)') end
 
-    local targetPlayer = Players[playerId]
-    targetPlayer:removeSlots(slots)
+    Players[playerId]:removeSlots(slots)
 end,  { 
     { name="playerId", help="Player id" },
     { name="slots", help="Slots" }
