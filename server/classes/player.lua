@@ -27,9 +27,8 @@ ATL.new = function(source, identifier, char_id, player)
 end
 
 --#region Getters
-
 function player:getSource()
-    return self.source or false
+    return self.source or 0
 end
 
 function player:getIdentifier()
