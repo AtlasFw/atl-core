@@ -69,6 +69,10 @@ function player:getCoords()
     return self.char_data.coords
 end
 
+function player:isOnDuty()
+    return self.jobs.onDuty
+end
+
 --#endregion Getters
 
 function player:setGroup(group)
@@ -90,12 +94,14 @@ function player:setJob(jobname, jobrank)
     if not Jobs[jobname] or not Jobs[jobname].ranks[jobrank] then return false end
     local job = Jobs[jobname]
 
-    self.jobs.jobname = jobname
-    self.jobs.joblabel = job.label
-    self.jobs.rank = jobrank
-    self.jobs.rankname = job.ranks[jobrank].name
-    self.jobs.ranklabel = job.ranks[jobrank].label
-    self.jobs.paycheck = job.ranks[jobrank].paycheck
+    self.jobs.jobname, self.jobs.joblabel, self.jobs.rank, self.jobs.rankname, self.jobs.ranklabel, self.jobs.paycheck, self.jobs.taxes, self.jobs.onDuty = jobname, job.label, jobrank, job.ranks[jobrank].name, job.ranks[jobrank].label, job.ranks[jobrank].paycheck, job.ranks[jobrank].taxes, job.onDuty
+    return true
+end
+
+function player:setDuty(bool)
+    if not bool then return false end
+    
+    self.jobs.onDuty = bool
     return true
 end
 
