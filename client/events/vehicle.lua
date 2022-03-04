@@ -1,5 +1,5 @@
 local function setPedSeats(netVehicle, seat)
-  if type(netVehicle) ~= 'number' or type(seat) ~= "number" then return end
+  if type(netVehicle) ~= 'number' or type(seat) ~= 'number' then return end
 
   local timeout = false
   SetTimeout(250, function() timeout = true end)

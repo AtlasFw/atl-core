@@ -35,7 +35,7 @@ local function createCharacter(playerId, license, identity, appearance)
   MySQL.insert('INSERT INTO characters (license, accounts, appearance, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
     license,
     encode(Config.Accounts),
-    encode(appearance),
+    encode(newAppearance),
     encode(Config.Status),
     encode({}),
     encode(newIdentity),
@@ -75,7 +75,6 @@ end
 
 function registerCharacter(identity)
   local playerId <const> = source
-  if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
   if type(identity) ~= 'table' then return DropPlayer(playerId, '[ATL] Invalid identity.') end
 
   local license = ATL.GetLicense(playerId)
@@ -113,7 +112,6 @@ end
 
 function deleteCharacter(character)
   local playerId <const> = source
-  if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
   if type(character.char_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end
 
   local license = ATL.GetLicense(playerId)
