@@ -52,6 +52,7 @@ local function CreateCharacter(playerId, license, identity, appearance)
     local user = GetUser(playerId, license)
     local newIdentity = next(identity) and identity or { }
     local newAppearance = { }
+    local newJob = { jobname = 'unemployed', joblabel = Jobs['unemployed'].label, rank = 1, rankname = Jobs['unemployed'].ranks[1].name, ranklabel = Jobs['unemployed'].ranks[1].label, paycheck = Jobs['unemployed'].ranks[1].paycheck, taxes = Jobs['unemployed'].ranks[1].taxes, onDuty = false }
     MySQL.insert('INSERT INTO characters (license, accounts, appearance, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
         license,
         encode(Config.Accounts),
@@ -59,14 +60,14 @@ local function CreateCharacter(playerId, license, identity, appearance)
         encode(Config.Status),
         encode({}),
         encode(newIdentity),
-        encode(Config.DefaultJob),
+        encode(newJob),
         encode({ coords = Config.Spawn }),
     }, function(charId)
         if charId then
             local player = {
                 identity = encode(newIdentity),
                 appearance = encode(newAppearance), -- TODO: Add appearance
-                job_data = encode(Config.DefaultJob),
+                job_data = encode(newJob),
                 group = user.group,
                 slots = user.slots
             }

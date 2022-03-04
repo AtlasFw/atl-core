@@ -8,7 +8,8 @@ Jobs = {
                 paycheck = 100,
                 taxes = 10
             }
-        }
+        },
+        onDuty = false
     },
     ['police'] = {
         label = 'Police',
@@ -25,7 +26,8 @@ Jobs = {
                 paycheck = 1000,
                 taxes = 10
             }
-        }
+        },
+        onDuty = false
     },
     ['ambulance'] = {
         label = 'Ambulance',
@@ -42,6 +44,7 @@ Jobs = {
                 paycheck = 100,
                 taxes = 10
             }
-        }
+        },
+        onDuty = false
     }
 }

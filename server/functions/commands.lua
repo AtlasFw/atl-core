@@ -1,6 +1,7 @@
 ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(player, args)
     local playerId = tonumber(args[1])
     local group = args[2]
+
     if not playerId or not group then error('Missing an id to set the group (Use setgroup + id + group)') end
 
     local targetPlayer = Players[playerId]
@@ -17,12 +18,21 @@ ATL.RegisterCommand('setjob', 'Set player job', 'admin', function(player, args)
     local jobRank = tonumber(args[3])
 
     if not playerId or not jobName or not jobRank then error('Missing an id or jobName or jobRank (Use setjob + id + jobName + jobRank)') end
-
-    local targetPlayer = Players[playerId]
-    targetPlayer:setJob(jobName, jobRank)
+    Players[playerId]:setJob(jobName, jobRank)
 end,  { 
     { name="Target id", help="Player id to set job" },
     { name="Job", help="Player job" }
+}, false)
+
+ATL.RegisterCommand('setduty', 'Set player duty', 'admin', function(player, args)
+    local playerId = tonumber(args[1])
+    local bool = args[2]
+
+    if not playerId or not bool then error('Missing an id or bool (Use setduty + id + true or false)') end
+    Players[playerId]:setDuty(bool)
+end, {
+    { name = 'playerId', 'Player id'},
+    { name = 'bool', 'Set true or false'}
 }, false)
 
 ATL.RegisterCommand('giveaccount', 'Give account money to player', 'admin', function(player, args)
@@ -139,7 +149,7 @@ ATL.RegisterCommand("startmulti", "Open the identity/multichar again", 'user', f
 end, {}, false)
 
 ATL.RegisterCommand('info', 'My character info', 'user', function(player, args)
-    print(("[ATL]: License: %s | Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: %s$"):format(player:getIdentifier(), GetPlayerName(player.source), player:getCharacterId(), player:getCharacterName(), player:getGroup(), player:getAccount('cash'), player:getAccount('bank')))
+    print(("Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: %s$ | Job: %s - %s | On Duty: %s"):format(GetPlayerName(player.source), player:getCharacterId(), player:getCharacterName(), player:getGroup(), player:getAccount('cash'), player:getAccount('bank'), player:getJob().joblabel, player:getJob().ranklabel, player:isOnDuty()))
 end, {}, false)
 
 ATL.RegisterCommand('coords', 'Get coords', 'admin', function(player)

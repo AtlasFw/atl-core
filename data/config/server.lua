@@ -14,14 +14,5 @@ Config = {
         MaxSlots = 5,
         IplName = 'gr_grdlc_int_01',
         IplCoords = vec(1103.5624, -3000.00, -40.00, -100.00)
-    },
-    DefaultJob = {
-        jobname = 'unemployed',
-        joblabel = 'Unemployed',
-        rank = 0,
-        rankname = 'unemployed',
-        ranklabel = 'Unemployed',
-        paycheck = 100,
-        taxes = 10
     }
 }
