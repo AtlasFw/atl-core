@@ -16,8 +16,10 @@ client_scripts {
     'data/config/client.lua',
 
     'client/main.lua',
-    'client/functions/*.lua',
-    'client/events/*.lua',
+
+    'client/functions/callbacks.lua',
+    
+    'client/events/vehicle.lua',
 
     -- Holds all the functions relating to the player
     'client/export.lua'
@@ -31,10 +33,18 @@ server_scripts {
 
     'server/main.lua',
     'server/classes/player.lua',
-    'server/functions/*.lua',
-    'server/events/*.lua',
 
-    'server/others/*.lua',
+    'server/functions/helpers.lua',
+    'server/functions/entities.lua',
+    'server/functions/callbacks.lua',
+
+    'server/events/player.lua',
+    'server/events/character.lua',
+
+
+    'server/others/version.lua',
+    'server/others/commands.lua',
+    'server/others/hotreload.lua',
 
     -- Holds all the functions relating to the player
     'server/export.lua'
