@@ -1,30 +1,29 @@
 ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
   if type(name) == 'table' then
-      for i=1, #name do
-          ATL.RegisterCommand(name[i], description, group, cb, suggestions, rcon)
-      end
-      return
-  end
-  if suggestions and #suggestions > 0 then
-      ATL.Commands[name] = {
-          description = description,
-          group = group,
-          suggestions = suggestions,
-      }
+    for i=1, #name do
+        ATL.RegisterCommand(name[i], description, group, cb, suggestions, rcon)
+    end
+    return
   end
 
+  ATL.Commands[name] = {
+    description = description,
+    group = group,
+    suggestions = suggestions,
+}
+
   RegisterCommand(name, function(source, args)
-      local playerId <const> = source
-      if rcon then
-          if playerId == 0 then
-              cb(nil, args)
-          end
-      else
-          local player = Players[playerId]
-          if player and player:isAuthorized(group) then
-              cb(player, args)
-          end
-      end
+    local playerId <const> = source
+    if rcon then
+        if playerId == 0 then
+            cb(nil, args)
+        end
+    else
+        local player = Players[playerId]
+        if player and player:isAuthorized(group) then
+            cb(player, args)
+        end
+    end
   end)
 end
 
