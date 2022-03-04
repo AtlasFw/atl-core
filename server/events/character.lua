@@ -30,7 +30,7 @@ end
 local function createCharacter(playerId, license, identity, appearance)
   local user = getUser(playerId, license)
   local newIdentity = next(identity) and identity or { }
-  local newAppearance = { }
+  local newAppearance = next(newAppearance) and newAppearance or { }
   local newJob = { jobname = 'unemployed', joblabel = Jobs['unemployed'].label, rank = 1, rankname = Jobs['unemployed'].ranks[1].name, ranklabel = Jobs['unemployed'].ranks[1].label, paycheck = Jobs['unemployed'].ranks[1].paycheck, taxes = Jobs['unemployed'].ranks[1].taxes, onDuty = false }
   MySQL.insert('INSERT INTO characters (license, accounts, appearance, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
     license,
