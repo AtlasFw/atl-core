@@ -1,4 +1,4 @@
-local callbacks = {}
+--[[ local callbacks = {}
 
 ATL.TriggerServerCallback = function(name, cb, ...)
   local args = (...)
@@ -17,7 +17,7 @@ end
 
 RegisterNetEvent("atl:client:recive", function (name, returnValue)
   callbacks[name] = returnValue
-end)
+end) ]]
 
 --[[ 
   client ---- server ---- client

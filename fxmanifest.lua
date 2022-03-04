@@ -5,6 +5,7 @@ lua54 'yes'
 
 name 'atl-core'
 author 'Atlas Framework Developers'
+locale 'es' -- Change core language
 
 shared_scripts {
     'data/locale.lua'
@@ -13,23 +14,37 @@ shared_scripts {
 client_scripts {
     'data/models.lua',
     'data/config/client.lua',
-    'client/main.lua',
-    'client/events.lua',
-    'client/functions/*.lua',
 
+    'client/main.lua',
+
+    'client/functions/callbacks.lua',
+    
+    'client/events/vehicle.lua',
+
+    -- Holds all the functions relating to the player
     'client/export.lua'
 }
 
 server_scripts {
     '@oxmysql/lib/MySQL.lua',
-    'data/config/server.lua',
+
     'data/jobs.lua',
+    'data/config/server.lua',
 
     'server/main.lua',
-    'server/hotreload.lua',
-    'server/classes/*.lua',
+    'server/classes/player.lua',
 
-    'server/functions/*.lua',
+    'server/functions/helpers.lua',
+    'server/functions/entities.lua',
+    'server/functions/callbacks.lua',
+
+    'server/events/player.lua',
+    'server/events/character.lua',
+
+
+    'server/others/version.lua',
+    'server/others/commands.lua',
+    'server/others/hotreload.lua',
 
     -- Holds all the functions relating to the player
     'server/export.lua'
@@ -46,5 +61,3 @@ dependencies {
 }
 
 provide 'core' -- Instead of saying 'stop atl-core', you can just say 'stop core'
-
-locale 'es' -- Change core language
