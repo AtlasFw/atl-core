@@ -23,6 +23,7 @@ ATL.new = function(source, identifier, char_id, player)
     self.char_data = decode(player.char_data) or { coords = Config.Spawn }
     self.identity = decode(player.identity) or {}
     Players[self.source] = self
+    TriggerClientEvent("atl:client:characterLoaded", self.source, self)
     return setmetatable(self, getmetatable(Players))
 end
 

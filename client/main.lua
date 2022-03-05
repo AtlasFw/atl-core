@@ -1,4 +1,6 @@
-ATL = {}
+ATL = {
+    Character = {},
+}
 
 CreateThread(function()
     while true do
@@ -8,4 +10,8 @@ CreateThread(function()
         end
         Wait(0)
     end
+end)
+
+RegisterNetEvent('atl:client:characterLoaded', function(character)
+    ATL.Character = character
 end)
