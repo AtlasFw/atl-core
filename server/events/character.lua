@@ -87,7 +87,7 @@ function registerCharacter(identity)
   })
   if not newIdentity then return DropPlayer(playerId, '[ATL] Invalid identity.') end
 
-  createCharacter(playerId, license, newIdentity)
+  createCharacter(playerId, license, newIdentity, {})
 end
 
 function loadCharacter(character)
