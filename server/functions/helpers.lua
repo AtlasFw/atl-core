@@ -1,3 +1,10 @@
+---comment
+---@param name table
+---@param description string
+---@param group string
+---@param cb function
+---@param suggestions table
+---@param rcon boolean
 ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
   if type(name) == 'table' then
     for i=1, #name do

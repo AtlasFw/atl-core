@@ -49,6 +49,7 @@ end
 
 ---Get character accounts
 ---@param playerId number
+---@param account string
 ATL.GetAccount = function(playerId, account)
     if not playerId or not account then return false end
     local player = Players[playerId]

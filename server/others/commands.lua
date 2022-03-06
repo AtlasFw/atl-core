@@ -21,7 +21,8 @@ ATL.RegisterCommand('setjob', 'Set player job', 'admin', function(player, args)
     Players[playerId]:setJob(jobName, jobRank)
 end,  { 
     { name="Target id", help="Player id to set job" },
-    { name="Job", help="Player job" }
+    { name="Job", help="Player job" },
+    { name="Rank", help="Rank id" }
 }, false)
 
 ATL.RegisterCommand('setduty', 'Set player duty', 'admin', function(player, args)
@@ -96,7 +97,7 @@ ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', functi
         DeleteEntity(vehicles[i])
     end
 end,  { 
-    { name="dist", help="Distance to remove (default: 1)" }
+    { name="dist", help="Distance to remove (default: 1.0)" }
 }, false)
 
 ATL.RegisterCommand('setcoords', 'Set to coords', 'admin', function(player, args)

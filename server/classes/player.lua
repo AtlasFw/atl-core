@@ -61,6 +61,8 @@ function player:getCharacterId()
 end
 
 function player:getAccount(account)
+    if type(account) ~= 'string' then return false end
+
     if Config.Accounts[account] then
         return self.accounts[account]
     end
@@ -77,7 +79,7 @@ end
 --#endregion Getters
 
 function player:setGroup(group)
-    if not group then return false end
+    if type(group) ~= 'string' then return false end
     if not Config.Groups[group] then return false end
     self.group = group
     ATL.RefreshCommands(self.source)
@@ -85,13 +87,13 @@ function player:setGroup(group)
 end
 
 function player:isAuthorized(group)
-    if not group then return false end
+    if type(group) ~= 'string' then return false end
     if not Config.Groups[group] then return false end
     return Config.Groups[self.group] >= Config.Groups[group]
 end
 
 function player:setJob(jobname, jobrank)
-    if not jobname or not jobrank then return false end
+    if type(jobname) ~= 'string' or type(jobrank) ~= 'number' then return false end
     if not Jobs[jobname] or not Jobs[jobname].ranks[jobrank] then return false end
     local job = Jobs[jobname]
 
@@ -100,32 +102,32 @@ function player:setJob(jobname, jobrank)
 end
 
 function player:setDuty(bool)
-    if not bool then return false end
+    if type(bool) ~= 'boolean' then return false end
     
     self.jobs.onDuty = bool
     return true
 end
 
 function player:setCoords(coords)
-    if not coords or type(coords) ~= 'vector4' then return false end
+    if type(coords) ~= 'vector4' then return false end
     self.char_data.coords = vector4(coords.x, coords.y, coords.z, coords.w)
     return true
 end
 
 function player:addSlots(slots)
-    if not slots then return false end
+    if type(slots) ~= 'number' then return false end
     self.slots = self.slots + slots
     return true
 end
 
 function player:removeSlots(slots)
-    if not slots then return false end
+    if type(slots) ~= 'number' then return false end
     self.slots = self.slots - slots
     return true
 end
 
 function player:addAccountMoney(account, quantity)
-    if not account or not quantity then return false end
+    if type(account) ~= 'string' or type(account) ~= 'number' then return false end
     if not self.accounts[account] then return false end
 
     self.accounts[account] = self.accounts[account] + quantity
@@ -133,7 +135,7 @@ function player:addAccountMoney(account, quantity)
 end
 
 function player:removeAccountMoney(account, quantity)
-    if not account or not quantity then return false end
+    if type(account) ~= 'string' or type(account) ~= 'number' then return false end
     if not self.accounts[account] then return false end
 
     self.accounts[account] = self.accounts[account] - quantity
