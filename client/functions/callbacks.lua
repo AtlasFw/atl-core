@@ -1,25 +1,16 @@
---[[ local callbacks = {}
+local callbacks = {}
 
 ATL.TriggerServerCallback = function(name, cb, ...)
-  local args = (...)
-  CreateThread(function()
-    TriggerServerEvent("atl:server:callbacks", name, args)
-    local tick = 0
-    while callbacks[name] == nil and tick < 10 do
-      tick = tick + 1
-      Wait(100)
-    end 
-    if callbacks[name] == nil then return cb(nil, "Callback no encontrado") end
-    cb(callbacks[name], nil)
-    callbacks[name] = nil
-  end)
+  if type(name) ~= "string" then error("ATL: TriggerServerCallback: name must be a string") end
+  if callbacks[name] then
+    print("ATL: ServerCallback " .. name .. " already using, wait to resolve it")
+    return
+  end
+  callbacks[name] = cb
+  TriggerServerEvent("atl:server:cb_trigger", name, ...)
 end
 
-RegisterNetEvent("atl:client:recive", function (name, returnValue)
-  callbacks[name] = returnValue
-end) ]]
-
---[[ 
-  client ---- server ---- client
-  server ---- client ---- server
-]]
+RegisterNetEvent("atl:client:cb_handler", function (name, ...)
+  callbacks[name](...)
+  callbacks[name] = nil
+end)

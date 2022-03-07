@@ -1,4 +1,5 @@
 ATL = {
+    Callbacks = {},
     Commands = {},
     Resources = {},
 }
