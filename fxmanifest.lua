@@ -36,6 +36,7 @@ server_scripts {
 
     'server/functions/logs.lua',
     'server/functions/helpers.lua',
+    'server/functions/players.lua',
     'server/functions/entities.lua',
     'server/functions/callbacks.lua',
 
