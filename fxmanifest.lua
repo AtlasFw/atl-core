@@ -12,13 +12,13 @@ shared_scripts {
 }
 
 client_scripts {
-    'data/models.lua',
+    'data/skin.lua',
     'data/config/client.lua',
 
     'client/main.lua',
 
     'client/functions/callbacks.lua',
-    
+
     'client/events/vehicle.lua',
 
     -- Holds all the functions relating to the player
