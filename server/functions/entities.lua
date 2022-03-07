@@ -1,4 +1,10 @@
+---Return found entities
+---@param coords vector3
+---@param entities table
+---@param distance number
+---@return table
 ATL.GetEntities = function(coords, entities, distance)
+  if type(coords) ~= 'vector3' or type(entities) ~= 'table' then return false end
   local foundEntities = {}
   local distance = distance or 1.0
   for _, entity in pairs(entities) do
@@ -12,10 +18,19 @@ ATL.GetEntities = function(coords, entities, distance)
   return foundEntities
 end
 
+---Return found vehicle entities
+---@param coords vector3
+---@param dist number
+---@return boolean
 ATL.GetVehicles = function(coords, dist)
   return ATL.GetEntities(coords, GetAllVehicles(), dist or 1.0)
 end
 
+---Create vehicle model
+---@param model string
+---@param coords vector4
+---@param cb boolean
+---@return boolean
 ATL.CreateVehicle = function(model, coords, cb)
   if type(coords) ~= 'vector4' then return cb(false, false) end
 
@@ -31,6 +46,11 @@ ATL.CreateVehicle = function(model, coords, cb)
   return cb(vehicle, NetworkGetNetworkIdFromEntity(vehicle))
 end
 
+---Create ped model
+---@param model string
+---@param coords vector4
+---@param cb boolean
+---@return boolean
 ATL.CreatePed = function(model, coords, cb)
   if type(model) ~= 'string' or type(coords) ~= 'vector4' then return cb(false, false) end
   
@@ -47,6 +67,11 @@ ATL.CreatePed = function(model, coords, cb)
   return cb(ped, NetworkGetNetworkIdFromEntity(ped))
 end
 
+---Create object model
+---@param model string
+---@param coords vector4
+---@param cb boolean
+---@return boolean
 ATL.CreateObject = function(model, coords, cb)
   if type(model) ~= 'string' or type(coords) ~= 'vector4' then return cb(false, false) end
   
@@ -63,6 +88,10 @@ ATL.CreateObject = function(model, coords, cb)
   return cb(object, NetworkGetNetworkIdFromEntity(object))
 end
 
+---Delete entity selected
+---@param netId number
+---@param cb boolean
+---@return boolean
 ATL.DeleteEntity = function(netId, cb)
   if type(netId) ~= 'number' then return end
   local entity = NetworkGetEntityFromNetworkId(netId)
@@ -72,4 +101,3 @@ ATL.DeleteEntity = function(netId, cb)
   end
   return cb(false)
 end
-
