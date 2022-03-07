@@ -14,5 +14,8 @@ Config = {
         MaxSlots = 5,
         IplName = 'gr_grdlc_int_01',
         IplCoords = vec(1103.5624, -3000.00, -40.00, -100.00)
-    }
+    },
+    Logs = {
+        API_KEY = '',
+    },
 }

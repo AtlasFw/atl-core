@@ -5,9 +5,9 @@ lua54 'yes'
 
 name 'atl-core'
 author 'Atlas Framework Developers'
-locale 'es' -- Change core language
 
 shared_scripts {
+    'data/config/shared.lua',
     'data/locale.lua'
 }
 
@@ -34,6 +34,7 @@ server_scripts {
     'server/main.lua',
     'server/classes/player.lua',
 
+    'server/functions/logs.lua',
     'server/functions/helpers.lua',
     'server/functions/entities.lua',
     'server/functions/callbacks.lua',

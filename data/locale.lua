@@ -1,7 +1,7 @@
 local Locales = {}
 
 local function LoadLang()
-    local lang = GetResourceMetadata(GetCurrentResourceName(), 'locale', 0) or 'en'
+    local lang = Config.Shared.Locale or 'en'
     local file = LoadResourceFile(GetCurrentResourceName(), ('data/locales/%s.lua'):format(lang))
     if file then
         local func, err = load(file)
