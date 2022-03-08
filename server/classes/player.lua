@@ -115,8 +115,11 @@ function player:setDuty(bool)
   return true
 end
 
-function player:setCoords(coords)
+function player:setCoords(coords, now)
   if type(coords) ~= 'vector4' then return false end
+  if now then
+    SetEntityCoords(GetPlayerPed(self.source), coords.x, coords.y, coords.z)
+  end
 
   self.char_data.coords = vec4(coords.x, coords.y, coords.z, coords.w)
   return true

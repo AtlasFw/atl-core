@@ -102,16 +102,11 @@ end,  {
   { name = 'dist', help = 'Distance to remove (default: 1.0)' }
 }, false)
 
-ATL.RegisterCommand('setcoords', 'Set to coords', 'admin', function(player, args)
-  local coords = {
-    x = tonumber(args[1]),
-    y = tonumber(args[2]),
-    z = tonumber(args[3])
-  }
-
+ATL.RegisterCommand('setcoords', 'Teleport to specified coords', 'admin', function(player, args)
+  local coords = vec4(args[1] + 0.0, args[2] + 0.0, args[3] + 0.0, 0.0)
   if not coords then error('Missing an coords, use (setcoords + x + y + z)') end
 
-  SetEntityCoords(GetPlayerPed(player.source), coords.x, coords.y, coords.z)
+  player:setCoords(coords, true)
 end,  {
   { name = 'x', help = 'Coords x' },
   { name = 'y', help = 'Coords y' },
@@ -143,11 +138,6 @@ end, {}, false)
 
 ATL.RegisterCommand('info', 'My character info', 'user', function(player)
   print(('Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: %s$ | Job: %s - %s | On Duty: %s'):format(GetPlayerName(player.source), player:getCharacterId(), player:getCharacterName(), player:getGroup(), player:getAccount('cash'), player:getAccount('bank'), player:getJobLabel(), player:getRankLabel(), player:getDuty()))
-end, {}, false)
-
-ATL.RegisterCommand('coords', 'Get coords', 'admin', function(player)
-  local coords, heading = GetEntityCoords(GetPlayerPed(player.source)), GetEntityHeading(GetPlayerPed(player.source))
-  print(vec(coords.x, coords.y, coords.z, heading))
 end, {}, false)
 
 ATL.RegisterCommand('clear', 'Clear chat', 'user', function(player)
