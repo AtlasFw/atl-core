@@ -8,7 +8,7 @@ end
 
 function playerJoined(playerId)
   local playerId <const> = source or playerId
-  if Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
+  if ATL.Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
 
   local license = ATL.GetLicense(playerId)
   local characters = getCharacters(license)
@@ -20,13 +20,13 @@ end
 
 function playerLeave()
   local playerId <const> = source
-  if Players[playerId] then
-    Players[playerId]:savePlayer()
-    Players[playerId] = nil
+  local player = ATL.Players[playerId]
+  if player then
+    player:savePlayer()
+    ATl.Players[playerId] = nil
   end
   DropPlayer(playerId, '[ATL] You have left the server. Come back soon!')
 end
-
 
 RegisterNetEvent('atl:server:playerJoined', playerJoined)
 RegisterNetEvent('atl:server:playerLeave', playerLeave)

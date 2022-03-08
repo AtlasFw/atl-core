@@ -29,9 +29,9 @@ end
 
 local function createCharacter(playerId, license, identity, appearance)
   local user = getUser(playerId, license)
-  local newIdentity = next(identity) and identity or { }
-  local newAppearance = next(appearance) and appearance or { }
-  local newJob = { jobname = 'unemployed', joblabel = Jobs['unemployed'].label, rank = 1, rankname = Jobs['unemployed'].ranks[1].name, ranklabel = Jobs['unemployed'].ranks[1].label, paycheck = Jobs['unemployed'].ranks[1].paycheck, taxes = Jobs['unemployed'].ranks[1].taxes, onDuty = false }
+  local newIdentity = next(identity) and identity or {}
+  local newAppearance = next(appearance) and appearance or {}
+  local newJob = { name = 'unemployed', rank = 1, onDuty = false }
   MySQL.insert('INSERT INTO characters (license, accounts, appearance, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
     license,
     encode(Config.Accounts),
@@ -50,7 +50,7 @@ local function createCharacter(playerId, license, identity, appearance)
         group = user.group,
         slots = user.slots
       }
-      Players[playerId] = ATL.new(playerId, license, charId, player)
+      ATL.Players[playerId] = ATL.new(playerId, license, charId, player)
       ATL.RefreshCommands(playerId)
       SetEntityCoords(GetPlayerPed(playerId), Config.Spawn.x, Config.Spawn.y, Config.Spawn.z)
     else
@@ -102,7 +102,7 @@ function loadCharacter(character)
         local coords = decode(player.char_data).coords
         player.group = user.group
         player.slots = user.slots
-        Players[playerId] = ATL.new(playerId, license, player.char_id, player)
+        ATL.Players[playerId] = ATL.new(playerId, license, player.char_id, player)
         ATL.RefreshCommands(playerId)
         SetEntityCoords(GetPlayerPed(playerId), coords.x, coords.y, coords.z)
       end
@@ -124,7 +124,6 @@ function deleteCharacter(character)
     end
   end)
 end
-
 
 RegisterNetEvent('atl:server:registerCharacter', registerCharacter)
 RegisterNetEvent('atl:server:loadCharacter', loadCharacter)

@@ -1,7 +1,7 @@
 exports('get', function()
   local resourceName = GetInvokingResource()
   if not ATL.Resources[resourceName] then
-      ATL.Resources[resourceName] = GetInvokingResource()
+    ATL.Resources[resourceName] = resourceName
   end
   return ATL
 end)
