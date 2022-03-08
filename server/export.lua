@@ -5,3 +5,12 @@ exports('get', function()
   end
   return ATL
 end)
+
+exports('test', function(playerId)
+  local player = ATL.Players[playerId]
+  return setmetatable(player, {
+    __index = function(player, ...)
+      return player.__index[...]
+    end,
+  })
+end)
