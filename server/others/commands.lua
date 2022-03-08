@@ -6,8 +6,8 @@ ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(player, ar
 
   ATL.Players[playerId]:setGroup(group)
 end,  {
-  { name='playerId', help='Player id' },
-  { name='group', help='Group to set' }
+  { name = 'playerId', help = 'Player id' },
+  { name = 'group', help = 'Group to set' }
 }, true)
 
 ATL.RegisterCommand('setjob', 'Set player job', 'admin', function(_, args)
@@ -18,9 +18,9 @@ ATL.RegisterCommand('setjob', 'Set player job', 'admin', function(_, args)
   if not playerId or not jobName or not jobRank then error('Missing an id or jobName or jobRank (Use setjob + id + jobName + jobRank)') end
   ATL.Players[playerId]:setJob(jobName, jobRank)
 end,  {
-  { name='Target id', help='Player id to set job' },
-  { name='Job', help='Player job' },
-  { name='Rank', help='Rank id' }
+  { name = 'Target id', help = 'Player id to set job' },
+  { name = 'Job', help = 'Player job' },
+  { name = 'Rank', help = 'Rank id' }
 }, false)
 
 ATL.RegisterCommand('setduty', 'Set player duty', 'admin', function(_, args)
@@ -55,36 +55,40 @@ ATL.RegisterCommand('removeaccount', 'Remove account money to player', 'admin', 
 
   ATL.Players[playerId]:removeAccountMoney(account, quantity)
 end,  {
-  { name='playerId', help='Player id' },
-  { name='account', help='Account to remove (cash, bank, tebex)' },
-  { name='money', help='Quantity to remove' }
+  { name = 'playerId', help = 'Player id' },
+  { name = 'account', help = 'Account to remove (cash, bank, tebex)' },
+  { name = 'money', help = 'Quantity to remove' }
 }, false)
 
 ATL.RegisterCommand({'car', 'veh'}, 'Spawn a vehicle', 'admin', function(player, args)
   local vehicle = args[1]
   if not vehicle then error('Missing a vehicle name (Use car + vehicle name)') end
 
-  local hashModel = GetHashKey(vehicle)
+  local hashModel = joaat(vehicle)
   local ped = GetPlayerPed(player.source)
   if not ped or ped <= 0 then return end
 
+  local curVehicle = GetVehiclePedIsIn(ped)
   local coords, heading = GetEntityCoords(ped), GetEntityHeading(ped)
-  local seats = ATL.GetPassengers(ped, GetVehiclePedIsIn(ped))
-  ATL.CreateVehicle(hashModel, vector4(coords.x, coords.y, coords.z, heading), function(_, netVehicle)
-    if netVehicle then
-      local peds = {}
-      for _, id in pairs(GetPlayers()) do
-        peds[GetPlayerPed(id)] = id
-      end
+  local seats = ATL.GetPassengers(ped, curVehicle)
 
-      for k, v in pairs(seats) do
-        local targetSrc = peds[v]
-        TriggerClientEvent('atl:client:setPedSeat', targetSrc, netVehicle, k)
+  ATL.DeleteEntity(NetworkGetNetworkIdFromEntity(curVehicle), function()
+    ATL.CreateVehicle(hashModel, vec4(coords.x, coords.y, coords.z, heading), function(_, netVehicle)
+      if netVehicle then
+        local peds = {}
+        for _, id in pairs(GetPlayers()) do
+          peds[GetPlayerPed(id)] = id
+        end
+
+        for k, v in pairs(seats) do
+          local targetSrc = peds[v]
+          TriggerClientEvent('atl:client:setPedSeat', targetSrc, netVehicle, k)
+        end
       end
-    end
+    end)
   end)
 end,  {
-  { name='hash', help='Vehicle name' }
+  { name = 'model', help = 'Vehicle name' }
 }, false)
 
 ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', function(player, args)
@@ -95,7 +99,7 @@ ATL.RegisterCommand({'dv', 'deletevehicle'}, 'Delete a vehicle', 'admin', functi
     DeleteEntity(vehicles[i])
   end
 end,  {
-    { name='dist', help='Distance to remove (default: 1.0)' }
+  { name = 'dist', help = 'Distance to remove (default: 1.0)' }
 }, false)
 
 ATL.RegisterCommand('setcoords', 'Set to coords', 'admin', function(player, args)
@@ -109,33 +113,21 @@ ATL.RegisterCommand('setcoords', 'Set to coords', 'admin', function(player, args
 
   SetEntityCoords(GetPlayerPed(player.source), coords.x, coords.y, coords.z)
 end,  {
-  { name='x', help='Coords x' },
-  { name='y', help='Coords y' },
-  { name='z', help='Coords z' }
+  { name = 'x', help = 'Coords x' },
+  { name = 'y', help = 'Coords y' },
+  { name = 'z', help = 'Coords z' }
 }, false)
 
-ATL.RegisterCommand('addslots', 'Add slots to player', 'admin', function(_, args)
+ATL.RegisterCommand('setslots', 'Set the slots of player', 'admin', function(_, args)
   local playerId = tonumber(args[1])
   local slots = tonumber(args[2])
 
   if not playerId or not slots then error('Missing an id or slots (Use addslots + id + slots)') end
 
-  ATL.Players[playerId]:addSlots(slots)
+  ATL.Players[playerId]:setSlots(slots)
 end,  {
-    { name='playerId', help='Player id' },
-    { name='slots', help='Slots' }
-}, false)
-
-ATL.RegisterCommand('removeslots', 'Remove slots to player', 'admin', function(_, args)
-  local playerId = tonumber(args[1])
-  local slots = tonumber(args[2])
-
-  if not playerId or not slots then error('Missing an id or slots (Use removeslots + id + slots)') end
-
-  ATL.Players[playerId]:removeSlots(slots)
-end,  {
-  { name='playerId', help='Player id' },
-  { name='slots', help='Slots' }
+  { name = 'playerId', help = 'Player id' },
+  { name = 'slots', help = 'Slots' }
 }, false)
 
 ATL.RegisterCommand('startmulti', 'Open the identity/multichar again', 'user', function(player)
@@ -150,7 +142,7 @@ ATL.RegisterCommand('startmulti', 'Open the identity/multichar again', 'user', f
 end, {}, false)
 
 ATL.RegisterCommand('info', 'My character info', 'user', function(player)
-  print(('Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: %s$ | Job: %s - %s | On Duty: %s'):format(GetPlayerName(player.source), player:getCharacterId(), player:getCharacterName(), player:getGroup(), player:getAccount('cash'), player:getAccount('bank'), player:getJobData().joblabel, player:getJobData().ranklabel, player:isOnDuty()))
+  print(('Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: %s$ | Job: %s - %s | On Duty: %s'):format(GetPlayerName(player.source), player:getCharacterId(), player:getCharacterName(), player:getGroup(), player:getAccount('cash'), player:getAccount('bank'), player:getJobLabel(), player:getRankLabel(), player:getDuty()))
 end, {}, false)
 
 ATL.RegisterCommand('coords', 'Get coords', 'admin', function(player)

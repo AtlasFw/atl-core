@@ -30,7 +30,7 @@ ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
       end
     else
       local player = ATL.Players[playerId]
-      if player and player:isAuthorized(group) then
+      if player and player:hasPerms(group) then
         cb(player, args)
       end
     end
@@ -46,7 +46,7 @@ ATL.RefreshCommands = function(playerId)
 
   local suggestions = {}
   for name, command in pairs(ATL.Commands) do
-    if player:isAuthorized(command.group) then
+    if player:hasPerms(command.group) then
       suggestions[#suggestions + 1] = {
         name = '/' .. name,
         help = command.description,

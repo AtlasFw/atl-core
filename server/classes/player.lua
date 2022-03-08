@@ -32,24 +32,12 @@ ATL.new = function(source, identifier, char_id, player)
 end
 
 --#region Getters
-function player:getSource()
-  return self.source
-end
-
 function player:getIdentifier()
   return self.identifier
 end
 
-function player:getCharData()
-  return self.char_data
-end
-
-function player:getGroup()
-  return self.group
-end
-
-function player:getJobData()
-  return self.job_data
+function player:getCharId()
+  return self.char_id
 end
 
 function player:getSlots()
@@ -64,6 +52,23 @@ function player:getCharacterId()
   return self.char_id
 end
 
+function player:getGroup()
+  return self.group
+end
+
+function player:getJobLabel()
+  return Jobs[self.job_data.name].name
+end
+
+function player:getRankLabel()
+  local job = self.job_data
+  return Jobs[job.name].ranks[job.rank].label
+end
+
+function player:getDuty()
+  return self.job_data.onDuty
+end
+
 function player:getAccount(account)
   if type(account) ~= 'string' then return false end
 
@@ -72,15 +77,15 @@ function player:getAccount(account)
   end
 end
 
-function player:getCoords()
-  return self.char_data.coords
-end
-
-function player:getDuty()
-  return self.job_data.onDuty
+function player:hasPerms(group)
+  if type(group) ~= 'string' then return false end
+  if not Config.Groups[group] then return false end
+  return Config.Groups[self.group] >= Config.Groups[group]
 end
 
 --#endregion Getters
+
+--#region Setters
 function player:setGroup(group)
   if type(group) ~= 'string' then return false end
   if not Config.Groups[group] then return false end
@@ -90,17 +95,11 @@ function player:setGroup(group)
   return true
 end
 
-function player:isAuthorized(group)
-  if type(group) ~= 'string' then return false end
-  if not Config.Groups[group] then return false end
-  return Config.Groups[self.group] >= Config.Groups[group]
-end
-
-function player:setJob(name, rank)
-  if type(name) ~= 'string' or type(rank) ~= 'number' then return false end
+function player:setJob(name, level)
+  if type(name) ~= 'string' or type(level) ~= 'number' then return false end
 
   local job = Jobs[name]
-  local rank = job?.ranks[rank]
+  local rank = job?.ranks[level]
   if not job or not rank then return false end
 
   -- Restarts the duty to false
@@ -123,17 +122,10 @@ function player:setCoords(coords)
   return true
 end
 
-function player:addSlots(slots)
+function player:setSlots(slots)
   if type(slots) ~= 'number' then return false end
 
   self.slots = self.slots + slots
-  return true
-end
-
-function player:removeSlots(slots)
-  if type(slots) ~= 'number' then return false end
-
-  self.slots = self.slots - slots
   return true
 end
 
@@ -152,6 +144,8 @@ function player:removeAccountMoney(account, quantity)
   self.accounts[account] = self.accounts[account] - quantity
   return true
 end
+
+--#endregion Setters
 
 function player:savePlayer()
   local ped = GetPlayerPed(self.source)

@@ -28,14 +28,14 @@ ATL.GetVehicles = function(coords, dist)
 end
 
 ---Create vehicle by the server
----@param model string - Model of the vehicleas a string
+---@param hash number - Model hash
 ---@param coords vector4 - Position of the vehicle
 ---@param cb boolean - Callback function
 ---@return function - Callback function with vehicle and network id of the vehicle
-ATL.CreateVehicle = function(model, coords, cb)
-  if type(model) ~= 'string' or type(coords) ~= 'vector4' then return cb(false, false) end
+ATL.CreateVehicle = function(hash, coords, cb)
+  if type(hash) ~= 'number' or type(coords) ~= 'vector4' then return cb(false, false) end
 
-  local vehicle = Citizen.InvokeNative(`CREATE_AUTOMOBILE`, model, coords.x, coords.y, coords.z, coords.w)
+  local vehicle = Citizen.InvokeNative(`CREATE_AUTOMOBILE`, hash, coords.x, coords.y, coords.z, coords.w)
   local timeout = false
   SetTimeout(250, function() timeout = true end)
 
