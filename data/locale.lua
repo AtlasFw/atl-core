@@ -14,8 +14,14 @@ else
 end
 
 function GetLocale(key, ...)
-  if type(key) ~= 'string' or not Locales[key] then return 'Key does not exist' end
-  return (Locales[key] or ''):format(...)
+  local val = Locales[key]
+  if type(key) ~= 'string' or not val then return 'Key does not exist' end
+
+  if type(val) == 'string' then
+    return (val or ''):format(...)
+  else
+    return val
+  end
 end
 
 exports('GetLocale', function()
