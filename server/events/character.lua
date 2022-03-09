@@ -1,4 +1,4 @@
-local encode, decode = json.encode, json.decode
+local encode = json.encode
 
 local function checkIdentity(identity)
   if not identity or not next(identity) then return false end
@@ -21,7 +21,7 @@ function createUser(playerId, license)
       })
     else
       p:resolve({})
-      error('Failed to create user')
+      error('Failed to create user with id: ' .. playerId)
     end
   end)
   return Citizen.Await(p)
@@ -31,7 +31,7 @@ local function createCharacter(playerId, license, identity, appearance)
   local user = getUser(playerId, license)
   local newIdentity = next(identity) and identity or {}
   local newAppearance = next(appearance) and appearance or {}
-  local newJob = { name = 'unemployed', rank = 1, onDuty = false }
+  local newJob = { name = 'unemployed', rank = 1, onDuty = false } -- Default job
   MySQL.insert('INSERT INTO characters (license, accounts, appearance, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
     license,
     encode(Config.Accounts),
@@ -51,8 +51,6 @@ local function createCharacter(playerId, license, identity, appearance)
         slots = user.slots
       }
       ATL.Players[playerId] = ATL.new(playerId, license, charId, player)
-      ATL.RefreshCommands(playerId)
-      SetEntityCoords(GetPlayerPed(playerId), Config.Spawn.x, Config.Spawn.y, Config.Spawn.z)
     else
       print('[ATL] Error while creating player')
       DropPlayer(playerId, '[ATL] Error while creating player')
@@ -99,12 +97,9 @@ function loadCharacter(character)
   if license then
     MySQL.single('SELECT * FROM characters WHERE license = ? AND char_id = ?', { license, character.char_id }, function(player)
       if player and next(player) then
-        local coords = decode(player.char_data).coords
         player.group = user.group
         player.slots = user.slots
         ATL.Players[playerId] = ATL.new(playerId, license, player.char_id, player)
-        ATL.RefreshCommands(playerId)
-        SetEntityCoords(GetPlayerPed(playerId), coords.x, coords.y, coords.z)
       end
     end)
   end

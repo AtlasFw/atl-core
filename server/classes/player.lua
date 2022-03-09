@@ -26,9 +26,13 @@ ATL.new = function(source, identifier, char_id, data)
   self.slots = data.slots or Config.Identity.AllowedSlots
   self.status = decode(data.status) or Config.Status
 
+  -- Update the player data
   ATL.Players[source] = self
+  ATL.RefreshCommands(source)
 
+  -- Load the player
   TriggerClientEvent('atl:client:characterLoaded', source, self)
+  SetEntityCoords(GetPlayerPed(playerId), self.char_data.coords.x, self.char_data.coords.y, self.char_data.coords.z)
   return setmetatable(self, getmetatable(ATL.Players))
 end
 
@@ -48,7 +52,6 @@ function player:savePlayer()
     end
   end)
 end
-
 
 --#region Getters
 -- Player data
