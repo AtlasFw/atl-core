@@ -5,14 +5,14 @@ end
 
 RegisterServerEvent('atl:server:cb_trigger', function(name, ...)
   local playerId <const> = source
-  local returnValue = nil
+  local rValue = nil
 
   if ATL.Callbacks[name] then
-    returnValue = ATL.Callbacks[name](playerId, ...)
+    rValue = ATL.Callbacks[name](playerId, ...)
   else
-    returnValue = nil
+    rValue = nil
     print('ATL: ServerCallback ' .. name .. ' not found')
   end
 
-  TriggerClientEvent('atl:client:cb_handler', playerId, name, returnValue)
+  TriggerClientEvent('atl:client:cb_handler', playerId, name, rValue)
 end)
