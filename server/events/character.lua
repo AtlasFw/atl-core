@@ -32,20 +32,20 @@ local function createCharacter(playerId, license, identity, appearance)
   local newIdentity = next(identity) and identity or {}
   local newAppearance = next(appearance) and appearance or {}
   local newJob = { name = 'unemployed', rank = 1, onDuty = false } -- Default job
-  MySQL.insert('INSERT INTO characters (license, accounts, appearance, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
+  MySQL.insert('INSERT INTO characters (license, accounts, appearance, char_data, identity, inventory, job_data, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
     license,
     encode(Config.Accounts),
     encode(newAppearance),
-    encode(Config.Status),
-    encode({}),
-    encode(newIdentity),
-    encode(newJob),
     encode({ coords = Config.Spawn }),
+    encode(newIdentity),
+    encode({}),
+    encode(newJob),
+    encode(Config.Status),
   }, function(charId)
     if charId then
       local player = {
-        identity = encode(newIdentity),
         appearance = encode(newAppearance), -- TODO: Add appearance
+        identity = encode(newIdentity),
         job_data = encode(newJob),
         group = user.group,
         slots = user.slots
