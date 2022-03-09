@@ -48,10 +48,6 @@ function player:getCharacterName()
   return self.identity.firstname, self.identity.lastname
 end
 
-function player:getCharacterId()
-  return self.char_id
-end
-
 function player:getGroup()
   return self.group
 end
