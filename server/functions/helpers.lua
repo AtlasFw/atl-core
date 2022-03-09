@@ -1,7 +1,3 @@
-ATL.GetPlayer = function(playerId)
-  return ATL.Players[playerId] -- Returns nil if playerId is not a valid player
-end
-
 ---Register a command with custom parameters.
 ---@param name unknown - Name or table of names
 ---@param description string - Description of the command
