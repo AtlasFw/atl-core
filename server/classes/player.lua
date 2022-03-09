@@ -173,3 +173,10 @@ function player:removeAccountMoney(account, quantity)
   return true
 end
 --#endregion Setters
+
+-- Needs testing. Idk if it was getmetatable(player) or just player
+for name, func in pairs(player) do
+  if type(v) == 'function' then
+    exports('atl_' .. name, func)
+  end
+end
