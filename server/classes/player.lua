@@ -177,8 +177,10 @@ end
 --#endregion Setters
 
 -- Needs testing. Idk if it was getmetatable(player) or just player
+print'loaded'
 for name, func in pairs(player) do
-  if type(v) == 'function' then
+  if type(func) == 'function' then
+    print(debug.getinfo(func, 'u').nparams, name)
     exports('atl_' .. name, func)
   end
 end
