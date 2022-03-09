@@ -9,9 +9,9 @@ setmetatable(ATL.Players, player)
 --Sets the player's index to player's table
 player.__index = player
 
-ATL.new = function(source, identifier, char_id, data)
+ATL.new = function(playerId, identifier, char_id, data)
   local self = {}
-  self.source = source
+  self.source = playerId
   self.identifier = identifier
   self.char_id = char_id
 
@@ -27,11 +27,11 @@ ATL.new = function(source, identifier, char_id, data)
   self.status = decode(data.status) or Config.Status
 
   -- Update the player data
-  ATL.Players[source] = self
-  ATL.RefreshCommands(source)
+  ATL.Players[playerId] = self
+  ATL.RefreshCommands(playerId)
 
   -- Load the player
-  TriggerClientEvent('atl:client:characterLoaded', source, self)
+  TriggerClientEvent('atl:client:characterLoaded', playerId, self)
   SetEntityCoords(GetPlayerPed(playerId), self.char_data.coords.x, self.char_data.coords.y, self.char_data.coords.z)
   return setmetatable(self, getmetatable(ATL.Players))
 end
