@@ -28,12 +28,14 @@ ATL.new = function(playerId, identifier, char_id, data)
 
   -- Update the player data
   ATL.Players[playerId] = self
-  ATL.RefreshCommands(playerId)
 
   -- Load the player
   TriggerClientEvent('atl:client:characterLoaded', playerId, self)
   SetEntityCoords(GetPlayerPed(playerId), self.char_data.coords.x, self.char_data.coords.y, self.char_data.coords.z)
-  return setmetatable(self, getmetatable(ATL.Players))
+
+  local newPlayer = setmetatable(self, getmetatable(ATL.Players))
+  ATL.RefreshCommands(playerId)
+  return newPlayer
 end
 
 function player:savePlayer()
