@@ -1,32 +1,19 @@
 local encode = json.encode
 
+---Returns if identity has all the required fields
+---@param identity table - Identity
+---@return boolean - Returns has proper fields
 local function checkIdentity(identity)
   if not identity or not next(identity) then return false end
   if not identity.firstname or not identity.lastname or type(identity.dob) ~= 'number' or not identity.sex or not identity.quote then return false end
   return identity
 end
 
-function createUser(playerId, license)
-  local p = promise.new()
-  MySQL.insert('INSERT INTO users (`license`, `name`, `group`, `slots`) VALUES (?, ?, ?, ?)', {
-    license,
-    GetPlayerName(playerId),
-    Config.Groups[1] or 'user',
-    Config.Identity.AllowedSlots
-  }, function(id)
-    if id then
-      p:resolve({
-        group = Config.Groups[1] or 'user',
-        slots = Config.Identity.AllowedSlots
-      })
-    else
-      p:resolve({})
-      error('Failed to create user with id: ' .. playerId)
-    end
-  end)
-  return Citizen.Await(p)
-end
-
+---Creates a new character
+---@param playerId number - Id of the player (source)
+---@param license string - License of the player
+---@param identity table - Identity of the player
+---@param appearance table - Appearance of the player
 local function createCharacter(playerId, license, identity, appearance)
   local user = getUser(playerId, license)
   local newIdentity = next(identity) and identity or {}
@@ -58,6 +45,36 @@ local function createCharacter(playerId, license, identity, appearance)
   end)
 end
 
+---Creates a new user for a player.
+---Do not confuse this with a character.
+---@param playerId number - Id of the player (source)
+---@param license string - License of the player
+---@return table - User
+function createUser(playerId, license)
+  local p = promise.new()
+  MySQL.insert('INSERT INTO users (`license`, `name`, `group`, `slots`) VALUES (?, ?, ?, ?)', {
+    license,
+    GetPlayerName(playerId),
+    Config.Groups[1] or 'user',
+    Config.Identity.AllowedSlots
+  }, function(id)
+    if id then
+      p:resolve({
+        group = Config.Groups[1] or 'user',
+        slots = Config.Identity.AllowedSlots
+      })
+    else
+      p:resolve({})
+      error('Failed to create user with id: ' .. playerId)
+    end
+  end)
+  return Citizen.Await(p)
+end
+
+---Returns the user for the player.
+---@param playerId number - Id of the player (source)
+---@param license string - License of the player
+---@return table - User (slots and group)
 function getUser(playerId, license)
   local p = promise.new()
   MySQL.single('SELECT `slots`, `group` FROM users WHERE license = ?', { license }, function(data)
@@ -71,7 +88,12 @@ function getUser(playerId, license)
   return Citizen.Await(p)
 end
 
-function registerCharacter(identity)
+---Register a new character for the player.
+---This is just the handler for the event.
+---Drops player if it fails.
+---Do not confuse this with createCharacter().
+---@param identity table - Identity of the player
+function registerCharacter(identity, appearance)
   local playerId <const> = source
   if type(identity) ~= 'table' then return DropPlayer(playerId, '[ATL] Invalid identity.') end
 
@@ -88,6 +110,9 @@ function registerCharacter(identity)
   createCharacter(playerId, license, newIdentity, {})
 end
 
+---Loads the character into the game.
+---Drops player if it fails.
+---@param character table - Character (holds the char_id)
 function loadCharacter(character)
   local playerId <const> = source
   if type(character.char_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end
@@ -105,6 +130,10 @@ function loadCharacter(character)
   end
 end
 
+-- Might update a deleted characters table later on.
+---Deletes the character from the database.
+---Drops player if it fails.
+---@param character table - Character (holds the char_id)
 function deleteCharacter(character)
   local playerId <const> = source
   if type(character.char_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end

@@ -1,6 +1,8 @@
 -- We are not supporting discord webhook logs. You must use DataDog logs or implement your own logs.
 -- We will also not accept pull requests implementing discord logs. However, we are open to
 -- pull requests for DataDog logs or other log options.
+-- If you need help setting up DataDog logs, please read the documentation or ask on the discord.
+-- https://atlasfw.live/documentation
 
 ---Sends a log to your DataDog account.
 ---@param tag string - Tag for the log (error, info, success, etc)

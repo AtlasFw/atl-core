@@ -1,6 +1,6 @@
 local function handleHotReloadStop(resource)
   if resource ~= GetCurrentResourceName() then return end
-  SetResourceKvp("resources", json.encode(ATL.Resources))
+  SetResourceKvp('resources', json.encode(ATL.Resources))
 end
 
 local function handleHotReloadStart(resource)
@@ -8,16 +8,16 @@ local function handleHotReloadStart(resource)
 
   CreateThread(function ()
     Wait(1000)
-    local resources = json.decode(GetResourceKvpString("resources"))
+    local resources = json.decode(GetResourceKvpString('resources'))
     if not resources then return end
     for _, resource in pairs(resources) do
       StopResource(resource)
       StartResource(resource)
     end
-    SetResourceKvp("resources", "")
+    SetResourceKvp('resources', '')
     ATL.Resources = {}
   end)
 end
 
-AddEventHandler("onServerResourceStop", handleHotReloadStop)
-AddEventHandler("onServerResourceStart", handleHotReloadStart)
+AddEventHandler('onServerResourceStop', handleHotReloadStop)
+AddEventHandler('onServerResourceStart', handleHotReloadStart)

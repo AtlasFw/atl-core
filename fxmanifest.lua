@@ -52,6 +52,7 @@ server_scripts {
 }
 
 files {
+  -- Our import file
   'import.lua',
   'data/locales/*.lua'
 }

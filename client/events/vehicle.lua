@@ -1,3 +1,7 @@
+---Event function handling the setting
+---of ped seats on specified vehicle.
+---@param netVehicle number - NetID of the vehicle
+---@param seat number - Seat number
 local function setPedSeats(netVehicle, seat)
   if type(netVehicle) ~= 'number' or type(seat) ~= 'number' then return end
 
