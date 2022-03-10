@@ -4,14 +4,13 @@
 ---@param group string - Player group required to use the command
 ---@param cb function - Callback function
 ---@param suggestions table
----@param rcon boolean
-ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
+ATL.RegisterCommand = function(name, description, group, cb, suggestions)
   if type(description) ~= 'string' or type(group) ~= 'string' or type(cb) ~= 'function' then error('ATL.RegisterCommand: description, group, and cb must be strings and cb must be a function') end
   if not Server.Groups[group] then error('ATL.RegisterCommand: group must be a valid group') end
 
   if type(name) == 'table' then
     for i=1, #name do
-      ATL.RegisterCommand(name[i], description, group, cb, suggestions, rcon)
+      ATL.RegisterCommand(name[i], description, group, cb, suggestions)
     end
     return
   end
@@ -20,19 +19,13 @@ ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
     description = description,
     group = group,
     suggestions = suggestions,
-}
+  }
 
   RegisterCommand(name, function(source, args)
     local playerId <const> = source
-    if rcon then
-      if playerId == 0 then
-        cb(nil, args)
-      end
-    else
-      local player = ATL.Players[playerId]
-      if player and player:hasPerms(group) then
-        cb(player, args)
-      end
+    local player = ATL.Players[playerId]
+    if player and player:hasPerms(group) then
+      cb(player, args)
     end
   end)
 end
