@@ -38,6 +38,7 @@ local function createCharacter(playerId, license, identity, appearance)
         slots = user.slots
       }
       ATL.Players[playerId] = ATL.new(playerId, license, charId, player)
+      ATL.RefreshCommands(playerId)
     else
       print('[ATL] Error while creating player')
       DropPlayer(playerId, '[ATL] Error while creating player')
@@ -125,6 +126,7 @@ function loadCharacter(character)
         player.group = user.group
         player.slots = user.slots
         ATL.Players[playerId] = ATL.new(playerId, license, player.char_id, player)
+        ATL.RefreshCommands(playerId)
       end
     end)
   end

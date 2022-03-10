@@ -30,15 +30,11 @@ ATL.new = function(playerId, identifier, char_id, data)
   self.slots = data.slots or Server.Identity.AllowedSlots
   self.status = decode(data.status) or Server.Status
 
-  -- Update the player data
-  ATL.Players[playerId] = self
-
   -- Load the player
   TriggerClientEvent('atl:client:characterLoaded', playerId, self)
   SetEntityCoords(GetPlayerPed(playerId), self.char_data.coords.x, self.char_data.coords.y, self.char_data.coords.z)
 
-  setmetatable(self, getmetatable(ATL.Players))
-  ATL.RefreshCommands(playerId)
+  return setmetatable(self, getmetatable(ATL.Players))
 end
 
 ---Save the player data to the database
@@ -225,12 +221,14 @@ function player:removeAccountMoney(account, quantity)
 end
 --#endregion Setters
 
+---Exportable methods
+local count = 0
 for name, func in pairs(player) do
   if type(func) == 'function' then
-    print(debug.getinfo(func, 'u').nparams, name) -- Can be removed later
     exports('atl_' .. name, func)
     ATL.Methods[name] = name
+    count += 1
   end
 end
 
-print('[ATL] Loaded exportable' .. #ATL.Methods .. ' methods')
+print('[ATL] Loaded ' .. count .. ' exportable methods')
