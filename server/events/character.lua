@@ -1,58 +1,43 @@
-local encode, decode = json.encode, json.decode
+local encode = json.encode
 
+---Returns if identity has all the required fields
+---@param identity table - Identity
+---@return boolean - Returns has proper fields
 local function checkIdentity(identity)
   if not identity or not next(identity) then return false end
   if not identity.firstname or not identity.lastname or type(identity.dob) ~= 'number' or not identity.sex or not identity.quote then return false end
   return identity
 end
 
-function createUser(playerId, license)
-  local p = promise.new()
-  MySQL.insert('INSERT INTO users (`license`, `name`, `group`, `slots`) VALUES (?, ?, ?, ?)', {
-    license,
-    GetPlayerName(playerId),
-    Config.Groups[1] or 'user',
-    Config.Identity.AllowedSlots
-  }, function(id)
-    if id then
-      p:resolve({
-        group = Config.Groups[1] or 'user',
-        slots = Config.Identity.AllowedSlots
-      })
-    else
-      p:resolve({})
-      error('Failed to create user')
-    end
-  end)
-  return Citizen.Await(p)
-end
-
+---Creates a new character
+---@param playerId number - Id of the player (source)
+---@param license string - License of the player
+---@param identity table - Identity of the player
+---@param appearance table - Appearance of the player
 local function createCharacter(playerId, license, identity, appearance)
   local user = getUser(playerId, license)
-  local newIdentity = next(identity) and identity or { }
-  local newAppearance = next(appearance) and appearance or { }
-  local newJob = { jobname = 'unemployed', joblabel = Jobs['unemployed'].label, rank = 1, rankname = Jobs['unemployed'].ranks[1].name, ranklabel = Jobs['unemployed'].ranks[1].label, paycheck = Jobs['unemployed'].ranks[1].paycheck, taxes = Jobs['unemployed'].ranks[1].taxes, onDuty = false }
-  MySQL.insert('INSERT INTO characters (license, accounts, appearance, status, inventory, identity, job_data, char_data) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
+  local newIdentity = next(identity) and identity or {}
+  local newAppearance = next(appearance) and appearance or {}
+  local newJob = { name = 'unemployed', rank = 1, onDuty = false } -- Default job
+  MySQL.insert('INSERT INTO characters (license, accounts, appearance, char_data, identity, inventory, job_data, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
     license,
-    encode(Config.Accounts),
+    encode(Server.Accounts),
     encode(newAppearance),
-    encode(Config.Status),
-    encode({}),
+    encode({ coords = Server.Spawn }),
     encode(newIdentity),
+    encode({}),
     encode(newJob),
-    encode({ coords = Config.Spawn }),
+    encode(Server.Status),
   }, function(charId)
     if charId then
       local player = {
-        identity = encode(newIdentity),
         appearance = encode(newAppearance), -- TODO: Add appearance
+        identity = encode(newIdentity),
         job_data = encode(newJob),
         group = user.group,
         slots = user.slots
       }
-      Players[playerId] = ATL.new(playerId, license, charId, player)
-      ATL.RefreshCommands(playerId)
-      SetEntityCoords(GetPlayerPed(playerId), Config.Spawn.x, Config.Spawn.y, Config.Spawn.z)
+      ATL.Players[playerId] = ATL.new(playerId, license, charId, player)
     else
       print('[ATL] Error while creating player')
       DropPlayer(playerId, '[ATL] Error while creating player')
@@ -60,6 +45,36 @@ local function createCharacter(playerId, license, identity, appearance)
   end)
 end
 
+---Creates a new user for a player.
+---Do not confuse this with a character.
+---@param playerId number - Id of the player (source)
+---@param license string - License of the player
+---@return table - User
+function createUser(playerId, license)
+  local p = promise.new()
+  MySQL.insert('INSERT INTO users (`license`, `name`, `group`, `slots`) VALUES (?, ?, ?, ?)', {
+    license,
+    GetPlayerName(playerId),
+    Server.Groups[1] or 'user',
+    Server.Identity.AllowedSlots
+  }, function(id)
+    if id then
+      p:resolve({
+        group = Server.Groups[1] or 'user',
+        slots = Server.Identity.AllowedSlots
+      })
+    else
+      p:resolve({})
+      error('Failed to create user with id: ' .. playerId)
+    end
+  end)
+  return Citizen.Await(p)
+end
+
+---Returns the user for the player.
+---@param playerId number - Id of the player (source)
+---@param license string - License of the player
+---@return table - User (slots and group)
 function getUser(playerId, license)
   local p = promise.new()
   MySQL.single('SELECT `slots`, `group` FROM users WHERE license = ?', { license }, function(data)
@@ -73,7 +88,12 @@ function getUser(playerId, license)
   return Citizen.Await(p)
 end
 
-function registerCharacter(identity)
+---Register a new character for the player.
+---This is just the handler for the event.
+---Drops player if it fails.
+---Do not confuse this with createCharacter().
+---@param identity table - Identity of the player
+function registerCharacter(identity, appearance)
   local playerId <const> = source
   if type(identity) ~= 'table' then return DropPlayer(playerId, '[ATL] Invalid identity.') end
 
@@ -90,6 +110,9 @@ function registerCharacter(identity)
   createCharacter(playerId, license, newIdentity, {})
 end
 
+---Loads the character into the game.
+---Drops player if it fails.
+---@param character table - Character (holds the char_id)
 function loadCharacter(character)
   local playerId <const> = source
   if type(character.char_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end
@@ -99,17 +122,18 @@ function loadCharacter(character)
   if license then
     MySQL.single('SELECT * FROM characters WHERE license = ? AND char_id = ?', { license, character.char_id }, function(player)
       if player and next(player) then
-        local coords = decode(player.char_data).coords
         player.group = user.group
         player.slots = user.slots
-        Players[playerId] = ATL.new(playerId, license, player.char_id, player)
-        ATL.RefreshCommands(playerId)
-        SetEntityCoords(GetPlayerPed(playerId), coords.x, coords.y, coords.z)
+        ATL.Players[playerId] = ATL.new(playerId, license, player.char_id, player)
       end
     end)
   end
 end
 
+-- Might update a deleted characters table later on.
+---Deletes the character from the database.
+---Drops player if it fails.
+---@param character table - Character (holds the char_id)
 function deleteCharacter(character)
   local playerId <const> = source
   if type(character.char_id) ~= 'number' then return DropPlayer(playerId, '[ATL] Table was not passed when loading player.') end
@@ -124,7 +148,6 @@ function deleteCharacter(character)
     end
   end)
 end
-
 
 RegisterNetEvent('atl:server:registerCharacter', registerCharacter)
 RegisterNetEvent('atl:server:loadCharacter', loadCharacter)

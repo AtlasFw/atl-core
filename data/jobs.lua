@@ -1,50 +1,44 @@
-Jobs = {
-    ['unemployed'] = {
-        label = 'Unemployed',
-        ranks = {
-            [1] = {
-                name = 'unemployed',
-                label = 'Unemployed',
-                paycheck = 100,
-                taxes = 10
-            }
-        },
-        onDuty = false
-    },
-    ['police'] = {
-        label = 'Police',
-        ranks = {
-            [1] = {
-                name = 'cadet',
-                label = 'Cadet',
-                paycheck = 500,
-                taxes = 10
-            },
-            [2] = {
-                name = 'officer1',
-                label = 'Officer I',
-                paycheck = 1000,
-                taxes = 10
-            }
-        },
-        onDuty = false
-    },
-    ['ambulance'] = {
-        label = 'Ambulance',
-        ranks = {
-            [1] = {
-                name = 'ems',
-                label = 'EMS',
-                paycheck = 90,
-                taxes = 10
-            },
-            [2] = {
-                name = 'paramedic',
-                label = 'Paramedic',
-                paycheck = 100,
-                taxes = 10
-            }
-        },
-        onDuty = false
+-- All the jobs for the server.
+
+Server.Jobs = {
+  ['unemployed'] = {
+    name = 'Unemployed',
+    ranks = {
+      [1] = {
+        label = 'Find a job',
+        paycheck = 10,
+        taxes = 10
+      }
     }
+  },
+  ['police'] = {
+    name = 'Police',
+    ranks = {
+      [1] = {
+        label = 'Cadet',
+        paycheck = 20,
+        taxes = 10
+      },
+      [2] = {
+        label = 'Officer I',
+        paycheck = 30,
+        taxes = 10
+      }
+    }
+  },
+  ['ambulance'] = {
+    name = 'Ambulance',
+    ranks = {
+      [1] = {
+        label = 'EMS',
+        paycheck = 90,
+        taxes = 10
+      },
+      [2] = {
+        name = 'Paramedic',
+        paycheck = 100,
+        taxes = 10
+      }
+    }
+  }
 }

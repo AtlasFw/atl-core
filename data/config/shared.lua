@@ -1,5 +1,3 @@
-Config = {}
-
-Config.Shared = {
+Shared = {
   Locale = 'en',
 }
