@@ -6,7 +6,7 @@
 ---@param suggestions table
 ---@param rcon boolean
 ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
-  if type(description) ~= 'string' or type(group) ~= 'string' or type(cb) ~= 'function' then error('ATL.RegisterCommand: name, description, group, and cb must be strings and cb must be a function') end
+  if type(description) ~= 'string' or type(group) ~= 'string' or type(cb) ~= 'function' then error('ATL.RegisterCommand: description, group, and cb must be strings and cb must be a function') end
   if not Config.Groups[group] then error('ATL.RegisterCommand: group must be a valid group') end
 
   if type(name) == 'table' then
@@ -46,14 +46,15 @@ ATL.RefreshCommands = function(playerId)
 
   local suggestions = {}
   for name, command in pairs(ATL.Commands) do
+    local commandName = '/' .. name
     if player:hasPerms(command.group) then
       suggestions[#suggestions + 1] = {
-        name = '/' .. name,
+        name = commandName,
         help = command.description,
         params = command.suggestions
       }
     else
-      TriggerClientEvent('chat:removeSuggestion', player.source, '/' .. name)
+      TriggerClientEvent('chat:removeSuggestion', player.source, commandName)
     end
   end
   TriggerClientEvent('chat:addSuggestions', player.source, suggestions)
