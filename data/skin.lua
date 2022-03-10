@@ -6,6 +6,24 @@ local models <const> = {
 
 local tattoos <const> = {
 	[`mp_m_freemode_01`] = {
+    ['head'] = {
+
+    },
+    ['torso'] = {
+
+    },
+    ['leftArm'] = {
+
+    },
+    ['rightArm'] = {
+
+    },
+    ['rightLeg'] = {
+
+    },
+    ['leftLeg'] = {
+
+    },
 		['MP_Airraces_Tattoo_000_M'] = {`mpairraces_overlays`, `MP_Airraces_Tattoo_000_M`, 'TAT_AR_000', 'ZONE_TORSO', '660.25'},
 		['MP_Airraces_Tattoo_001_M'] = {`mpairraces_overlays`, `MP_Airraces_Tattoo_001_M`, 'TAT_AR_001', 'ZONE_TORSO', '905.25'},
 		['MP_Airraces_Tattoo_002_M'] = {`mpairraces_overlays`, `MP_Airraces_Tattoo_002_M`, 'TAT_AR_002', 'ZONE_TORSO', '824.25'},
@@ -484,6 +502,25 @@ local tattoos <const> = {
 	},
 
 	[`mp_f_freemode_01`] = {
+    ['head'] = {
+
+    },
+    ['torso'] = {
+
+    },
+    ['leftArm'] = {
+
+    },
+    ['rightArm'] = {
+
+    },
+    ['rightLeg'] = {
+
+    },
+    ['leftLeg'] = {
+
+    },
+
 		['MP_Airraces_Tattoo_000_F'] = {`mpairraces_overlays`, `MP_Airraces_Tattoo_000_F`, 'TAT_AR_000', 'ZONE_TORSO', '660.25'},
 		['MP_Airraces_Tattoo_001_F'] = {`mpairraces_overlays`, `MP_Airraces_Tattoo_001_F`, 'TAT_AR_001', 'ZONE_TORSO', '905.25'},
 		['MP_Airraces_Tattoo_002_F'] = {`mpairraces_overlays`, `MP_Airraces_Tattoo_002_F`, 'TAT_AR_002', 'ZONE_TORSO', '824.25'},
@@ -945,23 +982,6 @@ local tattoos <const> = {
 		['FM_Tat_F_044'] = {`multiplayer_overlays`, `FM_Tat_F_044`, 'TAT_FM_245', 'ZONE_TORSO', '375.0'},
 		['FM_Tat_F_045'] = {`multiplayer_overlays`, `FM_Tat_F_045`, 'TAT_FM_246', 'ZONE_TORSO', '500.0'},
 		['FM_Tat_F_047'] = {`multiplayer_overlays`, `FM_Tat_F_047`, 'TAT_FM_247', 'ZONE_RIGHT_ARM', '125.0'},
-		['FM_Hair_Fuzz'] = {`mpbeach_overlays`, `FM_Hair_Fuzz`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_001'] = {`multiplayer_overlays`, `NG_F_Hair_001`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_002'] = {`multiplayer_overlays`, `NG_F_Hair_002`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_003'] = {`multiplayer_overlays`, `NG_F_Hair_003`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_004'] = {`multiplayer_overlays`, `NG_F_Hair_004`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_005'] = {`multiplayer_overlays`, `NG_F_Hair_005`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_006'] = {`multiplayer_overlays`, `NG_F_Hair_006`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_007'] = {`multiplayer_overlays`, `NG_F_Hair_007`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_008'] = {`multiplayer_overlays`, `NG_F_Hair_008`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_009'] = {`multiplayer_overlays`, `NG_F_Hair_009`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_010'] = {`multiplayer_overlays`, `NG_F_Hair_010`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_011'] = {`multiplayer_overlays`, `NG_F_Hair_011`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_012'] = {`multiplayer_overlays`, `NG_F_Hair_012`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_F_Hair_013'] = {`multiplayer_overlays`, `NG_F_Hair_013`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_M_Hair_014'] = {`multiplayer_overlays`, `NG_M_Hair_014`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NG_M_Hair_015'] = {`multiplayer_overlays`, `NG_M_Hair_015`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
-		['NGBea_F_Hair_000'] = {`multiplayer_overlays`, `NGBea_F_Hair_000`, 'TAT_HAIRFADE', 'ZONE_HAIROVERLAY', '125.0'},
 	}
 }
 
