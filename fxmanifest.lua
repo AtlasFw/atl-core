@@ -5,6 +5,7 @@ lua54 'yes'
 
 name 'atl-core'
 author 'Atlas Framework Developers'
+version '0.0.1'
 
 shared_scripts {
   'data/config/shared.lua',
