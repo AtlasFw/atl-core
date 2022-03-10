@@ -13,7 +13,7 @@ CreateThread(function()
     for _, player in pairs(ATL.Players) do
       player:savePlayer()
     end
-    Wait(Config.SaveTime)
+    Wait(Server.SaveTime)
   end
 end)
 

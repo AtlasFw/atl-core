@@ -20,15 +20,15 @@ ATL.new = function(playerId, identifier, char_id, data)
   self.char_id = char_id
 
   -- Player data
-  self.accounts = decode(data.accounts) or Config.Accounts
+  self.accounts = decode(data.accounts) or Server.Accounts
   self.appearance = decode(data.appearance) or {}
-  self.char_data = decode(data.char_data) or { coords = Config.Spawn }
-  self.group = data.group or Config.Groups[1] or 'user'
+  self.char_data = decode(data.char_data) or { coords = Server.Spawn }
+  self.group = data.group or Server.Groups[1] or 'user'
   self.identity = decode(data.identity) or {}
   self.inventory = decode(data.inventory) or {}
   self.job_data = decode(data.job_data) or {}
-  self.slots = data.slots or Config.Identity.AllowedSlots
-  self.status = decode(data.status) or Config.Status
+  self.slots = data.slots or Server.Identity.AllowedSlots
+  self.status = decode(data.status) or Server.Status
 
   -- Update the player data
   ATL.Players[playerId] = self
@@ -95,22 +95,22 @@ end
 ---@return boolean - Has enough permissions
 function player:hasPerms(group)
   if type(group) ~= 'string' then return false end
-  if not Config.Groups[group] then return false end
-  return Config.Groups[self.group] >= Config.Groups[group]
+  if not Server.Groups[group] then return false end
+  return Server.Groups[self.group] >= Server.Groups[group]
 end
 
 -- Jobs
 ---Return the job the player is in
 ---@return string - Job label
 function player:getJobLabel()
-  return Jobs[self.job_data.name].name
+  return Server.Jobs[self.job_data.name].name
 end
 
 ---Return the rank the player is in (job)
 ---@return string - Job rank label
 function player:getRankLabel()
   local job = self.job_data
-  return Jobs[job.name].ranks[job.rank].label
+  return Server.Jobs[job.name].ranks[job.rank].label
 end
 
 ---Return if the player in on duty (job)
@@ -126,7 +126,7 @@ end
 function player:getAccount(account)
   if type(account) ~= 'string' then return false end
 
-  if Config.Accounts[account] then
+  if Server.Accounts[account] then
     return self.accounts[account]
   end
 end
@@ -164,7 +164,7 @@ end
 ---@return boolean - Setting success
 function player:setGroup(group)
   if type(group) ~= 'string' then return false end
-  if not Config.Groups[group] then return false end
+  if not Server.Groups[group] then return false end
 
   self.group = group
   ATL.RefreshCommands(self.source)
@@ -179,7 +179,7 @@ end
 function player:setJob(name, level)
   if type(name) ~= 'string' or type(level) ~= 'number' then return false end
 
-  local job = Jobs[name]
+  local job = Server.Jobs[name]
   local rank = job?.ranks[level]
   if not job or not rank then return false end
 

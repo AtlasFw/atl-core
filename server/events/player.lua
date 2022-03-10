@@ -19,7 +19,7 @@ function playerJoined(playerId)
   local license = ATL.GetLicense(playerId)
   local characters = getCharacters(license)
   local slots = getUser(playerId, license).slots
-  local cfgIdentity = Config.Identity
+  local cfgIdentity = Server.Identity
   cfgIdentity.AllowedSlots = slots
   TriggerClientEvent('atl:client:startMulticharacter', playerId, characters, cfgIdentity)
 end

@@ -7,7 +7,7 @@
 ---@param rcon boolean
 ATL.RegisterCommand = function(name, description, group, cb, suggestions, rcon)
   if type(description) ~= 'string' or type(group) ~= 'string' or type(cb) ~= 'function' then error('ATL.RegisterCommand: description, group, and cb must be strings and cb must be a function') end
-  if not Config.Groups[group] then error('ATL.RegisterCommand: group must be a valid group') end
+  if not Server.Groups[group] then error('ATL.RegisterCommand: group must be a valid group') end
 
   if type(name) == 'table' then
     for i=1, #name do

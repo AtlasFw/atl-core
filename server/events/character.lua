@@ -21,13 +21,13 @@ local function createCharacter(playerId, license, identity, appearance)
   local newJob = { name = 'unemployed', rank = 1, onDuty = false } -- Default job
   MySQL.insert('INSERT INTO characters (license, accounts, appearance, char_data, identity, inventory, job_data, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?)', {
     license,
-    encode(Config.Accounts),
+    encode(Server.Accounts),
     encode(newAppearance),
-    encode({ coords = Config.Spawn }),
+    encode({ coords = Server.Spawn }),
     encode(newIdentity),
     encode({}),
     encode(newJob),
-    encode(Config.Status),
+    encode(Server.Status),
   }, function(charId)
     if charId then
       local player = {
@@ -55,13 +55,13 @@ function createUser(playerId, license)
   MySQL.insert('INSERT INTO users (`license`, `name`, `group`, `slots`) VALUES (?, ?, ?, ?)', {
     license,
     GetPlayerName(playerId),
-    Config.Groups[1] or 'user',
-    Config.Identity.AllowedSlots
+    Server.Groups[1] or 'user',
+    Server.Identity.AllowedSlots
   }, function(id)
     if id then
       p:resolve({
-        group = Config.Groups[1] or 'user',
-        slots = Config.Identity.AllowedSlots
+        group = Server.Groups[1] or 'user',
+        slots = Server.Identity.AllowedSlots
       })
     else
       p:resolve({})

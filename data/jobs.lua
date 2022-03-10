@@ -1,6 +1,6 @@
 -- All the jobs for the server.
 
-Jobs = {
+Server.Jobs = {
   ['unemployed'] = {
     name = 'Unemployed',
     ranks = {
