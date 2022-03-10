@@ -7,10 +7,12 @@ Got stuck while coding or don't know how to use Atlas Framework? Check out the d
 * [Discord](https://discord.gg/ffz84zfaXF)
 
 ## Contributing
-1. Download the extension called **[StyLua](https://marketplace.visualstudio.com/items?itemName=*JohnnyMorganz*.stylua)**. It will look something like the following if you search for it on the extensions page:
+1. Download the extension called **[StyLua](https://marketplace.visualstudio.com/items?itemName=*JohnnyMorganz*.stylua)**. It will look something like the following if you search for it on the extensions page
+
 ![Extension](https://imgur.com/uFCTMAr.png)
 
 2. Go to VS Code and then to `settings.json`. You also can simply do `Ctrl + Shift + P` and type settings. You will see a file like this:
+
 ![Settings](https://imgur.com/6syj1Pl.png)
 
 3. Paste this code. If you have it duplicated an error will appear. Make sure to remove the duplicate.
