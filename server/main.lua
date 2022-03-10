@@ -2,6 +2,7 @@ ATL = {
   Callbacks = {},
   Commands = {},
   Players = {},
+  Methods = {},
   Resources = {},
 }
 

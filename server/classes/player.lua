@@ -176,11 +176,11 @@ function player:removeAccountMoney(account, quantity)
 end
 --#endregion Setters
 
--- Needs testing. Idk if it was getmetatable(player) or just player
 print'loaded'
 for name, func in pairs(player) do
   if type(func) == 'function' then
-    print(debug.getinfo(func, 'u').nparams, name)
+    print(debug.getinfo(func, 'u').nparams, name) -- Can be removed later
     exports('atl_' .. name, func)
+    ATL.Methods[name] = name
   end
 end
