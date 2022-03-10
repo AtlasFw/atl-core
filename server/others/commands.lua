@@ -1,23 +1,6 @@
 ATL.RegisterCommand('test2', 'Testing command', 'user', function(source, args, rawCommand)
-  print('test2')
-end, {
-  'string-s',
-  'number-n',
-  'boolean-b',
-}, {
-  {
-    name = 'string',
-    help = 'String',
-  },
-  {
-    name = 'number',
-    help = 'Number',
-  },
-  {
-    name = 'boolean',
-    help = 'Boolean',
-  },
-})
+  print(source:getCharId(), 'FUNCTION CORE')
+end)
 
 -- ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(player, args)
 --   local playerId = tonumber(args[1])

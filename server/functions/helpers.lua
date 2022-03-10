@@ -1,11 +1,10 @@
 local function format(value, style)
-  ---{0, 0, 0, 0}
   if style == 'string' then
-    return tostring(v)
+    return tostring(value)
   elseif style == 'number' then
-    return tonumber(v)
+    return tonumber(value)
   elseif style == 'boolean' then
-    return string.lower(style) == 'true'
+    return string.lower(value) == 'true'
   elseif style == 'vector3' then
     local x, y, z = json.decode(value)
     return vec4(x, y, z)
@@ -14,12 +13,6 @@ local function format(value, style)
   end
 end
 
----Register a command with custom parameters.
----@param name unknown - Name or table of names
----@param description string - Description of the command
----@param group string - Player group required to use the command
----@param cb function - Callback function
----@param suggestions table
 ATL.RegisterCommand = function(name, description, group, cb, types, suggestions)
   if type(name) == 'table' then
     for i = 1, #name do
@@ -32,7 +25,9 @@ ATL.RegisterCommand = function(name, description, group, cb, types, suggestions)
     error('Command ' .. name .. ' already exists.')
   end
 
-  RegisterCommand(name, function(source, args, rawCommand)
+  local invoke = GetInvokingResource()
+  RegisterCommand(name, function(source, args)
+    types = types or {}
     if #args < #types then
       print 'Not enough arguments.'
       return
@@ -44,15 +39,22 @@ ATL.RegisterCommand = function(name, description, group, cb, types, suggestions)
 
     local arguments = {}
     for i = 1, #args do
-      local name, style = string.strsplit(types[i], '-')
-      print(name, style)
+      local style, argName = string.strsplit('-', types[i])
       local value = format(args[i], style)
-      print(value, type(value))
-      arguments[name] = value
+      if value == nil then
+        print('Argument "' .. args[i] .. '" cannot be formatted into "' .. style .. '"')
+        return
+      end
+      arguments[argName] = value
     end
 
+    -- ATM, if doing this from another resource, cb will return a table.
     if type(cb) == 'function' then
-      cb(source, arguments, rawCommand)
+      if invoke == nil then
+        cb(player, arguments)
+      else
+        cb(exports[invoke]:GetPlayer(source), arguments)
+      end
     end
   end)
 

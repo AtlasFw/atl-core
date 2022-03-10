@@ -6,19 +6,25 @@ ATL = exports['atl-core']:get()
 
 ATL.GetPlayer = function(playerId)
   local copyPlayer = ATL.Players[playerId]
-  if not copyPlayer then return {} end
+  if not copyPlayer then
+    return {}
+  end
   local metatable = {
     __index = function(self, name)
-      if not ATL.Methods[name] then error('[ATL] Method ' .. name .. '() does not exist') end
+      if not ATL.Methods[name] then
+        error('[ATL] Method ' .. name .. '() does not exist')
+      end
       return function(...)
         if type(self[name]) == 'function' then
-          print(debug.getinfo((exports['atl-core']['atl_' .. name]), 'u').nparams)
+          print(debug.getinfo(exports['atl-core']['atl_' .. name], 'u').nparams)
           return exports['atl-core']['atl_' .. name](nil, self, ...)
         end
       end
-    end
+    end,
   }
 
   setmetatable(copyPlayer, metatable)
   return copyPlayer
 end
+
+exports('GetPlayer', ATL.GetPlayer)
