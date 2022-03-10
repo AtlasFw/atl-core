@@ -56,7 +56,7 @@ ATL.SendLog = function(tag, message)
       function(errorCode, resultData, resultHeaders)
         if Server.Logs.SHOW_IN_CONSOLE then
           if errorCode == 202 then
-            print('ATL: Logs: [' .. tag .. '] - ' .. message)
+            Debug('Log [' .. tag .. '] - ' .. message)
           else
             Debug('Log error ' .. STATUS_CODES[errorCode], 'SUCCESS')
           end
