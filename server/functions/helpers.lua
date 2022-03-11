@@ -48,13 +48,10 @@ ATL.RegisterCommand = function(name, description, group, cb, types, suggestions)
       arguments[argName] = value
     end
 
-    -- ATM, if doing this from another resource, cb will return a table.
-    if type(cb) == 'function' then
-      if invoke == nil then
-        cb(player, arguments)
-      else
-        cb(exports[invoke]:GetPlayer(source), arguments)
-      end
+    if invoke == nil then
+      cb(player, arguments)
+    else
+      cb(source, arguments)
     end
   end)
 
