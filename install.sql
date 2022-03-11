@@ -15,5 +15,5 @@ CREATE TABLE `characters` (
   `identity` longtext,
   `inventory` longtext,
   `job_data` longtext,
-  `status` longtext,
+  `status` longtext
 ) DEFAULT CHARSET UTF8;
