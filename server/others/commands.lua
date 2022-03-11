@@ -1,6 +1,6 @@
 ATL.RegisterCommand('test2', 'Testing command', 'user', function(source, args, rawCommand)
-  print(source:getCharId(), 'FUNCTION CORE')
-end)
+  print(args.target)
+end, { 'number-target' }, {})
 
 -- ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(player, args)
 --   local playerId = tonumber(args[1])
