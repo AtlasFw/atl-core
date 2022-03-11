@@ -7,7 +7,7 @@ local function format(value, style)
     return string.lower(value) == 'true'
   elseif style == 'vector3' then
     local x, y, z = json.decode(value)
-    return vec4(x, y, z)
+    return vec3(x, y, z)
   else
     return value
   end
@@ -32,23 +32,33 @@ ATL.RegisterCommand = function(name, description, group, cb, types, suggestions)
       print 'Not enough arguments.'
       return
     end
-    local player = ATL.Players[source]
-    if not player or not player:hasPerms(group) then
-      return
-    end
 
+    local player = ATL.Players[source]
     local arguments = {}
     for i = 1, #args do
       local style, argName = string.strsplit('-', types[i])
+
       local value = format(args[i], style)
       if value == nil then
         print('Argument "' .. args[i] .. '" cannot be formatted into "' .. style .. '"')
         return
       end
+      if argName == 'target' then
+        player = ATL.Players[value]
+        if not player then
+          print('Player ' .. value .. ' not found.')
+          return
+        end
+      end
       arguments[argName] = value
     end
 
+    if not player or not player:hasPerms(group) then
+      print 'No perms'
+      return
+    end
     if invoke == nil then
+      print 'player'
       cb(player, arguments)
     else
       cb(source, arguments)
@@ -59,7 +69,7 @@ ATL.RegisterCommand = function(name, description, group, cb, types, suggestions)
   ATL.Commands[name] = {
     description = description,
     group = group,
-    suggestions = suggestions,
+    suggestions = suggestions or {},
   }
 end
 

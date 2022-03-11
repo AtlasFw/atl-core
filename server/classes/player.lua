@@ -201,7 +201,7 @@ end
 ---@param quantity number - Amount to add
 ---@return boolean - Adding success
 function player:addAccountMoney(account, quantity)
-  if type(account) ~= 'string' or type(account) ~= 'number' then return false end
+  if type(account) ~= 'string' or type(quantity) ~= 'number' then return false end
   if not self.accounts[account] then return false end
 
   self.accounts[account] = self.accounts[account] + quantity
@@ -213,7 +213,7 @@ end
 ---@param quantity number - Amount to remove
 ---@return boolean - Removing success
 function player:removeAccountMoney(account, quantity)
-  if type(account) ~= 'string' or type(account) ~= 'number' then return false end
+  if type(account) ~= 'string' or type(quantity) ~= 'number' then return false end
   if not self.accounts[account] then return false end
 
   self.accounts[account] = self.accounts[account] - quantity
