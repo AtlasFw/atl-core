@@ -21,7 +21,7 @@ function playerJoined(playerId)
   local slots = getUser(playerId, license).slots
   local cfgIdentity = Server.Identity
   cfgIdentity.AllowedSlots = slots
-  TriggerClientEvent('atl:client:startMulticharacter', playerId, characters, cfgIdentity)
+  TriggerClientEvent('atl:client:startMulticharacter', playerId, characters, cfgIdentity, Server.Jobs)
 end
 
 ---Event function handling the leaving of a player.
