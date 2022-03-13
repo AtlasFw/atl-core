@@ -1,4 +1,4 @@
--- Don't use this export. Use the import.
+-- Don't use these export. Use the import.
 -- If you need further help read the documentation.
 -- https://atlasfw.live/documentation
 

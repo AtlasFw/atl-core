@@ -4,7 +4,7 @@ local function format(value, style)
   elseif style == 'number' then
     return tonumber(value)
   elseif style == 'boolean' then
-    return string.lower(value) == 'true'
+    return value:lower() == 'true'
   else
     return value
   end

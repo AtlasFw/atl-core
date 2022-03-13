@@ -44,7 +44,10 @@ function player:savePlayer()
   self:setCoords(vector4(coords.x, coords.y, coords.z, heading))
 
   local queries = {
-    { query = 'UPDATE `users` SET `group` = ?, `slots` = ? WHERE `license` = ?', values = { self.group, self.slots, self.identifier } },
+    {
+      query = 'UPDATE `users` SET `group` = ?, `slots` = ? WHERE `license` = ?',
+      values = { self.group, self.slots, self.identifier },
+    },
     {
       query = 'UPDATE `characters` SET accounts = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ',
       values = {
