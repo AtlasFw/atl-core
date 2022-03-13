@@ -9,3 +9,7 @@ exports('get', function()
   end
   return ATL
 end)
+
+exports('GetPlayer', function(playerId)
+  return ATL.Players[playerId]
+end)
