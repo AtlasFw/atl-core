@@ -271,18 +271,16 @@ function player:removeAccountMoney(account, quantity)
   return true
 end
 
-function player:setStatus(name, newValue)
-  if type(name) ~= 'string' or type(newValue) ~= 'number' then
-    return false
-  end
-  if not self.status[name] then
+function player:setStatus(status)
+  if type(status) ~= 'table' then
     return false
   end
 
-  self.status[name].value = newValue
+  self.status = status
   TriggerClientEvent('atl:client:statusUpdate', self.source, self.status)
   return true
 end
+
 --#endregion Setters
 
 ---Exportable methods
