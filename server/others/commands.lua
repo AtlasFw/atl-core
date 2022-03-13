@@ -104,12 +104,11 @@ ATL.RegisterCommand('info', 'My character info', 'user', function(player)
     ('Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: $%s | Job: %s - %s | On Duty: %s'):format(
       GetPlayerName(player.source),
       player:getCharId(),
-      player:getCharName().firstname,
-      player:getCharName().lastname,
+      player:getCharName().firstname .. ' ' .. player:getCharName().lastname,
+      player:getGroup(),
       player:getAccount 'cash',
       player:getAccount 'bank',
-      player:getJobLabel(),
-      player:getRankLabel(),
+      player:getJobLabel() .. ' ' .. player:getRankLabel(),
       player:getDuty()
     )
   )
