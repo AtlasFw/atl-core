@@ -44,8 +44,21 @@ function player:savePlayer()
   self:setCoords(vector4(coords.x, coords.y, coords.z, heading))
 
   local queries = {
-    { query = 'UPDATE `users` SET `group` = ?, `slots` = ? WHERE `license` = ?', values = { self.group, self.slots, self.identifier }},
-    { query = 'UPDATE `characters` SET accounts = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ', values = { encode(self.accounts), encode(self.status), encode(self.inventory), encode(self.job_data), encode(self.char_data), self.char_id }}
+    {
+      query = 'UPDATE `users` SET `group` = ?, `slots` = ? WHERE `license` = ?',
+      values = { self.group, self.slots, self.identifier },
+    },
+    {
+      query = 'UPDATE `characters` SET accounts = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ',
+      values = {
+        encode(self.accounts),
+        encode(self.status),
+        encode(self.inventory),
+        encode(self.job_data),
+        encode(self.char_data),
+        self.char_id,
+      },
+    },
   }
 
   MySQL.Async.transaction(queries, function(result)
@@ -75,7 +88,7 @@ end
 function player:getCharName()
   return {
     firstname = self.identity.firstname,
-    lastname = self.identity.lastname
+    lastname = self.identity.lastname,
   }
 end
 
@@ -90,8 +103,12 @@ end
 ---@param group string - Group name to check
 ---@return boolean - Has enough permissions
 function player:hasPerms(group)
-  if type(group) ~= 'string' then return false end
-  if not Server.Groups[group] then return false end
+  if type(group) ~= 'string' then
+    return false
+  end
+  if not Server.Groups[group] then
+    return false
+  end
   return Server.Groups[self.group] >= Server.Groups[group]
 end
 
@@ -120,7 +137,9 @@ end
 ---@param account string - Account name
 ---@return number - Money value
 function player:getAccount(account)
-  if type(account) ~= 'string' then return false end
+  if type(account) ~= 'string' then
+    return false
+  end
 
   if Server.Accounts[account] then
     return self.accounts[account]
@@ -143,9 +162,13 @@ end
 ---@param now boolean - Teleport to coords now
 ---@return boolean - Teleport/Setting success
 function player:setCoords(coords, now)
-  if type(coords) ~= 'vector4' then return false end
+  if type(coords) ~= 'vector4' then
+    return false
+  end
   if now then
-    SetEntityCoords(GetPlayerPed(self.source), coords.x, coords.y, coords.z)
+    local ped = GetPlayerPed(self.source)
+    SetEntityCoords(ped, coords.x, coords.y, coords.z)
+    SetEntityHeading(ped, coords.w)
   end
 
   self.char_data.coords = vec4(coords.x, coords.y, coords.z, coords.w)
@@ -156,7 +179,9 @@ end
 ---@param slots number - Amount of allowed identity slots
 ---@return boolean - Setting success
 function player:setSlots(slots)
-  if type(slots) ~= 'number' then return false end
+  if type(slots) ~= 'number' then
+    return false
+  end
 
   self.slots = slots
   return true
@@ -167,8 +192,12 @@ end
 ---@param group string - Group name
 ---@return boolean - Setting success
 function player:setGroup(group)
-  if type(group) ~= 'string' then return false end
-  if not Server.Groups[group] then return false end
+  if type(group) ~= 'string' then
+    return false
+  end
+  if not Server.Groups[group] then
+    return false
+  end
 
   self.group = group
   ATL.RefreshCommands(self.source)
@@ -181,14 +210,14 @@ end
 ---@param level number - Job rank number
 ---@return boolean - Setting success
 function player:setJob(name, level)
-  if type(name) ~= 'string' or type(level) ~= 'number' then return false end
+  if type(name) ~= 'string' or type(level) ~= 'number' then
+    return false
+  end
 
-  local job = Server.Jobs[name]
-  local rank = job?.ranks[level]
-  if not job or not rank then return false end
+  local job = Server.Jobs[name:lower()]
 
   -- Restarts the duty to false
-  self.job_data = { name = job.name, rank = rank, onDuty = false}
+  self.job_data = { name = job.name:lower(), rank = level, onDuty = false }
 
   return true
 end
@@ -197,7 +226,9 @@ end
 ---@param state boolean - Duty state (true/false)
 ---@return boolean - Setting success
 function player:setDuty(state)
-  if type(state) ~= 'boolean' then return false end
+  if type(state) ~= 'boolean' then
+    return false
+  end
 
   self.job_data.onDuty = state
   return true
@@ -209,8 +240,12 @@ end
 ---@param quantity number - Amount to add
 ---@return boolean - Adding success
 function player:addAccountMoney(account, quantity)
-  if type(account) ~= 'string' or type(quantity) ~= 'number' then return false end
-  if not self.accounts[account] then return false end
+  if type(account) ~= 'string' or type(quantity) ~= 'number' then
+    return false
+  end
+  if not self.accounts[account] then
+    return false
+  end
 
   self.accounts[account] = self.accounts[account] + quantity
   return true
@@ -221,8 +256,12 @@ end
 ---@param quantity number - Amount to remove
 ---@return boolean - Removing success
 function player:removeAccountMoney(account, quantity)
-  if type(account) ~= 'string' or type(quantity) ~= 'number' then return false end
-  if not self.accounts[account] then return false end
+  if type(account) ~= 'string' or type(quantity) ~= 'number' then
+    return false
+  end
+  if not self.accounts[account] then
+    return false
+  end
 
   self.accounts[account] = self.accounts[account] - quantity
   return true

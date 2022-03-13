@@ -1,9 +1,5 @@
-ATL.RegisterCommand('test2', 'Testing command', 'user', function(source, args, rawCommand)
-  print(args.target)
-end, { 'number-target' }, {})
-
 ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(player, args)
-  player:setGroup(group)
+  player:setGroup(args.group)
 end, { 'number-target', 'string-group' }, {
   { name = 'playerId', help = 'Player id' },
   { name = 'group', help = 'Group to set' },
@@ -11,7 +7,7 @@ end, { 'number-target', 'string-group' }, {
 
 ATL.RegisterCommand('setjob', 'Set player job', 'admin', function(player, args)
   player:setJob(args.name, args.rank)
-end, { 'number-target', 'string-name', 'string-rank' }, {
+end, { 'number-target', 'string-name', 'number-rank' }, {
   { name = 'Target id', help = 'Player id to set job' },
   { name = 'Job', help = 'Player job' },
   { name = 'Rank', help = 'Rank id' },
@@ -81,8 +77,8 @@ end, { 'string-distance' }, {
 })
 
 ATL.RegisterCommand('setcoords', 'Teleport to specified coords', 'admin', function(player, args)
-  player:setCoords(args.coords, true)
-end, { 'vector3-coords' }, {
+  player:setCoords(vec4(args.x, args.y, args.z, GetEntityHeading(GetPlayerPed(player.source))), true)
+end, { 'number-x', 'number-y', 'number-z' }, {
   { name = 'x', help = 'Coords x' },
   { name = 'y', help = 'Coords y' },
   { name = 'z', help = 'Coords z' },
