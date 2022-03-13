@@ -249,7 +249,9 @@ function player:addAccountMoney(account, quantity)
     return false
   end
 
+  print('METHOD STARt', account, quantity, self.accounts[account])
   self.accounts[account] = self.accounts[account] + quantity
+  print('METHOD END', account, quantity, self.accounts[account])
   return true
 end
 
@@ -287,7 +289,10 @@ end
 local count = 0
 for name, func in pairs(player) do
   if type(func) == 'function' then
-    exports('atl_' .. name, func)
+    exports('atl_' .. name, function(playerId, ...)
+      local player = ATL.Players[playerId]
+      return player[name](player, ...)
+    end)
     ATL.Methods[name] = name
     count += 1
   end

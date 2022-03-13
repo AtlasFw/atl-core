@@ -100,6 +100,7 @@ ATL.RegisterCommand('startmulti', 'Open the identity/multichar again', 'user', f
 end)
 
 ATL.RegisterCommand('info', 'My character info', 'user', function(player)
+  print(player:getAccount 'cash', player:getAccount 'bank', player:getGroup())
   print(
     ('Name: %s | Character ID: %s | Character Name: %s | Group: %s | Money: %s$ | Bank: $%s | Job: %s - %s | On Duty: %s'):format(
       GetPlayerName(player.source),

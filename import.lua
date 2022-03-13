@@ -9,18 +9,16 @@ ATL.GetPlayer = function(playerId)
   if not copyPlayer then
     return {}
   end
-  local metatable = {
+  return setmetatable(copyPlayer, {
     __index = function(self, name)
       if not ATL.Methods[name] then
         error('[ATL] Method ' .. name .. '() does not exist')
       end
       return function(...)
         if type(self[name]) == 'function' then
-          return exports['atl-core']['atl_' .. name](nil, self, ...)
+          return exports['atl-core']['atl_' .. name](nil, self.source, ...)
         end
       end
     end,
-  }
-
-  return setmetatable(copyPlayer, metatable)
+  })
 end
