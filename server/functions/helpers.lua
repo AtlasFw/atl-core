@@ -5,9 +5,6 @@ local function format(value, style)
     return tonumber(value)
   elseif style == 'boolean' then
     return string.lower(value) == 'true'
-  elseif style == 'vector3' then
-    local x, y, z = json.decode(value)
-    return vec3(x, y, z)
   else
     return value
   end
@@ -37,17 +34,18 @@ ATL.RegisterCommand = function(name, description, group, cb, types, suggestions)
     local arguments = {}
     for i = 1, #args do
       local style, argName = string.strsplit('-', types[i])
-
       local value = format(args[i], style)
-      if value == nil then
-        print('Argument "' .. args[i] .. '" cannot be formatted into "' .. style .. '"')
-        return
-      end
-      if argName == 'target' then
-        player = ATL.Players[value]
-        if not player then
-          print('Player ' .. value .. ' not found.')
+      if args[i] ~= 'me' then
+        if value == nil then
+          print('Argument "' .. args[i] .. '" cannot be formatted into "' .. style .. '"')
           return
+        end
+        if argName == 'target' then
+          player = ATL.Players[value]
+          if not player then
+            print('Player ' .. value .. ' not found.')
+            return
+          end
         end
       end
       arguments[argName] = value
@@ -58,7 +56,6 @@ ATL.RegisterCommand = function(name, description, group, cb, types, suggestions)
       return
     end
     if invoke == nil then
-      print 'player'
       cb(player, arguments)
     else
       cb(source, arguments)
