@@ -37,7 +37,6 @@ end, { 'number-target', 'string-account', 'number-amount' }, {
 })
 
 ATL.RegisterCommand({ 'car', 'veh' }, 'Spawn a vehicle', 'admin', function(player, args)
-  local hashModel = joaat(args.model)
   local ped = GetPlayerPed(player.source)
   if not ped or ped <= 0 then
     return
@@ -48,7 +47,7 @@ ATL.RegisterCommand({ 'car', 'veh' }, 'Spawn a vehicle', 'admin', function(playe
   local seats = ATL.GetPassengers(ped, curVehicle)
 
   ATL.DeleteEntity(NetworkGetNetworkIdFromEntity(curVehicle), function()
-    ATL.CreateVehicle(hashModel, vec4(coords.x, coords.y, coords.z, heading), function(_, netVehicle)
+    ATL.CreateVehicle(args.model, vec4(coords.x, coords.y, coords.z, heading), function(_, netVehicle)
       if netVehicle then
         local peds = {}
         for _, id in pairs(GetPlayers()) do
