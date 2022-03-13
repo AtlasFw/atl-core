@@ -5,7 +5,7 @@
 ATL = exports['atl-core']:get()
 
 ATL.GetPlayer = function(playerId)
-  local copyPlayer = ATL.Players[playerId] or exports['atl-core']:GetPlayer(playerId)
+  local copyPlayer = exports['atl-core']:GetPlayer(playerId)
   if not copyPlayer then
     return {}
   end
@@ -16,13 +16,11 @@ ATL.GetPlayer = function(playerId)
       end
       return function(...)
         if type(self[name]) == 'function' then
-          print(debug.getinfo(exports['atl-core']['atl_' .. name], 'u').nparams)
           return exports['atl-core']['atl_' .. name](nil, self, ...)
         end
       end
     end,
   }
 
-  setmetatable(copyPlayer, metatable)
-  return copyPlayer
+  return setmetatable(copyPlayer, metatable)
 end
