@@ -6,11 +6,11 @@ Server = {
   Status = {
     ['hunger'] = {
       value = 100, -- Starting value
-      rate = 1, -- Rate of change
+      rate = -1, -- Rate of change
     },
     ['thirst'] = {
       value = 100,
-      rate = 1,
+      rate = -1,
     },
   },
 
