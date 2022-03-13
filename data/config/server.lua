@@ -4,6 +4,12 @@ Server = {
 
   -- Starting status for new players (can add more)
   Status = {
+    ['health'] = {
+      value = 200,
+    },
+    ['armor'] = {
+      value = 0,
+    },
     ['hunger'] = {
       value = 100, -- Starting value
       rate = -1, -- Rate of change

@@ -147,7 +147,9 @@ function player:getAccount(account)
 end
 
 function player:getStatus(name)
-  if type(name) ~= 'string' then return false end
+  if type(name) ~= 'string' then
+    return false
+  end
 
   if Server.Status[name] then
     return self.status[name]
@@ -268,8 +270,12 @@ function player:removeAccountMoney(account, quantity)
 end
 
 function player:setStatus(name, newValue)
-  if type(name) ~= 'string' or type(newValue) ~= 'number' then return false end
-  if not self.status[name] then return false end
+  if type(name) ~= 'string' or type(newValue) ~= 'number' then
+    return false
+  end
+  if not self.status[name] then
+    return false
+  end
 
   self.status[name].value = newValue
   TriggerClientEvent('atl:client:statusUpdate', self.source, self.status)
