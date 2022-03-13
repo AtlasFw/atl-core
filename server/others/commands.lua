@@ -71,7 +71,7 @@ ATL.RegisterCommand({ 'dv', 'deletevehicle' }, 'Delete a vehicle', 'admin', func
   for i = 1, #vehicles, 1 do
     DeleteEntity(vehicles[i])
   end
-end, { 'string-distance' }, {
+end, { 'number-distance' }, {
   { name = 'dist', help = 'Distance to remove (default: 1.0)' },
 })
 
