@@ -108,7 +108,7 @@ function registerCharacter(identity, appearance)
   })
   if not newIdentity then return DropPlayer(playerId, '[ATL] Invalid identity.') end
 
-  createCharacter(playerId, license, newIdentity, {})
+  createCharacter(playerId, license, newIdentity, appearance)
 end
 
 ---Loads the character into the game.
