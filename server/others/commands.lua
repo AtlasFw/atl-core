@@ -56,7 +56,7 @@ ATL.RegisterCommand({ 'car', 'veh' }, 'Spawn a vehicle', 'admin', function(playe
 
         for k, v in pairs(seats) do
           local targetSrc = peds[v]
-          TriggerClientEvent('atl:client:setPedSeat', targetSrc, netVehicle, k)
+          TriggerClientEvent('atl-core:client:setPedSeat', targetSrc, netVehicle, k)
         end
       end
     end)
@@ -95,7 +95,7 @@ ATL.RegisterCommand('startmulti', 'Open the identity/multichar again', 'user', f
   ATL.Players[player.source] = nil
   Wait(100)
 
-  TriggerClientEvent('atl:client:characterLoaded', player.source, nil)
+  TriggerClientEvent('atl-core:client:characterLoaded', player.source, nil)
   playerJoined(player.source)
 end)
 

@@ -3,13 +3,19 @@
 ---@param netVehicle number - NetID of the vehicle
 ---@param seat number - Seat number
 local function setPedSeats(netVehicle, seat)
-  if type(netVehicle) ~= 'number' or type(seat) ~= 'number' then return end
+  if type(netVehicle) ~= 'number' or type(seat) ~= 'number' then
+    return
+  end
 
   local timeout = false
-  SetTimeout(250, function() timeout = true end)
+  SetTimeout(250, function()
+    timeout = true
+  end)
   repeat
     Wait(0)
-    if timeout then return end
+    if timeout then
+      return
+    end
   until NetworkDoesEntityExistWithNetworkId(netVehicle)
 
   local vehicle = NetToVeh(netVehicle)
@@ -21,4 +27,4 @@ local function setPedSeats(netVehicle, seat)
   end
 end
 
-RegisterNetEvent('atl:client:setPedSeat', setPedSeats)
+RegisterNetEvent('atl-core:client:setPedSeat', setPedSeats)

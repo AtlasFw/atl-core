@@ -9,7 +9,7 @@ ATL = {
 CreateThread(function()
   while true do
     if NetworkIsPlayerActive(PlayerId()) then
-      TriggerServerEvent('atl:server:playerJoined')
+      TriggerServerEvent 'atl-core:server:playerJoined'
       break
     end
     Wait(0)
@@ -18,6 +18,6 @@ end)
 
 ---Event handling the first setting of the character in the client.
 ---@param character table - The character table.
-RegisterNetEvent('atl:client:characterLoaded', function(character)
+RegisterNetEvent('atl-core:client:characterLoaded', function(character)
   ATL.Character = character
 end)

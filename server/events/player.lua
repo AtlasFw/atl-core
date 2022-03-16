@@ -21,11 +21,11 @@ function playerJoined(playerId)
   local slots = getUser(playerId, license).slots
   local cfgIdentity = Server.Identity
   cfgIdentity.AllowedSlots = slots
-  TriggerClientEvent('atl:client:startMulticharacter', playerId, characters, cfgIdentity, Server.Jobs)
+  TriggerClientEvent('atl-identity:client:startMulticharacter', playerId, characters, cfgIdentity, Server.Jobs)
 end
 
 ---Event function handling the leaving of a player.
-function playerLeave()
+function playerExit()
   local playerId <const> = source
   local player = ATL.Players[playerId]
   if player then
@@ -35,5 +35,5 @@ function playerLeave()
   DropPlayer(playerId, '[ATL] You have left the server. Come back soon!')
 end
 
-RegisterNetEvent('atl:server:playerJoined', playerJoined)
-RegisterNetEvent('atl:server:playerLeave', playerLeave)
+RegisterNetEvent('atl-core:server:playerJoined', playerJoined)
+RegisterNetEvent('atl-core:server:playerExit', playerExit)

@@ -31,7 +31,7 @@ ATL.new = function(playerId, identifier, char_id, data)
   self.status = decode(data.status) or Server.Status
 
   -- Load the player
-  TriggerClientEvent('atl:client:characterLoaded', playerId, self)
+  TriggerClientEvent('atl-core:client:characterLoaded', playerId, self)
   SetEntityCoords(GetPlayerPed(playerId), self.char_data.coords.x, self.char_data.coords.y, self.char_data.coords.z)
 
   return setmetatable(self, getmetatable(ATL.Players))
@@ -249,9 +249,7 @@ function player:addAccountMoney(account, quantity)
     return false
   end
 
-  print('METHOD STARt', account, quantity, self.accounts[account])
   self.accounts[account] = self.accounts[account] + quantity
-  print('METHOD END', account, quantity, self.accounts[account])
   return true
 end
 
@@ -277,7 +275,25 @@ function player:setStatus(status)
   end
 
   self.status = status
-  TriggerClientEvent('atl:client:statusUpdate', self.source, self.status)
+  TriggerClientEvent('atl-status:client:update', self.source, self.status)
+  return true
+end
+
+function player:addStatus(status, value)
+  if type(status) ~= 'string' or type(value) ~= 'number' then
+    return false
+  end
+
+  local fValue = self.status[status].value + value
+  if fValue < 0 then
+    fValue = 0
+  elseif fValue > 100 then
+    fValue = 100
+  end
+
+  self.status[status].value = fValue
+
+  TriggerClientEvent('atl-status:client:update', self.source, self.status)
   return true
 end
 

@@ -151,6 +151,6 @@ function deleteCharacter(character)
   end)
 end
 
-RegisterNetEvent('atl:server:registerCharacter', registerCharacter)
-RegisterNetEvent('atl:server:loadCharacter', loadCharacter)
-RegisterNetEvent('atl:server:deleteCharacter', deleteCharacter)
+RegisterNetEvent('atl-core:server:registerCharacter', registerCharacter)
+RegisterNetEvent('atl-core:server:loadCharacter', loadCharacter)
+RegisterNetEvent('atl-core:server:deleteCharacter', deleteCharacter)
