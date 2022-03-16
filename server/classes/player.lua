@@ -315,6 +315,24 @@ function player:subtractStatus(status, value)
   return true
 end
 
+function player:subtractStatus(status, value)
+  if type(status) ~= 'string' or type(value) ~= 'number' then
+    return false
+  end
+
+  local fValue = self.status[status].value - value
+  if fValue < 0 then
+    fValue = 0
+  elseif fValue > 100 then
+    fValue = 100
+  end
+
+  self.status[status].value = fValue
+
+  TriggerClientEvent('atl-status:client:sync', self.source, self.status)
+  return true
+end
+
 --#endregion Setters
 
 ---Exportable methods
