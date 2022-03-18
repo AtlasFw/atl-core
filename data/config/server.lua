@@ -18,6 +18,10 @@ Server = {
       value = 100,
       rate = -1,
     },
+    ['stress'] = {
+      value = 0,
+      rate = 1,
+    },
   },
 
   -- Starting accounts for new players with default values
