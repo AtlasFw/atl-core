@@ -44,8 +44,8 @@ Server = {
   Identity = {
     ['AllowedSlots'] = 3, -- Max slots an user is allowed to have by default
     ['MaxSlots'] = 5, -- Max characters for all players
-    ['IplName'] = 'gr_grdlc_int_01', -- Ipl name to load (can be changed if you prefer another location)
-    ['IplCoords'] = vec4(1103.5624, -3000.00, -40.00, -100.00), -- Coords where the player will spawn by defualt. Once character creation finishes, the player will be teleported to the `Spawn` position
+    ['IplName'] = 'facelobby', -- Ipl name to load (can be changed if you prefer another location)
+    ['IplCoords'] = vec4(-1080.7585, -248.3140, 43.0113, 260.6512), -- Coords where the player will spawn by defualt. Once character creation finishes, the player will be teleported to the `Spawn` position
   },
 
   -- DataDog logs configuration
