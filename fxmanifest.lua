@@ -17,7 +17,9 @@ client_scripts {
 
   'client/main.lua',
 
+  
   'client/functions/callbacks.lua',
+  'client/functions/request.lua',
 
   'client/events/vehicle.lua',
 
