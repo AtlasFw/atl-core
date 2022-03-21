@@ -1,4 +1,7 @@
 return {
-    ['core'] = 'Welcome',
-    ['error'] = 'Error en espanol sin enne'
-}
+    ['core'] = 'Bienvenido',
+    ['error'] = 'Error',
+    ['appearance'] = {
+      ['ped_label'] = 'Vista modelo ped'
+    }
+  }
