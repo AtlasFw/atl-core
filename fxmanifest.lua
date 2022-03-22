@@ -13,7 +13,7 @@ shared_scripts {
 }
 
 client_scripts {
-  'data/skin.lua',
+  'data/appearance.lua',
   'data/config/client.lua',
 
   'client/main.lua',
