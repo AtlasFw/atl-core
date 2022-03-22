@@ -284,14 +284,10 @@ function player:addStatus(status, value)
     return false
   end
 
-  local fValue = self.status[status].value + value
-  if fValue < 0 then
-    fValue = 0
-  elseif fValue > 100 then
-    fValue = 100
-  end
+  local newValue = self.status[status].value + value
+  newValue = (newValue < 0) and 0 or (newValue > 100) and 100 or newValue
 
-  self.status[status].value = fValue
+  self.status[status].value = newValue
 
   TriggerClientEvent('atl-status:client:sync', self.source, self.status)
   return true
@@ -302,14 +298,10 @@ function player:subtractStatus(status, value)
     return false
   end
 
-  local fValue = self.status[status].value - value
-  if fValue < 0 then
-    fValue = 0
-  elseif fValue > 100 then
-    fValue = 100
-  end
+  local newValue = self.status[status].value - value
+  newValue = (newValue < 0) and 0 or (newValue > 100) and 100 or newValue
 
-  self.status[status].value = fValue
+  self.status[status].value = newValue
 
   TriggerClientEvent('atl-status:client:sync', self.source, self.status)
   return true
