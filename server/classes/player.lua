@@ -69,19 +69,6 @@ function player:savePlayer()
 end
 
 --#region Getters
--- Player data
----Return the character id
----@return number - Character id
-function player:getCharId()
-  return self.char_id
-end
-
----Return the amount of identity slots the player has
----@return number - Amount of allowed identity slots
-function player:getSlots()
-  return self.slots
-end
-
 -- Character data
 ---Return the character name
 ---@return table - Character name (func().firstname, func().lastname)
@@ -90,13 +77,6 @@ function player:getCharName()
     firstname = self.identity.firstname,
     lastname = self.identity.lastname,
   }
-end
-
--- Group
----Return the group the player is in
----@return string - Group name
-function player:getGroup()
-  return self.group
 end
 
 ---Return if the group the player is has enough permissions
