@@ -17,6 +17,17 @@ CreateThread(function()
   end
 end)
 
+AddEventHandler('txAdmin:events:scheduledRestart', function(data)
+	if data.secondsRemaining == 60 then
+    CreateThread(function()
+			Wait(50000)
+      for _, player in pairs(ATL.Players) do
+        player:savePlayer()
+      end
+    end)
+	end
+end)
+
 ---Handler for the joining event.
 ---Should check for license and
 ---kick the player if it's not valid.
