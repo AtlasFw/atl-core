@@ -22,7 +22,7 @@ end)
 AddEventHandler('txAdmin:events:scheduledRestart', function(data)
 	if data.secondsRemaining == 60 then
     CreateThread(function()
-			Wait(50000)
+			Wait(45000)
       for _, player in pairs(ATL.Players) do
         player:savePlayer()
       end
