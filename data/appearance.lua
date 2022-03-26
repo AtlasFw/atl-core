@@ -1,3 +1,55 @@
+local shops <const> = {
+  {
+    name = "Pennsylvania Clothes",
+    coords = vec3(0, 0, 0),
+    blip = {
+      sprite = 437,
+      scale = 0.8,
+      colour = 1,
+    },
+    data = {
+      ped = false,
+      inheritance = {
+        state = false,
+      },
+      face = {
+        state = false,
+      },
+      head = {
+        state = false,
+      },
+      tattoos = {
+        state = false,
+      },
+    }
+  },
+
+  {
+    name = "asd Clothes",
+    coords = vec3(30, 0, 0),
+    blip = {
+      sprite = 1,
+      scale = 0.8,
+      colour = 3,
+    },
+    data = {
+      ped = true,
+      inheritance = {
+        state = false,
+      },
+      face = {
+        state = false,
+      },
+      head = {
+        state = false,
+      },
+      tattoos = {
+        state = false,
+      },
+    }
+  }
+}
+
 local models <const> = {
   { label = 'a_f_m_beach_01', value = 'a_f_m_beach_01' },
   { label = 'mp_m_freemode_01', value = 'mp_m_freemode_01' },
@@ -1130,4 +1182,8 @@ end)
 
 exports('Models', function()
   return models
+end)
+
+exports('Shops', function ()
+  return shops
 end)
