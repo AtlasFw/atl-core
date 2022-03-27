@@ -200,6 +200,7 @@ function player:setJob(name, level)
 
   -- Restarts the duty to false
   self.job_data = { name = job.name:lower(), rank = level, onDuty = false }
+  TriggerClientEvent('atl-core:client:onJobUpdate', self.source, self.job_data)
 
   return true
 end
@@ -213,6 +214,8 @@ function player:setDuty(state)
   end
 
   self.job_data.onDuty = state
+  TriggerClientEvent('atl-core:client:onJobUpdate', self.source, self.job_data)
+
   return true
 end
 
@@ -230,6 +233,8 @@ function player:addAccountMoney(account, quantity)
   end
 
   self.accounts[account] = self.accounts[account] + quantity
+  TriggerClientEvent('atl-core:client:onAccountUpdate', self.source, self.accounts)
+
   return true
 end
 
@@ -246,6 +251,8 @@ function player:removeAccountMoney(account, quantity)
   end
 
   self.accounts[account] = self.accounts[account] - quantity
+  TriggerClientEvent('atl-core:client:onAccountUpdate', self.source, self.accounts)
+
   return true
 end
 
@@ -256,6 +263,7 @@ function player:setStatus(status)
 
   self.status = status
   TriggerClientEvent('atl-core:client:onStatusUpdate', self.source, self.status)
+
   return true
 end
 
@@ -268,8 +276,8 @@ function player:addStatus(status, value)
   newValue = (newValue < 0) and 0 or (newValue > 100) and 100 or newValue
 
   self.status[status].value = newValue
-
   TriggerClientEvent('atl-core:client:onStatusUpdate', self.source, self.status)
+
   return true
 end
 
@@ -282,8 +290,8 @@ function player:subtractStatus(status, value)
   newValue = (newValue < 0) and 0 or (newValue > 100) and 100 or newValue
 
   self.status[status].value = newValue
-
   TriggerClientEvent('atl-core:client:onStatusUpdate', self.source, self.status)
+
   return true
 end
 
