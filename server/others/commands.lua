@@ -95,7 +95,7 @@ ATL.RegisterCommand('startmulti', 'Open the identity/multichar again', 'user', f
   ATL.Players[player.source] = nil
   Wait(100)
 
-  TriggerClientEvent('atl-core:client:characterLoaded', player.source, nil)
+  TriggerClientEvent('atl-core:client:onCharacterLoaded', player.source, nil)
   playerJoined(player.source)
 end)
 

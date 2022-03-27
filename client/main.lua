@@ -18,6 +18,6 @@ end)
 
 ---Event handling the first setting of the character in the client.
 ---@param character table - The character table.
-RegisterNetEvent('atl-core:client:characterLoaded', function(character)
+RegisterNetEvent('atl-core:client:onCharacterLoaded', function(character)
   ATL.Character = character
 end)

@@ -31,7 +31,7 @@ ATL.new = function(playerId, identifier, char_id, data)
   self.status = decode(data.status) or Server.Status
 
   -- Load the player
-  TriggerClientEvent('atl-core:client:characterLoaded', playerId, self)
+  TriggerClientEvent('atl-core:client:onCharacterLoaded', playerId, self)
   SetEntityCoords(GetPlayerPed(playerId), self.char_data.coords.x, self.char_data.coords.y, self.char_data.coords.z)
 
   return setmetatable(self, getmetatable(ATL.Players))
@@ -255,7 +255,7 @@ function player:setStatus(status)
   end
 
   self.status = status
-  TriggerClientEvent('atl-status:client:sync', self.source, self.status)
+  TriggerClientEvent('atl-core:client:onStatusUpdate', self.source, self.status)
   return true
 end
 
@@ -269,7 +269,7 @@ function player:addStatus(status, value)
 
   self.status[status].value = newValue
 
-  TriggerClientEvent('atl-status:client:sync', self.source, self.status)
+  TriggerClientEvent('atl-core:client:onStatusUpdate', self.source, self.status)
   return true
 end
 
@@ -283,7 +283,7 @@ function player:subtractStatus(status, value)
 
   self.status[status].value = newValue
 
-  TriggerClientEvent('atl-status:client:sync', self.source, self.status)
+  TriggerClientEvent('atl-core:client:onStatusUpdate', self.source, self.status)
   return true
 end
 
