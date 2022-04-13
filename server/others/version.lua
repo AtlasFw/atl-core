@@ -4,7 +4,7 @@ function checkVersion()
       Debug('Failed to fetch latest version', 'WARN')
       return
     end
-    local latestVersion = json.decode(response).tag_name
+    local latestVersion = json.decode(response).tag_name:sub(2)
     local currentVersion = GetResourceMetadata('atl-core', 'version', 0)
 
     if latestVersion > currentVersion then
