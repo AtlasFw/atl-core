@@ -8,6 +8,7 @@ local DEBUG_COLORS = {
   ['ERROR'] = '\x1b[31m',
   ['SUCCESS'] = '\x1b[32m',
   ['WARN'] = '\x1b[33m',
+  ['INFO'] = '\x1B[30m',
 }
 
 local STATUS_CODES = {
@@ -26,19 +27,11 @@ function Debug(msg, type)
   if not msg then
     return nil
   end
-  if not type then
+  if not type or not DEBUG_COLORS[type] then
     type = 'INFO'
   end
 
-  Citizen.Trace(
-    '\x1b[38;5;33m[ATL]^0 '
-      .. DEBUG_COLORS[type:upper()]
-      .. '['
-      .. type:upper()
-      .. ']^0 '
-      .. msg
-      .. '^0'
-  )
+  Citizen.Trace('\x1b[38;5;33m[ATL]^0 ' .. DEBUG_COLORS[type:upper()] .. '[' .. type:upper() .. ']^0 ' .. msg .. '^0')
 end
 
 ---Sends a log to your DataDog account.
