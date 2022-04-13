@@ -2,7 +2,7 @@
 ---@param dict string
 ATL.RequestDict = function(dict)
   local timeout = false
-  SetTimeout(5000, function()
+  SetTimeout(500, function()
     timeout = true
   end)
 
@@ -16,7 +16,7 @@ end
 ---@param model string
 ATL.RequestModel = function(model)
   local timeout = false
-  SetTimeout(5000, function()
+  SetTimeout(500, function()
     timeout = true
   end)
 
@@ -31,7 +31,7 @@ end
 ---@param walk string
 ATL.RequestWalk = function(walk)
   local timeout = false
-  SetTimeout(5000, function()
+  SetTimeout(500, function()
     timeout = true
   end)
 
@@ -45,7 +45,7 @@ end
 ---@param asset string
 ATL.RequestParticleFx = function(asset)
   local timeout = false
-  SetTimeout(5000, function()
+  SetTimeout(500, function()
     timeout = true
   end)
 
