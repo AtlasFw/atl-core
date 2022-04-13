@@ -1,39 +1,16 @@
 local shops <const> = {
   {
-    name = "Pennsylvania Clothes",
-    coords = vec3(0, 0, 0),
+    name = "Suburban",
+    coords = vec3(122.8682, -221.9649, 54.5578),
+    range = 3,5,
+    pricePerChange = 100,
     blip = {
-      sprite = 437,
+      sprite = 73,
       scale = 0.8,
       colour = 1,
     },
     data = {
       ped = false,
-      inheritance = {
-        state = false,
-      },
-      face = {
-        state = false,
-      },
-      head = {
-        state = false,
-      },
-      tattoos = {
-        state = false,
-      },
-    }
-  },
-
-  {
-    name = "asd Clothes",
-    coords = vec3(30, 0, 0),
-    blip = {
-      sprite = 1,
-      scale = 0.8,
-      colour = 3,
-    },
-    data = {
-      ped = true,
       inheritance = {
         state = false,
       },
