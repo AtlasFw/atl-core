@@ -49,9 +49,10 @@ function player:savePlayer()
       values = { self.group, self.slots, self.identifier },
     },
     {
-      query = 'UPDATE `characters` SET accounts = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ',
+      query = 'UPDATE `characters` SET accounts = ?, appearance = ?, status = ?, inventory = ?, job_data = ?, char_data = ? WHERE `char_id` = ? ',
       values = {
         encode(self.accounts),
+        encode(self.appearance),
         encode(self.status),
         encode(self.inventory),
         encode(self.job_data),
@@ -256,6 +257,7 @@ function player:removeAccountMoney(account, quantity)
   return true
 end
 
+-- Status
 function player:setStatus(status)
   if type(status) ~= 'table' then
     return false
@@ -291,6 +293,18 @@ function player:subtractStatus(status, value)
 
   self.status[status].value = newValue
   TriggerClientEvent('atl-core:client:onStatusUpdate', self.source, self.status)
+
+  return true
+end
+
+-- Appearance
+function player:setAppearance(appearance)
+  if type(appearance) ~= 'table' then
+    return false
+  end
+
+  self.appearance = appearance
+  --TriggerClientEvent('atl-core:client:onAppearanceUpdate', self.source, self.appearance)
 
   return true
 end
