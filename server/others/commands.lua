@@ -1,3 +1,7 @@
+ATL.RegisterCommand('c', 'c creator', 'admin', function(player, args)
+  ATL.newVehicle(player.source, player.identifier, player.char_id, 'sultanrs')
+end, {}, {})
+
 ATL.RegisterCommand('setgroup', 'Set player group', 'admin', function(player, args)
   player:setGroup(args.group)
 end, { 'number-target', 'string-group' }, {
@@ -47,7 +51,7 @@ ATL.RegisterCommand({ 'car', 'veh' }, 'Spawn a vehicle', 'admin', function(playe
   local seats = ATL.GetPassengers(ped, curVehicle)
 
   ATL.DeleteEntity(NetworkGetNetworkIdFromEntity(curVehicle), function()
-    ATL.CreateVehicle(args.model, vec4(coords.x, coords.y, coords.z, heading), function(_, netVehicle)
+    ATL.CreateVehicle(args.model, vec4(coords, heading), function(_, netVehicle)
       if netVehicle then
         local peds = {}
         for _, id in pairs(GetPlayers()) do

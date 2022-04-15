@@ -35,7 +35,7 @@ end
 ATL.CreateVehicle = function(model, coords, cb)
   if type(model) ~= 'string' or type(coords) ~= 'vector4' then return cb(false, false) end
 
-  local vehicle = Citizen.InvokeNative(`CREATE_AUTOMOBILE`, joaat(model), coords.x, coords.y, coords.z, coords.w)
+  local vehicle = Citizen.InvokeNative(`CREATE_AUTOMOBILE`, joaat(model), coords)
   local timeout = false
   SetTimeout(250, function() timeout = true end)
 
@@ -55,7 +55,7 @@ end
 ATL.CreatePed = function(model, coords, cb)
   if type(model) ~= 'string' or type(coords) ~= 'vector4' then return cb(false, false) end
 
-  local ped = CreatePed(0, joaat(model), coords.x, coords.y, coords.z, coords.w, true, true)
+  local ped = CreatePed(0, joaat(model), coords, true, true)
   local timeout = false
   SetTimeout(250, function() timeout = true end)
 
@@ -76,7 +76,7 @@ end
 ATL.CreateObject = function(model, coords, cb)
   if type(model) ~= 'string' or type(coords) ~= 'vector4' then return cb(false, false) end
 
-  local object = CreateObject(joaat(model), coords.x, coords.y, coords.z, coords.w, true, true)
+  local object = CreateObject(joaat(model), coords, true, true)
   local timeout = false
   SetTimeout(250, function() timeout = true end)
 

@@ -33,6 +33,7 @@ ATL.new = function(playerId, identifier, char_id, data)
   -- Load the player
   TriggerClientEvent('atl-core:client:onCharacterLoaded', playerId, self)
   SetEntityCoords(GetPlayerPed(playerId), self.char_data.coords.x, self.char_data.coords.y, self.char_data.coords.z)
+  SetEntityHeading(GetPlayerPed(playerId), self.char_data.coords.w)
 
   return setmetatable(self, getmetatable(ATL.Players))
 end
@@ -41,7 +42,7 @@ end
 function player:savePlayer()
   local ped = GetPlayerPed(self.source)
   local coords, heading = GetEntityCoords(ped), GetEntityHeading(ped)
-  self:setCoords(vector4(coords.x, coords.y, coords.z, heading))
+  self:setCoords(vector4(coords, heading))
 
   local queries = {
     {
@@ -154,7 +155,7 @@ function player:setCoords(coords, now)
     SetEntityHeading(ped, coords.w)
   end
 
-  self.char_data.coords = vec4(coords.x, coords.y, coords.z, coords.w)
+  self.char_data.coords = vec4(coords)
   return true
 end
 
