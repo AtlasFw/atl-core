@@ -7,7 +7,7 @@ ATL = exports['atl-core']:get()
 ATL.GetPlayer = function(playerId)
   local copyPlayer = exports['atl-core']:GetPlayer(playerId)
   if not copyPlayer then
-    return {}
+    return false
   end
   return setmetatable(copyPlayer, {
     __index = function(self, name)
