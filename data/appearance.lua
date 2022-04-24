@@ -5,10 +5,10 @@ local shops <const> = {
     range = 3,5,
     pricePerChange = 100,
     blip = {
-      enabled = false,
+      enabled = true,
       sprite = 73,
       scale = 0.8,
-      colour = 1,
+      color = 1,
     },
     data = {
       ped = false,
