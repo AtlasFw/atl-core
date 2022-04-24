@@ -20,6 +20,7 @@ client_scripts {
 
   'client/functions/callbacks.lua',
   'client/functions/request.lua',
+	'client/functions/blip.lua',
 
   'client/events/vehicle.lua',
 
