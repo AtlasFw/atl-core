@@ -26,7 +26,7 @@ Got stuck while coding or don't know how to use Atlas Framework? Check out the d
 
 ## License
 ```
-atl-ui
+atl-core
 
 Copyright (C) 2022 Atlas Framework
 
