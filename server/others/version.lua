@@ -18,4 +18,8 @@ function checkVersion()
   end)
 end
 
-AddEventHandler('onServerResourceStart', checkVersion)
+AddEventHandler('onServerResourceStart', function(resourceName)
+  if resourceName == GetCurrentResourceName() then
+    checkVersion()
+  end
+end)
