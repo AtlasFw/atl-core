@@ -310,6 +310,17 @@ function player:setAppearance(appearance)
   return true
 end
 
+-- UI
+function player:notify(data)
+  if type(data.type) ~= 'string' or type(data.message) ~= 'string' then
+    error('UI: Missing required parameters for notify')
+    return false
+  end
+  TriggerClientEvent('atl-ui:client:simpleNotify', self.source, data)
+
+  return true
+end
+
 --#endregion Setters
 
 ---Exportable methods
