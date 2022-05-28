@@ -28,7 +28,7 @@ ATL.GetVehicles = function(coords, dist)
 end
 
 ---Create vehicle by the server
----@param hash number - Model hash
+---@param model string - Model of the vehicle
 ---@param coords vector4 - Position of the vehicle
 ---@param cb boolean - Callback function
 ---@return function - Callback function with vehicle and network id of the vehicle

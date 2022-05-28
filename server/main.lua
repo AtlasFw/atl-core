@@ -18,7 +18,7 @@ CreateThread(function()
 end)
 
 ---Handler for the auto restart event.
----@param data object
+---@param data table - Data of the event
 AddEventHandler('txAdmin:events:scheduledRestart', function(data)
 	if data.secondsRemaining == 60 then
     CreateThread(function()
