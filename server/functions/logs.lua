@@ -31,7 +31,7 @@ function Debug(msg, type)
     type = 'INFO'
   end
 
-  Citizen.Trace('\x1b[38;5;33m[ATL]^0 ' .. DEBUG_COLORS[type:upper()] .. '[' .. type:upper() .. ']^0 ' .. msg .. '^0')
+  Citizen.Trace('\x1b[38;5;33m[ATL]^0 ' .. DEBUG_COLORS[type:upper()] .. '[' .. type:upper() .. ']^0 ' .. msg .. '^0\n')
 end
 
 ---Sends a log to your DataDog account.
