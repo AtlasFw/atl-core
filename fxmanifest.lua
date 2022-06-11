@@ -6,6 +6,7 @@ lua54 'yes'
 name 'atl-core'
 author 'Atlas Framework Developers'
 version '0.0.1'
+repository 'https://github.com/AtlasFw/atl-core'
 
 shared_scripts {
   'data/config/shared.lua',
@@ -21,6 +22,8 @@ client_scripts {
   'client/functions/callbacks.lua',
   'client/functions/request.lua',
 	'client/functions/blip.lua',
+  'client/functions/anim.lua',
+  'client/functions/pool.lua',
 
   'client/events/vehicle.lua',
 
