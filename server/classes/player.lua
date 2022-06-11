@@ -95,23 +95,21 @@ function player:hasPerms(group)
 end
 
 -- Jobs
----Return the job the player is in
----@return string - Job label
-function player:getJobLabel()
-	return Server.Jobs[self.job_data.name].name
-end
-
----Return the rank the player is in (job)
----@return string - Job rank label
-function player:getRankLabel()
-	local job = self.job_data
-	return Server.Jobs[job.name].ranks[job.rank].label
-end
-
----Return if the player in on duty (job)
----@return boolean - Is on duty
-function player:getDuty()
-	return self.job_data.onDuty
+---Return the job data of the player is in
+---@return table - Job data
+function player:getJob()
+  local job = self.job_data
+  return {
+    name = job.name,
+    label = Server.Jobs[job.name].name,
+    rank = {
+      level = job.rank,
+      label = Server.Jobs[job.name].ranks[job.rank].label,
+      paycheck = Server.Jobs[job.name].ranks[job.rank].paycheck,
+      taxes = Server.Jobs[job.name].ranks[job.rank].taxes,
+    },
+    onDuty = job.onDuty,
+  }
 end
 
 -- Account
