@@ -33,8 +33,8 @@ end)
 ---Handler for the joining event.
 ---Should check for license and
 ---kick the player if it's not valid.
----@param _ unknown
----@param _ unknown
+---@param _ any
+---@param _ any
 ---@param deferrals function - Deferrals
 ---@return any
 AddEventHandler('playerConnecting', function(_, _, deferrals)
@@ -46,7 +46,8 @@ AddEventHandler('playerConnecting', function(_, _, deferrals)
   Wait(500)
   if not license then
     deferrals.done('[ATL] No license found.')
-    return CancelEvent()
+    CancelEvent()
+    return
   end
   deferrals.done()
 end)

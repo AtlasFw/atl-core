@@ -9,7 +9,7 @@ ATL = {
 CreateThread(function()
   while true do
     if NetworkIsPlayerActive(PlayerId()) then
-      TriggerServerEvent 'atl-core:server:playerJoined'
+      TriggerServerEvent('atl-core:server:playerJoined')
       break
     end
     Wait(0)

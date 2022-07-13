@@ -31,7 +31,7 @@ local function createCharacter(playerId, license, identity, appearance)
   }, function(charId)
     if charId then
       local player = {
-        appearance = encode(newAppearance), -- TODO: Add appearance
+        appearance = encode(newAppearance),
         identity = encode(newIdentity),
         job_data = encode(newJob),
         group = user.group,

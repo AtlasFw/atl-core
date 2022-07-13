@@ -51,7 +51,6 @@ server_scripts {
 
   'server/others/version.lua',
   'server/others/commands.lua',
-  'server/others/hotreload.lua',
 
   -- Holds all the functions relating to the player
   'server/export.lua',

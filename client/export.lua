@@ -5,6 +5,6 @@
 ---ask for help on our Discord.
 ---https://atlasfw.live/documentation
 
-exports('get', function()
+exports('GetCore', function()
   return ATL
 end)

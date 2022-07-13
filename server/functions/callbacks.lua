@@ -14,7 +14,7 @@ end
 
 ---Event triggering the callback back to the client
 ---@param name string - Name of the existing callback
----@param ... unknown - Arguments to pass to the callback
+---@param ... any - Arguments to pass to the callback
 RegisterServerEvent('atl:server:cb_trigger', function(name, ...)
   local playerId <const> = source
   local rValue = nil

@@ -22,6 +22,7 @@ ATL.new = function(playerId, identifier, char_id, data)
   -- Player data
   self.accounts = decode(data.accounts) or Server.Accounts
   self.appearance = decode(data.appearance) or {}
+  self.banned = data.banned or 0
   self.char_data = decode(data.char_data) or { coords = Server.Spawn }
   self.group = data.group or Server.Groups[1] or 'user'
   self.identity = decode(data.identity) or {}
@@ -29,6 +30,7 @@ ATL.new = function(playerId, identifier, char_id, data)
   self.job_data = decode(data.job_data) or {}
   self.slots = data.slots or Server.Identity.AllowedSlots
   self.status = decode(data.status) or Server.Status
+  self.last_played = data.last_played
 
   -- Load the player
   TriggerClientEvent('atl-core:client:onCharacterLoaded', playerId, self)
@@ -128,7 +130,7 @@ end
 
 -- Status
 ---Return the value the player status has in specified
----@param status string - Status name
+---@param name string - Status name
 ---@return table - Status data {rate, value}
 function player:getStatus(name)
   if type(name) ~= 'string' then
@@ -200,6 +202,9 @@ function player:setJob(name, level)
   end
 
   local job = Server.Jobs[name:lower()]
+  if not job then
+    return false
+  end
 
   -- Restarts the duty to false
   self.job_data = { name = job.name:lower(), rank = level, onDuty = false }
@@ -259,7 +264,27 @@ function player:removeAccountMoney(account, quantity)
   return true
 end
 
+---Set the money of an specified account
+---@param account string - Account name
+---@param quantity number - Amount to set
+---@return boolean - Setting success
+function player:setAccountMoney(account, quantity)
+  if type(account) ~= 'string' or type(quantity) ~= 'number' then
+    return false
+  end
+  if not self.accounts[account] then
+    return false
+  end
+
+  self.accounts[account] = quantity
+  TriggerClientEvent('atl-core:client:onAccountUpdate', self.source, self.accounts)
+
+  return true
+end
+
 -- Status
+---Set the status of an user to a specific status
+---@param status table - Status data
 function player:setStatus(status)
   if type(status) ~= 'table' then
     return false
@@ -271,42 +296,54 @@ function player:setStatus(status)
   return true
 end
 
-function player:addStatus(status, value)
-  if type(status) ~= 'string' or type(value) ~= 'number' then
+---Add value to a status
+---@param name string - Status name
+---@param value number - Quantity to add
+---@return boolean - Adding success
+function player:addStatus(name, value)
+  if type(name) ~= 'string' or type(value) ~= 'number' then
     return false
   end
 
-  local newValue = self.status[status].value + value
+  local newValue = self.status[name].value + value
   newValue = (newValue < 0) and 0 or (newValue > 100) and 100 or newValue
 
-  self.status[status].value = newValue
+  self.status[name].value = newValue
   TriggerClientEvent('atl-core:client:onStatusUpdate', self.source, self.status)
 
   return true
 end
 
-function player:subtractStatus(status, value)
-  if type(status) ~= 'string' or type(value) ~= 'number' then
+---Remove value from a status
+---@param name string - Status name
+---@param value number - Amount to remove
+---@return boolean - Removing success
+function player:reduceStatus(name, value)
+  if type(name) ~= 'string' or type(value) ~= 'number' or not self.status[name] then
     return false
   end
 
-  local newValue = self.status[status].value - value
+
+  local newValue = self.status[name].value - value
   newValue = (newValue < 0) and 0 or (newValue > 100) and 100 or newValue
 
-  self.status[status].value = newValue
+  self.status[name].value = newValue
   TriggerClientEvent('atl-core:client:onStatusUpdate', self.source, self.status)
 
   return true
 end
 
 -- Appearance
+---Set the player's appearance
+---@param appearance table - Appearance data
+---@return boolean - Setting success
 function player:setAppearance(appearance)
   if type(appearance) ~= 'table' then
     return false
   end
 
   self.appearance = appearance
-  --TriggerClientEvent('atl-core:client:onAppearanceUpdate', self.source, self.appearance)
+  TriggerClientEvent('atl-core:client:onAppearanceUpdate', self.source, self.appearance)
 
   return true
 end
@@ -315,7 +352,7 @@ end
 ---Plays a simple notification on the player's screen
 ---@param data table - message and duration
 ---@return boolean
-function player:notify(data)
+function player:simpleNotify(data)
   if type(data.type) ~= 'string' or type(data.message) ~= 'string' then
     error('UI: Missing required parameters for notify')
     return false
@@ -331,22 +368,19 @@ function player:advancedNotify(data)
     return false
   end
   TriggerClientEvent('atl-ui:client:advNotify', self.source, data)
+
   return true
 end
 
 --#endregion Setters
 
 ---Exportable methods
-local count = 0
 for name, func in pairs(player) do
   if type(func) == 'function' then
     exports('atl_' .. name, function(playerId, ...)
-      local player = ATL.Players[playerId]
-      return player[name](player, ...)
+      local copyPlayer = ATL.Players[playerId]
+      return copyPlayer[name](copyPlayer, ...)
     end)
     ATL.Methods[name] = name
-    count += 1
   end
 end
-
-print('[ATL] Loaded ' .. count .. ' exportable methods')

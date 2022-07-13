@@ -13,15 +13,15 @@ end
 ---Drops the player if it fails (already exists).
 ---@param playerId number - Id of the player (source)
 function playerJoined(playerId)
-  local playerId <const> = source or playerId
-  if ATL.Players[playerId] then return DropPlayer(playerId, '[ATL] Player with same identifier is already logged in.') end
+  local newPlayerId <const> = source or playerId
+  if ATL.Players[newPlayerId] then return DropPlayer(newPlayerId, '[ATL] Player with same identifier is already logged in.') end
 
-  local license = ATL.GetLicense(playerId)
+  local license = ATL.GetLicense(newPlayerId)
   local characters = getCharacters(license)
-  local slots = getUser(playerId, license).slots
+  local slots = getUser(newPlayerId, license).slots
   local cfgIdentity = Server.Identity
   cfgIdentity.AllowedSlots = slots
-  TriggerClientEvent('atl-identity:client:startMulticharacter', playerId, characters, cfgIdentity, Server.Jobs)
+  TriggerClientEvent('atl-identity:client:startMulticharacter', newPlayerId, characters, cfgIdentity, Server.Jobs)
 end
 
 ---Event function handling the leaving of a player.

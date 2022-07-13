@@ -11,7 +11,7 @@ ATL.CreateCoordsBlip = function(data)
   SetBlipAlpha(blip, data.alpha or 255)
   SetBlipAsShortRange(blip, data.shortRange or false)
   BeginTextCommandSetBlipName('STRING')
-  AddTextComponentSubstringPlayerName(data.label or 'Atlas Blip')
+  AddTextComponentSubstringPlayerName(data.label or 'Unnamed Blip')
   EndTextCommandSetBlipName(blip)
 
   return blip
@@ -59,7 +59,7 @@ ATL.CreateEntityBlip = function(data)
   SetBlipAlpha(blip, data.alpha or 255)
   SetBlipAsShortRange(blip, data.shortRange or false)
   BeginTextCommandSetBlipName('STRING')
-  AddTextComponentSubstringPlayerName(data.label or 'Atlas Blip')
+  AddTextComponentSubstringPlayerName(data.label or 'Unnamed Blip')
   EndTextCommandSetBlipName(blip)
 
   return blip

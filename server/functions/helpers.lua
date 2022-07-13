@@ -54,8 +54,17 @@ ATL.RegisterCommand = function(name, description, group, cb, types, suggestions)
 			arguments[argName] = value
 		end
 
-		if not player or not player:hasPerms(group) then
-			print("No perms")
+		if not player then
+			TriggerClientEvent("atl-ui:client:simpleNotify", source, {
+				type = "error",
+				message = "Could not find the player.",
+			})
+			return
+		elseif not player:hasPerms(group) then
+			player:simpleNotify({
+				type = "error",
+				message = "You don't have permission to use this command.",
+			})
 			return
 		end
 		if invoke == nil then
