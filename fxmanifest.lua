@@ -15,9 +15,6 @@ shared_scripts {
 
 client_scripts {
   'data/config/client.lua',
-
-  -- Holds all the functions relating to the player
-  'client/export.lua',
 }
 
 server_scripts {
@@ -27,14 +24,10 @@ server_scripts {
 
   'server/main.lua',
   'server/classes/player.lua',
-
-  -- Holds all the functions relating to the player
-  'server/export.lua',
+  'server/classes/methods.lua',
 }
 
 files {
-  -- Our import file
-  'import.lua',
   'data/locales/*.lua',
 }
 
