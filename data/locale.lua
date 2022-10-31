@@ -29,8 +29,6 @@ function GetLocale(key, ...)
   end
 end
 
----Instead of doing exports('GetLocale', GetLocale)
----We return the function so that the following can be done.
 ---local customName = exports['atl-core']:GetLocale()
 ---Now you can simply use your customName instead of
 --- Having to use the export every time.
