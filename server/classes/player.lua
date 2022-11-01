@@ -11,15 +11,3 @@ _ENV.Player = setmetatable({}, {
 	end
 })
 setmetatable(PlayerList, {__index = Player})
-
-function Player:add(a)
-	self.money = self.money + a
-end
-
-PlayerList[1] = Player(1, 1, {
-	money = 0
-})
-
-local player = PlayerList[1]
-player:add(1)
-print(player.money)
