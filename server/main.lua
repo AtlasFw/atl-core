@@ -1,5 +1,5 @@
-PlayerList = {}
-_G.PlayerList = PlayerList
+ATL, PlayerList = {}, {}
+_G.PlayerList, _G.ATL = PlayerList, ATL
 
 AddEventHandler('playerJoining', function(name, setKickReason, deferrals)
   deferrals.defer()

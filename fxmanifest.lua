@@ -25,6 +25,14 @@ server_scripts {
   'server/main.lua',
   'server/classes/player.lua',
   'server/classes/methods.lua',
+
+  'server/functions/helpers.lua',
+  'server/functions/logs.lua',
+  'server/functions/commands.lua',
+  'server/functions/players.lua',
+
+  'server/events/player.lua',
+  'server/events/character.lua',
 }
 
 files {
