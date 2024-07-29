@@ -5,10 +5,10 @@ CREATE TABLE `users` (
   `license` VARCHAR(60) NOT NULL,
   `name` VARCHAR(60) NOT NULL,
   `group` VARCHAR(60) NOT NULL,
-  `slots` INTEGER(2) NOT NULL,
-  `banned` BOOLEAN NOT NULL DEFAULT FALSE,
+  `slots` INT NOT NULL,
+  `banned` TINYINT(1) NOT NULL DEFAULT 0,
   PRIMARY KEY (`license`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
 
 CREATE TABLE `characters` (
   `char_id` int NOT NULL AUTO_INCREMENT,
@@ -20,7 +20,7 @@ CREATE TABLE `characters` (
   `identity` longtext,
   `inventory` longtext NOT NULL DEFAULT '[]',
   `job_data` longtext,
-  `last_played` date NOT NULL DEFAULT CURDATE(),
+  `last_played` date NOT NULL DEFAULT CURRENT_DATE,
   `status` longtext,
   PRIMARY KEY (`char_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) DEFAULT CHARSET=utf8mb4;
